@@ -26,7 +26,7 @@ class App extends React.Component {
   handleClick = (event) => {
     if (event.button === 0) {
       if (event.type === "mousedown") {
-        this.setState({ message: "Left Mouse Downtown"});
+        this.setState({ message: "Left Mouse Down"});
       } else if (event.type === "mouseup") {
         this.setState({ message: "Left Mouse Up"});
       }
