@@ -59,6 +59,7 @@ class Game extends React.Component {
       stepNumber: 0,
       lMouseDown: false,
       rMouseDown: false,
+      initialSquare: 'empty',
       currentAction: 'empty',
       changed: false,
       seconds: 0,
@@ -108,6 +109,7 @@ class Game extends React.Component {
     this.setState({
       lMouseDown: false,
       rMouseDown: false,
+      initialSquare: 'empty',
       currentAction: 'empty',
     });
   }
@@ -117,20 +119,22 @@ class Game extends React.Component {
     const squares = current.slice();
     let lMouseDown = this.state.lMouseDown;
     let rMouseDown = this.state.rMouseDown;
+    let initialSquare = squares[i];
     let currentAction = this.state.currentAction;
     let changed = this.state.changed;
 
     if (event.button === 0) {
       if (event.type === "mousedown") {
         lMouseDown = true;
-        currentAction = (squares[i] === 'empty') ? 'filled' : 'empty';
+        currentAction = (initialSquare === 'empty') ? 'filled' : 'empty';
         squares[i] = currentAction;
         changed = true;
       }
     } else if (event.button === 2) {
       if (event.type === "mousedown") {
         rMouseDown = true;
-        currentAction = (squares[i] === 'empty') ? 'marked' : 'empty';
+
+        currentAction = (initialSquare === 'empty') ? 'marked' : 'empty';
         squares[i] = currentAction;
         changed = true;
       }
@@ -141,6 +145,7 @@ class Game extends React.Component {
       current: squares,
       lMouseDown: lMouseDown,
       rMouseDown: rMouseDown,
+      initialSquare: initialSquare,
       currentAction: currentAction,
       changed: changed,
     });
@@ -155,9 +160,10 @@ class Game extends React.Component {
 
     const current = this.state.current;
     const squares = current.slice();
+    let initialSquare = this.state.initialSquare;
     let currentAction = this.state.currentAction;
 
-    if (currentAction !== squares[i]) {
+    if (initialSquare === squares[i]) {
       squares[i] = currentAction;
       changed = true;
     } else {
@@ -208,16 +214,16 @@ class Game extends React.Component {
     */
 
     return (
-      <div className="game" onContextMenu={(e)=> e.preventDefault()}>
+      <div
+        className="game"
+        onContextMenu={(e)=> e.preventDefault()}
+        onMouseUp={() => this.appendHistory()}
+      >
         <div className="game-info">
           <div>{this.state.timer}</div>
           <span class="material-icons" onClick={() => this.undo()}>undo</span>
         </div>
-        <div
-          className="game-board"
-          onMouseLeave={() => this.appendHistory()}
-          onMouseUp={() => this.appendHistory()}
-        >
+        <div className="game-board">
           <Board
             squares={current}
             rows={this.state.rows}
