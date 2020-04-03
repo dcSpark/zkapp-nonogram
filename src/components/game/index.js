@@ -6,7 +6,6 @@ function Square(props) {
     <div
       className={'square ' + 'square-' + props.value}
       onMouseDown={props.onMouseDown}
-      onMouseUp={props.onMouseUp}
       onMouseEnter={props.onMouseEnter}
     > 
         <span class="material-icons">cancel</span>
@@ -20,7 +19,6 @@ class Board extends React.Component {
       <Square
         value={this.props.squares[i]}
         onMouseDown={(event) => this.props.onMouseDown(event, i)}
-        onMouseUp={() => this.props.onMouseUp()}
         onMouseEnter={() => this.props.onMouseEnter(i)}
       />
     );
@@ -215,13 +213,16 @@ class Game extends React.Component {
           <div>{this.state.timer}</div>
           <span class="material-icons" onClick={() => this.undo()}>undo</span>
         </div>
-        <div className="game-board" onMouseLeave={() => this.appendHistory()}>
+        <div
+          className="game-board"
+          onMouseLeave={() => this.appendHistory()}
+          onMouseUp={() => this.appendHistory()}
+        >
           <Board
             squares={current}
             rows={this.state.rows}
             cols={this.state.cols}
             onMouseDown={(event, i) => this.squareClick(event, i)}
-            onMouseUp={() => this.appendHistory()}
             onMouseEnter={i => this.squareHover(i)}
           />
         </div>
