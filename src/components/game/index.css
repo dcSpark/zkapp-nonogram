@@ -1,0 +1,104 @@
+ol,
+ul {
+  padding-left: 30px;
+}
+
+.game-board {
+  background-color: #ccc;
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.square {
+  position: relative;
+  display: flex;
+  color: #f44336;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  border-width: 3px;
+  border-radius: 6px;
+  margin: 3px;
+  float: left;
+  height: 70px;
+  width: 70px;
+  cursor: pointer;
+  transition: border 0.2s ease 0s, background-color 0.2s ease 0s;
+}
+
+.square .material-icons {
+  transform: scale(0);
+  transition: transform 0.2s ease 0s;
+}
+
+.square::after {
+  transform: scale(0);
+}
+
+.square-empty {
+  background-color: #fff;
+}
+
+.square-marked {
+  background-color: #ccc;
+  color: #f44336;
+}
+
+.square-marked .material-icons {
+  font-size: 70px;
+  transform: scale(1);
+  transition: transform 0.2s ease 0s;
+}
+
+.square-filled {
+  background-color: #353235;
+}
+
+@keyframes blink {
+  from  { box-shadow: 0 0 0 8px #1a7acd;}
+  to    { box-shadow: 0 0 0 8px #40ffdd;}
+}
+
+.square-empty:hover, .square-filled:hover {
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+.game {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.game-info {
+  margin-right: 20px;
+}
