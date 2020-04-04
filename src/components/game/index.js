@@ -1,72 +1,140 @@
 import React from "react";
+import { DefaultDimensions, SquareValue } from "../common/constants.js";
 import "./index.css";
 
-function Square(props) {
+function HintNumbers(props) {
+  let hintNumbers = [];
+
+  for (let a = 0; a < props.values.length; a++) {
+    let aSection = [];
+
+    for (let b = 0; b < props.values[a].length; b++) {
+      aSection.push(<div className="hint">{props.values[a][b]}</div>);
+    }
+
+    hintNumbers.push(<div className={"hint-" + props.type}>{aSection}</div>);
+  }
+
   return (
-    <div
-      className={'square ' + 'square-' + props.value}
-      onMouseDown={props.onMouseDown}
-      onMouseEnter={props.onMouseEnter}
-    > 
-        <span class="material-icons">cancel</span>
+    <div className={props.area + '-hints'}>
+      {hintNumbers}
     </div>
   );
 }
 
+/**
+ * Translates individual board squares into HTML div elements.
+ * 
+ * @param {*} props 
+ */
+function Square(props) {
+  const index = (typeof props.value === 'undefined') ? 1 : props.value;
+  const value = SquareValue.properties[index].name;
+
+  return (
+    <div
+      className={'square square-' + value}
+      onMouseDown={props.onMouseDown}
+      onMouseEnter={props.onMouseEnter}
+    > 
+      <span className="material-icons">cancel</span>
+    </div>
+  );
+}
+
+/**
+ * A game board made up of squares.
+ */
 class Board extends React.Component {
-  renderSquare(i) {
+  renderSquare(loc) {
     return (
       <Square
-        value={this.props.squares[i]}
-        onMouseDown={(event) => this.props.onMouseDown(event, i)}
-        onMouseEnter={() => this.props.onMouseEnter(i)}
+        value={this.props.squares[loc]}
+        onMouseDown={(event) => this.props.onMouseDown(event, loc)}
+        onMouseEnter={() => this.props.onMouseEnter(loc)}
       />
     );
   }
 
   render() {
     const cols = [];
-    let it = 0;
-    for (let col = 0; col < this.props.cols; col++) {
+    let loc = 0
+
+    for (let col = 0; col < this.props.dimensions.rows; col++) {
       let temp = [];
-      for (let row = 0; row < this.props.rows; row++) {
-        temp.push(this.renderSquare(it++));
+      for (let row = 0; row < this.props.dimensions.cols; row++) {
+        temp.push(this.renderSquare(loc++));
       }
       cols.push(temp);
     }
+
     const rows = [];
-    for (let row = 0; row < this.props.rows; row++) {
+    for (let row = 0; row < this.props.dimensions.rows; row++) {
       rows.push(<div className="board-row">{cols[row]}</div>);
     }
     return (
-      <div>
+      <div className="game-board">
         {rows}
       </div>
     );
   }
 }
 
+/**
+ * The main component that is called on by ReactDOM.render().
+ */
 class Game extends React.Component {
   constructor(props) {
     super(props);
+    const size = DefaultDimensions.ROWS * DefaultDimensions.COLS;
+
     this.state = {
-      rows: 5,
-      cols: 5,
-      current: [],
+      /** Number of rows and columns in game board. */
+      dimensions: {
+        rows: DefaultDimensions.ROWS,
+        cols: DefaultDimensions.COLS,
+      },
+      /** Current board state. */
+      current: Array(size).fill(SquareValue.EMPTY),
+      /** History of board states. Initial board state will always be empty. */
       history: [{
-        squares: [],
+        squares: Array(size).fill(SquareValue.EMPTY),
       }],
+      /** Index of history that we're currently at. */
       stepNumber: 0,
+      /** Current hint numbers. */
+      currentHints: {
+        rows: [],
+        cols: [],
+      },
+      /** Goal hint numbers. */
+      goalHints: {
+        rows: [],
+        cols: [],
+      },
+      /** Whether or not the left mouse button is currently held down. */
       lMouseDown: false,
+      /** Whether or not the right mouse button is currently held down. */
       rMouseDown: false,
-      initialSquare: 'empty',
-      currentAction: 'empty',
+      /** Value of first square clicked. Reset when mouse button is let go. */
+      initialSquare: SquareValue.EMPTY,
+      /** Value we're currently changing squares to. Reset when mouse button is let go. */
+      currentAction: SquareValue.EMPTY,
+      /** Whether or not the board's current state has been changed since the last time we appended to history. */
       changed: false,
+      /** The number of seconds that have elapsed since board initialization. */
       seconds: 0,
+      /** A string timer keeping track of hours:minutes:seconds elapsed since board initialization. */
       timer: "00:00:00",
     };
   }
 
+  /**
+   * Initially called by componentDidMount().
+   * 
+   * Will be called once every 1,000 milliseconds (1 second)
+   * in order to update the in-game clock.
+   */
   tick() {
     this.setState(state => ({
       seconds: state.seconds + 1,
@@ -74,25 +142,40 @@ class Game extends React.Component {
     }));
   }
 
+  /**
+   * Called once on initial load.
+   */
   componentDidMount() {
     this.interval = setInterval(() => this.tick(), 1000);
-    const size = this.state.rows * this.state.cols;
-    const squares = Array(size).fill("empty");
-    this.setState({
-      current: squares,
-      history: [{
-        squares: squares,
-      }],
-    });
   }
 
+  /**
+   * Retrieve square index in 1-D array using the
+   * [row][column] indices one would expect from a 2-D array.
+   * 
+   * @param {Number} row Row that square is located.
+   * @param {Number} col Column that square is located.
+   */
+  getSquareIndex(row, col) {
+    return col + (this.state.dimensions.cols * row);
+  }
+
+  /**
+   * Append current board state to history of board states.
+   * 
+   * Should be called whenever we finish changing square values.
+   * 
+   * At the moment, this is called whenever we let go of a mouse button.
+   * This means we can capture multiple square value changes in a single
+   * append as long as the mouse button is held down and the cursor is
+   * dragged over multiple squares.
+   */
   appendHistory() {
-    if (!this.state.changed) {
-      return;
-    }
+    if (!this.state.changed) return;
 
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = this.state.current;
+    const hintNumbers = this.getHintNumbers();
 
     if (current !== history[history.length - 1].squares) {
       this.setState({
@@ -102,40 +185,55 @@ class Game extends React.Component {
           }
         ]),
         stepNumber: history.length,
+        currentHints: hintNumbers,
         changed: false,
       });
-    } 
+    }
 
     this.setState({
       lMouseDown: false,
       rMouseDown: false,
-      initialSquare: 'empty',
-      currentAction: 'empty',
+      initialSquare: SquareValue.EMPTY,
+      currentAction: SquareValue.EMPTY,
     });
+
+    console.log(this.state.currentHints);
   }
 
-  squareClick(event, i) {
+  /**
+   * Deal with square click interaction.
+   * 
+   * Should be called when user mouse cursor is hovering over
+   * a square on the game board and a mouse button is pressed down.
+   * 
+   * Will alter the value of that square, and initiate the process
+   * of potentially holding the mouse button down and dragging over
+   * other squares in order to also alter their values.
+   * 
+   * @param {MouseEvent} event Mouse event for determining which mouse button was pressed.
+   * @param {Number} loc Index of the square being clicked.
+   */
+  squareClick(event, loc) {
     const current = this.state.current;
     const squares = current.slice();
     let lMouseDown = this.state.lMouseDown;
     let rMouseDown = this.state.rMouseDown;
-    let initialSquare = squares[i];
+    let initialSquare = squares[loc];
     let currentAction = this.state.currentAction;
     let changed = this.state.changed;
 
     if (event.button === 0) {
       if (event.type === "mousedown") {
         lMouseDown = true;
-        currentAction = (initialSquare === 'empty') ? 'filled' : 'empty';
-        squares[i] = currentAction;
+        currentAction = (initialSquare === SquareValue.EMPTY) ? SquareValue.FILLED : SquareValue.EMPTY;
+        squares[loc] = currentAction;
         changed = true;
       }
     } else if (event.button === 2) {
       if (event.type === "mousedown") {
         rMouseDown = true;
-
-        currentAction = (initialSquare === 'empty') ? 'marked' : 'empty';
-        squares[i] = currentAction;
+        currentAction = (initialSquare === SquareValue.EMPTY) ? SquareValue.MARKED : SquareValue.EMPTY;
+        squares[loc] = currentAction;
         changed = true;
       }
     } else {
@@ -151,7 +249,18 @@ class Game extends React.Component {
     });
   }
 
-  squareHover(i) {
+  /**
+   * Deal with square hover interaction.
+   * 
+   * Should be called when user mouse cursor is hovering over
+   * a square on the game board.
+   * 
+   * Will check if a mouse button is being held down,
+   * and if one is, the square's value may be altered.
+   * 
+   * @param {Number} loc Index of the square being hovered over.
+   */
+  squareHover(loc) {
     let lMouseDown = this.state.lMouseDown;
     let rMouseDown = this.state.rMouseDown;
     let changed = this.state.changed;
@@ -163,8 +272,8 @@ class Game extends React.Component {
     let initialSquare = this.state.initialSquare;
     let currentAction = this.state.currentAction;
 
-    if (initialSquare === squares[i]) {
-      squares[i] = currentAction;
+    if (initialSquare === squares[loc]) {
+      squares[loc] = currentAction;
       changed = true;
     } else {
       return;
@@ -176,16 +285,77 @@ class Game extends React.Component {
     });
   }
 
+  /**
+   * Retrieve row and column hint numbers and return them.
+   * 
+   * @return {Object} Return object containing two arrays (rows[], cols[]).
+   */
+  getHintNumbers() {
+    const current = this.state.current;
+    const dimensions = this.state.dimensions;
+    const hintNumbers = {
+      rows: [],
+      cols: [],
+    };
+
+    // Find row hint numbers.
+    for (let row = 0; row < dimensions.rows; row++) {
+      let rowHints = [];
+      let num = 0;
+
+      for ( let col = 0; col < dimensions.cols; col++) {
+        if (current[this.getSquareIndex(row, col)] === SquareValue.FILLED) num++;
+        else if (num) {
+          rowHints.push(num);
+          num = 0;
+        }
+      }
+      if (num || !rowHints.length) rowHints.push(num);
+      hintNumbers.rows.push(rowHints);
+    }
+
+    // Find column hint numbers.
+    for (let col = 0; col < dimensions.cols; col++) {
+      let colHints = [];
+      let num = 0;
+
+      for ( let row = 0; row < dimensions.rows; row++) {
+        if (current[this.getSquareIndex(row, col)] === SquareValue.FILLED) num++;
+        else if (num) {
+          colHints.push(num);
+          num = 0;
+        }
+      }
+      if (num || !colHints.length) colHints.push(num);
+      hintNumbers.cols.push(colHints);
+    }
+
+    return hintNumbers;
+  }
+
+  /**
+   * Jump to a particular point in the history of actions.
+   * If the step doesn't exist in the history as an index, do nothing.
+   * 
+   * @param {Number} step The index of the action state to jump to.
+   */
   jumpTo(step) {
-    this.appendHistory();
-    
+    if (step < 0 || step >= this.state.history.length) return;
+
     this.setState({
       current: this.state.history[step].squares,
       stepNumber: step,
     });
   }
 
-  undo() {
+  /**
+   * Undo the most recent action.
+   * If there is no action to undo, do nothing.
+   * 
+   * As soon as we commit a new action, we cut off any actions
+   * in front of the current action in the action history.
+   */
+  undoAction() {
     const stepNumber = this.state.stepNumber;
 
     if (!stepNumber) return;
@@ -195,12 +365,29 @@ class Game extends React.Component {
       stepNumber: stepNumber - 1,
     });
   }
-  
-  render() {
-    const history = this.state.history;
-    const current = this.state.current;
 
+  /**
+   * Redo an undo.
+   * If any actions have been undone by the undoAction()
+   * function, we can redo them with this function.
+   * 
+   * As soon as we commit a new action, we cut off any actions
+   * in front of the current action in the action history.
+   */
+  redoAction() {
+    const stepNumber = this.state.stepNumber;
+
+    if (stepNumber === this.state.history.length - 1) return;
+
+    this.setState({
+      current: this.state.history[stepNumber + 1].squares,
+      stepNumber: stepNumber + 1,
+    });
+  }
+
+  render() {
     /*
+    const history = this.state.history;
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move :
@@ -213,24 +400,44 @@ class Game extends React.Component {
     });
     */
 
+   const current = this.state.current;
+
     return (
       <div
         className="game"
         onContextMenu={(e)=> e.preventDefault()}
         onMouseUp={() => this.appendHistory()}
       >
-        <div className="game-info">
-          <div>{this.state.timer}</div>
-          <span class="material-icons" onClick={() => this.undo()}>undo</span>
+        <div className="left-panel">
+          <div className="game-info">
+            <div>{this.state.timer}</div>
+          </div>
         </div>
-        <div className="game-board">
-          <Board
-            squares={current}
-            rows={this.state.rows}
-            cols={this.state.cols}
-            onMouseDown={(event, i) => this.squareClick(event, i)}
-            onMouseEnter={i => this.squareHover(i)}
-          />
+        <div className="right-panel">
+          <div className="upper-board">
+            <HintNumbers
+              values={this.state.currentHints.cols}
+              area='upper'
+              type='col'
+            />
+          </div>
+          <div className="lower-board">
+            <HintNumbers
+              values={this.state.currentHints.rows}
+              area='left'
+              type='row'
+            />
+            <Board
+              squares={current}
+              dimensions={this.state.dimensions}
+              onMouseDown={(event, loc) => this.squareClick(event, loc)}
+              onMouseEnter={loc => this.squareHover(loc)}
+            />
+          </div>
+          <div className="undo-redo">
+            <span className="material-icons" onClick={() => this.undoAction()}>undo</span>
+            <span className="material-icons" onClick={() => this.redoAction()}>redo</span>
+          </div>
         </div>
       </div>
     );

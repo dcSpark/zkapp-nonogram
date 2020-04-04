@@ -3,6 +3,48 @@ ul {
   padding-left: 30px;
 }
 
+.upper-hints {
+  display: grid;
+  align-self: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: end;
+  justify-content: end;
+  grid-auto-flow: column;
+  margin-bottom: 20px;
+}
+
+.hint-col {
+  display: grid;
+  justify-items: center;
+  width: 77px;
+  grid-gap: 20px;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  transition: color 0.2s ease 0s;
+}
+
+.lower-board {
+  display: flex;
+}
+
+.left-hints {
+  display: grid;
+  justify-items: end;
+  margin-right: 20px;
+}
+
+.hint-row {
+  display: grid;
+  grid-gap: 20px;
+  grid-auto-flow: column;
+}
+
 .game-board {
   background-color: #ccc;
   border-radius: 10px;
