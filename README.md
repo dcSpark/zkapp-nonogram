@@ -20,10 +20,13 @@ At the moment, I have the very basics implemented:
     * Some of the larger dimensions absolutely destroy the appearance of the board.
 * ```Row and Column Hint Numbers``` that inform the user about the current sequences of filled in boxes on the game board. These are dynamic at the moment, as no goal state is being generated. Once a goal state is generated, these will by static and determined during the board's initialization.
     * The row hint numbers are great, but the column hint numbers are hacked together and aren't aligned all that well.
+* Random win state generation and automatic check to see if player has met the win conditions.
 
 This is what it looks like in its current state:
 
-![Basic demonstration](https://i.imgur.com/lBr3BEK.gif)
+![Basic demonstration #1](https://i.imgur.com/Kn6a7jd.gif)
+
+![Basic demonstration #2](https://i.imgur.com/wTDeF9e.gif)
 
 ## What are you still working on?
 I'm still working on a bunch of stuff. Like I said, this is still in the very early stages of development.
@@ -31,10 +34,9 @@ I'm still working on a bunch of stuff. Like I said, this is still in the very ea
 ### The basics
 These are basically all the features I managed to implement in my Rust version. At the very least, I want to implement all of this:
 
-* Win condition.
-    * Randomly generated goal states.
-    * Automatic check for win whenever board state is changed.
-    * Win screen with stats.
+* Win screen with stats.
+    * Currently a message shows up beneath the timer announcing the player has won and that's it.
+* Automatically cross out hint numbers when conditions are met.
 * Improved UI:
     * The current ```Undo``` button has no ```hover over``` animation. It should probably have this.
     * The current ```Redo``` button has no ```hover over``` animation. It should probably have this.
@@ -52,7 +54,7 @@ These are basically all the features I managed to implement in my Rust version. 
 * Save data.
 
 ### Stretch goals
-Like with my Rust implementation, I've got a bunch of features I can add if I manage to hit all my basic goals:
+Like with my Rust implementation, I've got some features I can add if I manage to hit all my basic goals:
 
 * Allow image files to be read in and converted into a board goal state.
 * Allow the user to play the color version as well. The ruleset of this is that there's basically more colors than black and white, hint numbers indicate color, and segments of different colors don't need whitespace to separate them. There's a lot more to it than that, and it would require quite a bit of work.

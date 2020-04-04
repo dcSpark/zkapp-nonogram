@@ -127,11 +127,6 @@ class Game extends React.Component {
       }],
       /** Index of history that we're currently at. */
       stepNumber: 0,
-      /** Current hint numbers. */
-      currentHints: {
-        rows: [],
-        cols: [],
-      },
       /** Goal hint numbers. */
       goalHints: {
         rows: [],
@@ -172,6 +167,64 @@ class Game extends React.Component {
    */
   componentDidMount() {
     this.interval = setInterval(() => this.tick(), 1000);
+    this.generateWinState();
+  }
+
+  /**
+   * Called when component is updated.
+   */
+  componentDidUpdate(prevProps, prevState) {
+    if (typeof this.state.goalHints.rows[0] === 'undefined') {
+      this.generateWinState();
+    }
+  }
+
+  /**
+   * Produces a randomly generated win state for the game board.
+   * 
+   * The hint numbers are what determine the win state rather than
+   * the actual board state because we're not necessarily generating
+   * win states with only one solution.
+   */
+  generateWinState() {
+    const size = this.state.dimensions.rows * this.state.dimensions.cols;
+    let winSquares = [];
+
+    for (let i = 0; i < size; i++) {
+      winSquares.push((Math.random() < 0.5) ? SquareValue.EMPTY : SquareValue.FILLED);
+    }
+    
+    this.setState({
+      goalHints: this.getHintNumbers(winSquares),
+    });
+  }
+
+  /**
+   * Compares current hint numbers to goal hint numbers to see
+   * if they match. If they match, the player has won.
+   * 
+   * @returns {Boolean} Whether or not the player has won.
+   */
+  winCheck() {
+    const currentHints = this.getHintNumbers(this.state.current);
+
+    // Compare row hint numbers.
+    for (let a = 0; a < this.state.goalHints.rows.length; a++) {
+      if (this.state.goalHints.rows[a].length != currentHints.rows[a].length) return false;
+      for (let b = 0; b < this.state.goalHints.rows[a].length; b++) {
+        if (this.state.goalHints.rows[a][b] !== currentHints.rows[a][b]) return false;
+      }
+    }
+
+    // Compare column hint numbers.
+    for (let a = 0; a < this.state.goalHints.cols.length; a++) {
+      if (this.state.goalHints.cols[a].length != currentHints.cols[a].length) return false;
+      for (let b = 0; b < this.state.goalHints.cols[a].length; b++) {
+        if (this.state.goalHints.cols[a][b] !== currentHints.cols[a][b]) return false;
+      }
+    }
+
+    return true;
   }
 
   /**
@@ -200,7 +253,6 @@ class Game extends React.Component {
 
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = this.state.current;
-    const hintNumbers = this.getHintNumbers();
 
     if (current !== history[history.length - 1].squares) {
       this.setState({
@@ -210,7 +262,6 @@ class Game extends React.Component {
           }
         ]),
         stepNumber: history.length,
-        currentHints: hintNumbers,
         changed: false,
       });
     }
@@ -221,8 +272,6 @@ class Game extends React.Component {
       initialSquare: SquareValue.EMPTY,
       currentAction: SquareValue.EMPTY,
     });
-
-    console.log(this.state.currentHints);
   }
 
   /**
@@ -315,8 +364,7 @@ class Game extends React.Component {
    * 
    * @return {Object} Return object containing two arrays (rows[], cols[]).
    */
-  getHintNumbers() {
-    const current = this.state.current;
+  getHintNumbers(squares) {
     const dimensions = this.state.dimensions;
     const hintNumbers = {
       rows: [],
@@ -329,7 +377,7 @@ class Game extends React.Component {
       let num = 0;
 
       for ( let col = 0; col < dimensions.cols; col++) {
-        if (current[this.getSquareIndex(row, col)] === SquareValue.FILLED) num++;
+        if (squares[this.getSquareIndex(row, col)] === SquareValue.FILLED) num++;
         else if (num) {
           rowHints.push(num);
           num = 0;
@@ -345,7 +393,7 @@ class Game extends React.Component {
       let num = 0;
 
       for ( let row = 0; row < dimensions.rows; row++) {
-        if (current[this.getSquareIndex(row, col)] === SquareValue.FILLED) num++;
+        if (squares[this.getSquareIndex(row, col)] === SquareValue.FILLED) num++;
         else if (num) {
           colHints.push(num);
           num = 0;
@@ -429,10 +477,6 @@ class Game extends React.Component {
         squares: Array(size).fill(SquareValue.EMPTY),
       }],
       stepNumber: 0,
-      currentHints: {
-        rows: [],
-        cols: [],
-      },
       goalHints: {
         rows: [],
         cols: [],
@@ -444,7 +488,7 @@ class Game extends React.Component {
       changed: false,
       seconds: 0,
       timer: "00:00:00",
-    })
+    });
   }
 
   render() {
@@ -473,19 +517,20 @@ class Game extends React.Component {
         <div className="left-panel">
           <div className="game-info">
             <div>{this.state.timer}</div>
+            <div>{(this.winCheck()) ? 'You won!' : ''}</div>
           </div>
         </div>
         <div className="right-panel">
           <div className="upper-board">
             <HintNumbers
-              values={this.state.currentHints.cols}
+              values={this.state.goalHints.cols}
               area='upper'
               type='col'
             />
           </div>
           <div className="lower-board">
             <HintNumbers
-              values={this.state.currentHints.rows}
+              values={this.state.goalHints.rows}
               area='left'
               type='row'
             />
