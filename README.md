@@ -14,6 +14,12 @@ At the moment, I have the very basics implemented:
 * A timer keps track of the time that's elapsed since this instance of the page has been opened.
 * An ```Undo``` button that travels reverts back to the board's state before the most recent action.
     * This is cool because this is already a feature I wanted to implement in the original game that I didn't get around to adding. This is based upon the basic [tic-tac-toe React tutorial](https://reactjs.org/tutorial/tutorial.html) in which the board states are saved in a ```history``` array.
+* A ```Redo``` button that reverts an ```Undo``` by travelling forward into the board state's history if possible.
+* A ```Restart``` button that resets the board state, and potentially produces a board with different dimensions from the previous board.
+* A ```Dimensions Dropdown Selection Box``` that allows the user to select new ```columns```x```rows``` dimensions for the game board. These new dimensions will take effect upon board restart.
+    * Some of the larger dimensions absolutely destroy the appearance of the board.
+* ```Row and Column Hint Numbers``` that inform the user about the current sequences of filled in boxes on the game board. These are dynamic at the moment, as no goal state is being generated. Once a goal state is generated, these will by static and determined during the board's initialization.
+    * The row hint numbers are great, but the column hint numbers are hacked together and aren't aligned all that well.
 
 This is what it looks like in its current state:
 
@@ -29,11 +35,11 @@ These are basically all the features I managed to implement in my Rust version. 
     * Randomly generated goal states.
     * Automatic check for win whenever board state is changed.
     * Win screen with stats.
-* Hint numbers.
-    * Generated alongside columns and rows based on win state.
-    * Automatically crossed out based on current board state.
-* Improved ```Undo``` button.
+* Improved UI:
     * The current ```Undo``` button has no ```hover over``` animation. It should probably have this.
+    * The current ```Redo``` button has no ```hover over``` animation. It should probably have this.
+    * The current ```Restart``` button has no ```hover over``` animation. It should probably have this.
+    * The current ```Dimensions Dropdown Selection Box``` looks ugly. It needs some CSS love.
 * Keyboard controls.
     * Currently only mouse controls are implemented.
     * Need to implement the basic controls I had in the original Rust version:
@@ -43,8 +49,6 @@ These are basically all the features I managed to implement in my Rust version. 
         * ```R``` - Restart.
         * ```U``` - Undo action.
     * Menu for editing keybindings.
-* Board dimensions dropdown selection box.
-* Restart button.
 * Save data.
 
 ### Stretch goals

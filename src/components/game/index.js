@@ -1,7 +1,32 @@
 import React from "react";
-import { DefaultDimensions, SquareValue } from "../common/constants.js";
+import { DefaultDimensions, SquareValue, DimensionsChoices } from "../common/constants.js";
 import "./index.css";
 
+/**
+ * Produces a dropdown selection box for user to select the dimensions
+ * of the game board when it's reset next.
+ * 
+ * These choices are pulled from ../common/constants.js.
+ */
+function DimensionChoices() {
+  let choices = [];
+
+  for (let i = 0; i < DimensionsChoices.length; i++) {
+    choices.push(<option>{DimensionsChoices[i][0] + "x" + DimensionsChoices[i][1]}</option>)
+  }
+
+  return (
+    <select id="dimensions-select">
+      {choices}
+    </select>
+  )
+}
+
+/**
+ * Translates either row or column hint numbers into HTML div elements.
+ * 
+ * @param {*} props 
+ */
 function HintNumbers(props) {
   let hintNumbers = [];
 
@@ -91,11 +116,6 @@ class Game extends React.Component {
     this.state = {
       /** Number of rows and columns in game board. */
       dimensions: {
-        rows: DefaultDimensions.ROWS,
-        cols: DefaultDimensions.COLS,
-      },
-      /** Dimensions of game board on restart. */
-      nextDimensions: {
         rows: DefaultDimensions.ROWS,
         cols: DefaultDimensions.COLS,
       },
@@ -394,10 +414,16 @@ class Game extends React.Component {
    * Restart with a new game board.
    */
   restart() {
-    const size = this.state.nextDimensions.rows * this.state.nextDimensions.cols;
+    let sel = document.getElementById('dimensions-select');
+    const index = sel.selectedIndex;
+    const nextDimensions = {
+      rows: DimensionsChoices[index][1],
+      cols: DimensionsChoices[index][0]
+    }
+    const size = nextDimensions.rows * nextDimensions.cols;
 
     this.setState({
-      dimensions: this.state.nextDimensions,
+      dimensions: nextDimensions,
       current: Array(size).fill(SquareValue.EMPTY),
       history: [{
         squares: Array(size).fill(SquareValue.EMPTY),
@@ -474,6 +500,7 @@ class Game extends React.Component {
             <span className="material-icons" onClick={() => this.undoAction()}>undo</span>
             <span className="material-icons" onClick={() => this.redoAction()}>redo</span>
             <span className="material-icons" onClick={() => this.restart()}>replay</span>
+            <DimensionChoices/>
           </div>
         </div>
       </div>
