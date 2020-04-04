@@ -94,6 +94,11 @@ class Game extends React.Component {
         rows: DefaultDimensions.ROWS,
         cols: DefaultDimensions.COLS,
       },
+      /** Dimensions of game board on restart. */
+      nextDimensions: {
+        rows: DefaultDimensions.ROWS,
+        cols: DefaultDimensions.COLS,
+      },
       /** Current board state. */
       current: Array(size).fill(SquareValue.EMPTY),
       /** History of board states. Initial board state will always be empty. */
@@ -385,6 +390,37 @@ class Game extends React.Component {
     });
   }
 
+  /**
+   * Restart with a new game board.
+   */
+  restart() {
+    const size = this.state.nextDimensions.rows * this.state.nextDimensions.cols;
+
+    this.setState({
+      dimensions: this.state.nextDimensions,
+      current: Array(size).fill(SquareValue.EMPTY),
+      history: [{
+        squares: Array(size).fill(SquareValue.EMPTY),
+      }],
+      stepNumber: 0,
+      currentHints: {
+        rows: [],
+        cols: [],
+      },
+      goalHints: {
+        rows: [],
+        cols: [],
+      },
+      lMouseDown: false,
+      rMouseDown: false,
+      initialSquare: SquareValue.EMPTY,
+      currentAction: SquareValue.EMPTY,
+      changed: false,
+      seconds: 0,
+      timer: "00:00:00",
+    })
+  }
+
   render() {
     /*
     const history = this.state.history;
@@ -437,6 +473,7 @@ class Game extends React.Component {
           <div className="undo-redo">
             <span className="material-icons" onClick={() => this.undoAction()}>undo</span>
             <span className="material-icons" onClick={() => this.redoAction()}>redo</span>
+            <span className="material-icons" onClick={() => this.restart()}>replay</span>
           </div>
         </div>
       </div>
