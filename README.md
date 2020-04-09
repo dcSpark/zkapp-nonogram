@@ -30,7 +30,7 @@ From left to right in order of appearance, the buttons are:
 ## How to play
 There are numbers near each column and row of the board. These numbers indicate sequences of filled in blocks. For example, take a look at the image below:
 
-![Example image of 5x5 solution](https://i.imgur.com/0yIdX0Z.gif)
+![Example image of 5x5 solution](https://i.imgur.com/vPTTS1a.png)
 
 This is the final solution to this particular Nonogram. From glancing at this, we can see that sequences of filled in boxes maintain the same order given by the order of the numbers nearby. We can also see that sequences of filled in boxes need at least one white box of separation. In order to assist you in remembering which boxes cannot be filled in, you can ```right click``` a box in order to mark it. You don't need to mark any boxes in order to win. They're just there to help you.
 
