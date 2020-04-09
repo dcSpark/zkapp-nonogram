@@ -3,6 +3,17 @@ import { DefaultDimensions, SquareValue, DimensionsChoices } from "../common/con
 import "./index.css";
 
 /**
+ * A basic class containing the structure that makes up the hint
+ * number values.
+ */
+class Hints {
+  constructor(rows, cols) {
+    this.rows = rows;
+    this.cols = cols;
+  }
+}
+
+/**
  * Produces a dropdown selection box for user to select the dimensions
  * of the game board when it's reset next.
  * 
@@ -25,16 +36,31 @@ function DimensionChoices() {
 /**
  * Translates either row or column hint numbers into HTML div elements.
  * 
+ * The current hint numbers according to the current state of the board
+ * are compared to the static goal hint numbers in order to "cross out"
+ * some numbers in order to assist the user in figuring out what sequences
+ * they've already finished.
+ * 
+ * Crossed out hint numbers appear as a different color than normal hint numbers,
+ * and are thus given a different div className than normal hint numbers.
+ * 
  * @param {*} props 
  */
 function HintNumbers(props) {
   let hintNumbers = [];
 
-  for (let a = 0; a < props.values.length; a++) {
+  for (let a = 0; a < props.goalHints.length; a++) {
     let aSection = [];
+    let currentIt = 0;
 
-    for (let b = 0; b < props.values[a].length; b++) {
-      aSection.push(<div className="hint">{props.values[a][b]}</div>);
+    for (let b = 0; b < props.goalHints[a].length; b++) {
+      if (typeof props.currentHints[a][currentIt] !== 'undefined' &&
+          props.currentHints[a][currentIt] === props.goalHints[a][b]) {
+        currentIt++;
+        aSection.push(<div className="hint crossout">{props.goalHints[a][b]}</div>);
+      } else {
+        aSection.push(<div className="hint">{props.goalHints[a][b]}</div>);
+      }
     }
 
     hintNumbers.push(<div className={"hint-" + props.type}>{aSection}</div>);
@@ -127,11 +153,10 @@ class Game extends React.Component {
       }],
       /** Index of history that we're currently at. */
       stepNumber: 0,
+      /** Current hint numbers. */
+      currentHints: new Hints(Array(DefaultDimensions.ROWS).fill([0]), Array(DefaultDimensions.COLS).fill([0])),
       /** Goal hint numbers. */
-      goalHints: {
-        rows: [],
-        cols: [],
-      },
+      goalHints: new Hints([], []),
       /** Whether or not the left mouse button is currently held down. */
       lMouseDown: false,
       /** Whether or not the right mouse button is currently held down. */
@@ -174,7 +199,7 @@ class Game extends React.Component {
    * Called when component is updated.
    */
   componentDidUpdate(prevProps, prevState) {
-    if (typeof this.state.goalHints.rows[0] === 'undefined') {
+    if (!this.state.goalHints.rows.length) {
       this.generateWinState();
     }
   }
@@ -206,21 +231,21 @@ class Game extends React.Component {
    * @returns {Boolean} Whether or not the player has won.
    */
   winCheck() {
-    const currentHints = this.getHintNumbers(this.state.current);
+    if (!this.state.currentHints.rows.length) return false;
 
     // Compare row hint numbers.
     for (let a = 0; a < this.state.goalHints.rows.length; a++) {
-      if (this.state.goalHints.rows[a].length != currentHints.rows[a].length) return false;
+      if (this.state.goalHints.rows[a].length !== this.state.currentHints.rows[a].length) return false;
       for (let b = 0; b < this.state.goalHints.rows[a].length; b++) {
-        if (this.state.goalHints.rows[a][b] !== currentHints.rows[a][b]) return false;
+        if (this.state.goalHints.rows[a][b] !== this.state.currentHints.rows[a][b]) return false;
       }
     }
 
     // Compare column hint numbers.
     for (let a = 0; a < this.state.goalHints.cols.length; a++) {
-      if (this.state.goalHints.cols[a].length != currentHints.cols[a].length) return false;
+      if (this.state.goalHints.cols[a].length !== this.state.currentHints.cols[a].length) return false;
       for (let b = 0; b < this.state.goalHints.cols[a].length; b++) {
-        if (this.state.goalHints.cols[a][b] !== currentHints.cols[a][b]) return false;
+        if (this.state.goalHints.cols[a][b] !== this.state.currentHints.cols[a][b]) return false;
       }
     }
 
@@ -267,6 +292,7 @@ class Game extends React.Component {
     }
 
     this.setState({
+      currentHints: this.getHintNumbers(this.state.current),
       lMouseDown: false,
       rMouseDown: false,
       initialSquare: SquareValue.EMPTY,
@@ -362,14 +388,11 @@ class Game extends React.Component {
   /**
    * Retrieve row and column hint numbers and return them.
    * 
-   * @return {Object} Return object containing two arrays (rows[], cols[]).
+   * @return {Hints} Return Hints object containing two arrays (rows[], cols[]).
    */
   getHintNumbers(squares) {
     const dimensions = this.state.dimensions;
-    const hintNumbers = {
-      rows: [],
-      cols: [],
-    };
+    const hintNumbers = new Hints([], []);
 
     // Find row hint numbers.
     for (let row = 0; row < dimensions.rows; row++) {
@@ -477,10 +500,8 @@ class Game extends React.Component {
         squares: Array(size).fill(SquareValue.EMPTY),
       }],
       stepNumber: 0,
-      goalHints: {
-        rows: [],
-        cols: [],
-      },
+      currentHints: new Hints(Array(nextDimensions.rows).fill([0]), Array(nextDimensions.cols).fill([0])),
+      goalHints: new Hints([], []),
       lMouseDown: false,
       rMouseDown: false,
       initialSquare: SquareValue.EMPTY,
@@ -523,14 +544,16 @@ class Game extends React.Component {
         <div className="right-panel">
           <div className="upper-board">
             <HintNumbers
-              values={this.state.goalHints.cols}
+              currentHints={this.state.currentHints.cols}
+              goalHints={this.state.goalHints.cols}
               area='upper'
               type='col'
             />
           </div>
           <div className="lower-board">
             <HintNumbers
-              values={this.state.goalHints.rows}
+              currentHints={this.state.currentHints.rows}
+              goalHints={this.state.goalHints.rows}
               area='left'
               type='row'
             />

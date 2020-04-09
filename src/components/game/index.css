@@ -29,6 +29,10 @@ ul {
   transition: color 0.2s ease 0s;
 }
 
+.crossout {
+  color: #666;
+}
+
 .lower-board {
   display: flex;
 }
@@ -46,15 +50,17 @@ ul {
 }
 
 .game-board {
+  display: grid;
   background-color: #ccc;
   border-radius: 10px;
   padding: 3px;
+  width: auto;
+  height: 30%;
 }
 
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
+.board-row {
+  display: grid;
+  grid-auto-flow: column;
 }
 
 .status {
@@ -139,6 +145,7 @@ ul {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  cursor: default;
 }
 
 .game-info {
