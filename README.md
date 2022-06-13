@@ -2,7 +2,7 @@
 [Try it out right here](https://sundwalltanner.github.io/React-Nonogram/)
 
 ## Description
-This is currently in the very early stages of development. I haven't created anything that warranted the use of [GitHub Pages](https://pages.github.com/) yet, so I thought I would try and remake [the Nonogram game I built in Rust](https://github.com/Sundwalltanner/Rust-Nonogram). I previously used JavaScript in [a Discord Idle RPG bot](https://github.com/Sundwalltanner/Dewie-RPG), but I've never used React before.
+This is currently in the very early stages of development. I haven't created anything that warranted the use of [GitHub Pages](https://pages.github.com/) yet, so I thought I would try and remake [the Nonogram game I built in Rust](https://github.com/Sundwalltanner/Rust-Nonogram).
 
 ## Controls
 These are the default controls. There are currently only mouse controls, but I hope to add keyboard controls soon.
