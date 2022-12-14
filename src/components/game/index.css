@@ -3,7 +3,7 @@ ul {
   padding-left: 30px;
 }
 
-.upper-hints {
+.col-hints {
   display: grid;
   align-self: flex-end;
   align-items: flex-end;
@@ -37,7 +37,7 @@ ul {
   display: flex;
 }
 
-.left-hints {
+.row-hints {
   display: grid;
   justify-items: end;
   margin-right: 20px;
@@ -94,22 +94,22 @@ ul {
   transform: scale(0);
 }
 
-.square-empty {
+.square-EMPTY {
   background-color: #fff;
 }
 
-.square-marked {
+.square-MARKED {
   background-color: #ccc;
   color: #f44336;
 }
 
-.square-marked .material-icons {
+.square-MARKED .material-icons {
   font-size: 70px;
   transform: scale(1);
   transition: transform 0.2s ease 0s;
 }
 
-.square-filled {
+.square-FILLED {
   background-color: #353235;
 }
 
@@ -118,7 +118,7 @@ ul {
   to    { box-shadow: 0 0 0 8px #40ffdd;}
 }
 
-.square-empty:hover, .square-filled:hover {
+.square-EMPTY:hover, .square-FILLED:hover {
   animation-name: blink;
   animation-duration: 0.5s;
   animation-iteration-count: infinite;
