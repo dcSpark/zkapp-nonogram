@@ -45,5 +45,6 @@ export const DimensionsChoices: [number, number][] = [
 
 export function createColors(numColors: number) {
   if (numColors === 1) return ['#353235'];
-  return chroma.scale('Set1').mode('lab').colors(numColors);
+  if (numColors > 9) throw new Error(`Set1 only supports a max of 9 colors`);
+  return chroma.brewer.Set1.slice(0, numColors);
 }
