@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ColorGenerator } from './Board';
 import classNames from 'classnames';
 
@@ -33,15 +33,18 @@ export function ColorSquare(props: {
   onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
 }) {
   return (
-    <div
-      className={classNames({
-        colorSquare: true,
-        selected: props.selected,
-      })}
-      style={{ backgroundColor: props.genColor(props.color) }}
-      onMouseDown={props.onMouseDown}
-      onMouseEnter={props.onMouseEnter}
-    />
+    <div className="colorSquareAndShortcut">
+      <div
+        className={classNames({
+          colorSquare: true,
+          selected: props.selected,
+        })}
+        style={{ backgroundColor: props.genColor(props.color) }}
+        onMouseDown={props.onMouseDown}
+        onMouseEnter={props.onMouseEnter}
+      />
+      <div className="colorSquareShortcut">{props.color}</div>
+    </div>
   );
 }
 
@@ -51,6 +54,22 @@ export function ColorPicker(props: {
   selectedColor: number;
   onSelect: (color: number) => void;
 }) {
+  const { numColors, onSelect } = props;
+  useEffect(() => {
+    const downHandler = (event: KeyboardEvent) => {
+      const val = Number.parseInt(event.key, 10);
+      if (Number.isNaN(val)) return;
+      if (val >= 1 && val <= numColors) {
+        onSelect(val - 1);
+      }
+    };
+    window.addEventListener('keydown', downHandler);
+    // Remove event listeners on cleanup
+    return () => {
+      window.removeEventListener('keydown', downHandler);
+    };
+  }, [numColors, onSelect]);
+
   const colorOptions: React.ReactElement[] = [];
   for (let i = 0; i < props.numColors; i++) {
     colorOptions.push(
