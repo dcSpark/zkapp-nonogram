@@ -22,6 +22,8 @@ export function Square(props: {
       onMouseDown={props.onMouseDown}
       onMouseEnter={props.onMouseEnter}
     >
+      {/* inline material UI SVG here so we can properly dynamically resize it*/}
+      {/* otherwise we'd have to try and resize a font which is harder */}
       {props.value?.state === SquareFill.MARKED && (
         <div style={{ height: '75%', width: '75%' }}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
