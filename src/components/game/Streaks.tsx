@@ -17,22 +17,31 @@ export class BoardStreaks {
     this.rows = rows;
     this.cols = cols;
   }
+
+  maxColor(): number {
+    let maxColor = 1;
+    for (const row of this.rows) {
+      for (const num of row) {
+        maxColor = Math.max(num.color, maxColor);
+      }
+    }
+    for (const row of this.cols) {
+      for (const num of row) {
+        maxColor = Math.max(num.color, maxColor);
+      }
+    }
+    return maxColor;
+  }
 }
 
-export class Streak {
+export type Streak = {
   length: number;
   color: Color;
-
-  constructor(color: Color, length: number) {
-    this.color = color;
-    this.length = length;
-  }
-
-  equals(other: Streak): boolean {
-    if (this.length !== other.length) return false;
-    if (this.color !== other.color) return false;
-    return true;
-  }
+};
+export function compareStreak(s1: Streak, s2: Streak): boolean {
+  if (s1.length !== s2.length) return false;
+  if (s1.color !== s2.color) return false;
+  return true;
 }
 
 function adjustColor(color: string, targetContrast: number): string {
@@ -81,6 +90,7 @@ function StreakListElement(props: {
   expectedStreaks: StreakList;
   /* place the list is rendered in */
   type: 'row' | 'col';
+  emptyStreakColor: string;
 }) {
   const streaks: React.ReactElement[] = [];
 
@@ -96,7 +106,7 @@ function StreakListElement(props: {
   for (const expectedStreak of props.expectedStreaks) {
     let foundMatch = false;
     for (let i = lastMatchedStreak; i < props.currentStreaks.length; i++) {
-      if (expectedStreak.equals(props.currentStreaks[i])) {
+      if (compareStreak(expectedStreak, props.currentStreaks[i])) {
         // start from next streak going forward to avoid the double-matching mentioned above
         lastMatchedStreak = i + 1;
         foundMatch = true;
@@ -109,6 +119,18 @@ function StreakListElement(props: {
     );
   }
 
+  if (streaks.length === 0) {
+    streaks.push(
+      <StreakElement
+        genColor={() => props.emptyStreakColor}
+        crossOut={false}
+        streak={{
+          color: 0,
+          length: 0,
+        }}
+      />
+    );
+  }
   return <div className={'hint-' + props.type}>{streaks}</div>;
 }
 
@@ -117,6 +139,7 @@ type StreakSectionProps = {
   currentStreaks: StreakList[];
   expectedStreaks: StreakList[];
   type: 'row' | 'col';
+  emptyStreakColor: string;
 };
 
 /**
@@ -148,6 +171,7 @@ export const StreakSection = React.forwardRef<HTMLDivElement, StreakSectionProps
         currentStreaks={props.currentStreaks[i]}
         expectedStreaks={props.expectedStreaks[i]}
         type={props.type}
+        emptyStreakColor={props.emptyStreakColor}
       />
     );
   }

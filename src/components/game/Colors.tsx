@@ -12,7 +12,7 @@ export function ColorChoices(props: { onChange: () => void }) {
   const choices: React.ReactElement[] = [];
 
   for (let i = 1; i < 10; i++) {
-    choices.push(<option>{i}</option>);
+    choices.push(<option key={i}>{i}</option>);
   }
 
   return (
@@ -43,7 +43,7 @@ export function ColorSquare(props: {
         onMouseDown={props.onMouseDown}
         onMouseEnter={props.onMouseEnter}
       />
-      <div className="colorSquareShortcut">{props.color}</div>
+      <div className="colorSquareShortcut">{props.color + 1}</div>
     </div>
   );
 }
@@ -71,12 +71,15 @@ export function ColorPicker(props: {
   }, [numColors, onSelect]);
 
   const colorOptions: React.ReactElement[] = [];
+
+  const genColor = (i: number) => props.colorGenerator(props.numColors, i);
   for (let i = 0; i < props.numColors; i++) {
     colorOptions.push(
       <ColorSquare
+        key={`${i}-${props.colorGenerator(props.numColors, i)}`}
         color={i}
         selected={i === props.selectedColor}
-        genColor={i => props.colorGenerator(props.numColors, i)}
+        genColor={genColor}
         onMouseDown={() => props.onSelect(i)}
         onMouseEnter={() => {}}
       />

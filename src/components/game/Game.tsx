@@ -8,6 +8,7 @@ import { useGameMouse } from './GameMouse';
 import { useHistory } from './History';
 import { useCallback } from 'react';
 import { ColorChoices, ColorPicker } from './Colors';
+import { dcSpark } from '../../prepackaged';
 
 function TimeDisplay(props: { seconds: number }) {
   return <div>{new Date(1000 * (props.seconds + 1)).toISOString().substring(11, 11 + 8)}</div>;
@@ -28,7 +29,11 @@ export function Game() {
   }, [history.getLatestSnapshot().winState]);
 
   useEffect(() => {
-    board.newRandomGame(board.getDimensions(), board.getNumColors());
+    // board.newRandomGame(board.getDimensions(), board.getNumColors());
+    const prepackagedBoard = dcSpark();
+    board.newFixedGame(prepackagedBoard);
+    mouse.reset(true);
+    history.reset(prepackagedBoard.dimensions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -86,6 +91,7 @@ export function Game() {
           >
             <StreakSection
               genColor={indexedColorGenerator}
+              emptyStreakColor={board.getDefaultColor()}
               currentStreaks={history.getLatestSnapshot().streaks.cols}
               expectedStreaks={board.getExpectedStreaks().cols}
               type="col"
@@ -94,12 +100,14 @@ export function Game() {
           <div className="lower-board">
             <StreakSection
               ref={elementRef}
+              emptyStreakColor={board.getDefaultColor()}
               genColor={indexedColorGenerator}
               currentStreaks={history.getLatestSnapshot().streaks.rows}
               expectedStreaks={board.getExpectedStreaks().rows}
               type="row"
             />
             <Board
+              emptySquareColor={board.getDefaultColor()}
               genColor={indexedColorGenerator}
               getSquare={board.getSquare}
               dimensions={board.getDimensions()}

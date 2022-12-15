@@ -1,3 +1,4 @@
+import chroma from 'chroma-js';
 import React from 'react';
 import { SquareFill, SquareValue } from '../common/constants';
 
@@ -5,20 +6,30 @@ import { SquareFill, SquareValue } from '../common/constants';
  * Translates individual board squares into HTML div elements.
  */
 export function Square(props: {
+  emptySquareColor: string;
   value: undefined | SquareValue;
   genColor: (index: number) => string;
   onMouseDown: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
 }) {
   const value: string = SquareFill[props.value?.state ?? SquareFill.FILLED];
+
+  const getBackgroundColor = () => {
+    if (props.value == null) return props.emptySquareColor;
+    if (props.value.state === SquareFill.FILLED) {
+      return props.genColor(props.value.color);
+    }
+    if (props.value.state === SquareFill.EMPTY) {
+      return props.emptySquareColor;
+    }
+    if (props.value.state === SquareFill.MARKED) {
+      return chroma(props.emptySquareColor).darken(1).hex();
+    }
+  };
   return (
     <div
       className={'square square-' + value}
-      style={
-        props.value != null && props.value.state === SquareFill.FILLED
-          ? { backgroundColor: props.genColor(props.value.color) }
-          : {}
-      }
+      style={{ backgroundColor: getBackgroundColor() }}
       onMouseDown={props.onMouseDown}
       onMouseEnter={props.onMouseEnter}
     >

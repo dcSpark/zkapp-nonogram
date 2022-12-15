@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { BoardDescription } from '../../prepackaged';
 import { createColors, DefaultDimensions, SquareFill, SquareValue } from '../common/constants';
 import { DimensionType } from './Dimension';
 import { Square } from './Square';
 import { BoardStreaks, Streak, StreakList } from './Streaks';
 
 type BoardProps = {
+  emptySquareColor: string;
   getSquare: (loc: number) => SquareValue;
   genColor: (index: number) => string;
   dimensions: DimensionType;
@@ -19,6 +21,7 @@ function BoardRow(props: BoardProps & { startIndex: number; rowLength: number })
     rowElements.push(
       <Square
         key={loc}
+        emptySquareColor={props.emptySquareColor}
         genColor={props.genColor}
         value={props.getSquare(loc)}
         onMouseDown={event => props.onMouseDown(event, loc)}
@@ -50,6 +53,7 @@ export function Board(props: BoardProps) {
 
 interface BoardContextObject {
   getDimensions(): DimensionType;
+  getSize(): number;
 
   /**
    * Produces a randomly generated win state for the game board.
@@ -59,7 +63,8 @@ interface BoardContextObject {
    * win states with only one solution.
    */
   newRandomGame(newDimensions: DimensionType, newNumColors: number): void;
-  getSize(): number;
+
+  newFixedGame(board: BoardDescription): void;
 
   getExpectedStreaks(): BoardStreaks;
 
@@ -70,6 +75,7 @@ interface BoardContextObject {
 
   getNumColors(): number;
   getColorGenerator(): ColorGenerator;
+  getDefaultColor(): string;
 }
 const BoardContext = React.createContext<BoardContextObject>(null!);
 
@@ -91,6 +97,7 @@ export function GameBoard({ children }: { children: React.ReactNode }) {
   );
   const [numColors, setNumColors] = useState<number>(1);
   const [colorGenerator, setColorGenerator] = useState<ColorGenerator>(() => defaultCreateColor);
+  const [defaultColor, setDefaultColor] = useState<string>('#FFFFFF');
 
   const context: BoardContextObject = {
     getDimensions() {
@@ -100,6 +107,7 @@ export function GameBoard({ children }: { children: React.ReactNode }) {
       setDimensions(newDimensions);
       setNumColors(newNumColors);
       setSquares(Array(getSize(newDimensions)).fill({ state: SquareFill.EMPTY }));
+      setDefaultColor('#FFFFFF');
 
       const size = newDimensions.rows * newDimensions.cols;
       const winSquares: SquareValue[] = [];
@@ -114,6 +122,14 @@ export function GameBoard({ children }: { children: React.ReactNode }) {
       // tricky point: to generate what the streaks are for the board
       // we generate what the streaks would be if the user entered the exact solution
       setExpectedStreaks(getUserFilledStreaks(newDimensions, winSquares));
+    },
+    newFixedGame(boardDescription) {
+      setDimensions(boardDescription.dimensions);
+      setNumColors(boardDescription.expectedStreaks.maxColor() + 1);
+      setSquares(Array(getSize(boardDescription.dimensions)).fill({ state: SquareFill.EMPTY }));
+      setColorGenerator(() => boardDescription.colorGenerator);
+      setExpectedStreaks(boardDescription.expectedStreaks);
+      setDefaultColor(boardDescription.defaultColor);
     },
     getSize() {
       return getSize(dimensions);
@@ -142,6 +158,9 @@ export function GameBoard({ children }: { children: React.ReactNode }) {
     },
     getNumColors() {
       return numColors;
+    },
+    getDefaultColor() {
+      return defaultColor;
     },
   };
   return <BoardContext.Provider value={context}>{children}</BoardContext.Provider>;
@@ -191,7 +210,7 @@ export function getUserFilledStreaks(
 
     // 1st value → start new streak
     if (currentStreak == null) {
-      const newStreak = new Streak(squareValue.color, 1);
+      const newStreak: Streak = { color: squareValue.color, length: 1 };
       streaksForRow.push(newStreak);
       return newStreak;
     }
@@ -203,7 +222,7 @@ export function getUserFilledStreaks(
     }
 
     // color doesn't match → new streak
-    const newStreak = new Streak(squareValue.color, 1);
+    const newStreak: Streak = { color: squareValue.color, length: 1 };
     streaksForRow.push(newStreak);
 
     return newStreak;

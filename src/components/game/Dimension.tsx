@@ -16,7 +16,9 @@ export function DimensionChoices(props: { onChange: () => void }) {
   const choices: React.ReactElement[] = [];
 
   for (let i = 0; i < DimensionsChoices.length; i++) {
-    choices.push(<option>{DimensionsChoices[i][0] + 'x' + DimensionsChoices[i][1]}</option>);
+    choices.push(
+      <option key={i}>{DimensionsChoices[i][0] + 'x' + DimensionsChoices[i][1]}</option>
+    );
   }
 
   return (

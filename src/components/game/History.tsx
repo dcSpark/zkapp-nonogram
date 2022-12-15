@@ -4,7 +4,7 @@ import { SquareFill, SquareValue } from '../common/constants';
 import { getUserFilledStreaks, useGameBoard } from './Board';
 import { DimensionType } from './Dimension';
 import { useGameMouse } from './GameMouse';
-import { BoardStreaks } from './Streaks';
+import { BoardStreaks, compareStreak } from './Streaks';
 
 type HistorySnapshot = {
   streaks: BoardStreaks;
@@ -140,7 +140,7 @@ function checkWinState(expectedStreaks: BoardStreaks, currentStreaks: BoardStrea
   for (let a = 0; a < expectedStreaks.rows.length; a++) {
     if (expectedStreaks.rows[a].length !== currentStreaks.rows[a].length) return false;
     for (let b = 0; b < expectedStreaks.rows[a].length; b++) {
-      if (!expectedStreaks.rows[a][b].equals(currentStreaks.rows[a][b])) return false;
+      if (!compareStreak(expectedStreaks.rows[a][b], currentStreaks.rows[a][b])) return false;
     }
   }
 
@@ -148,7 +148,7 @@ function checkWinState(expectedStreaks: BoardStreaks, currentStreaks: BoardStrea
   for (let a = 0; a < expectedStreaks.cols.length; a++) {
     if (expectedStreaks.cols[a].length !== currentStreaks.cols[a].length) return false;
     for (let b = 0; b < expectedStreaks.cols[a].length; b++) {
-      if (!expectedStreaks.cols[a][b].equals(currentStreaks.cols[a][b])) return false;
+      if (!compareStreak(expectedStreaks.cols[a][b], currentStreaks.cols[a][b])) return false;
     }
   }
 

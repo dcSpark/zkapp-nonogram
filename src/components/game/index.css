@@ -48,7 +48,6 @@ ul {
 
 .game-board {
   display: grid;
-  background-color: #ccc;
   border-radius: 10px;
   padding: 3px;
   min-width: 40vw;
@@ -90,12 +89,7 @@ ul {
   transform: scale(0);
 }
 
-.square-EMPTY {
-  background-color: #fff;
-}
-
 .square-MARKED {
-  background-color: #ccc;
   color: #f44336;
 }
 
