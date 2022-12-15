@@ -1,5 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
+import { Color } from '../common/constants';
+import chroma from 'chroma-js';
 
 /** ex: 3 1 3 */
 export type StreakList = Streak[];
@@ -20,30 +21,60 @@ export class BoardStreaks {
 
 export class Streak {
   length: number;
+  color: Color;
 
-  constructor(length: number) {
+  constructor(color: Color, length: number) {
+    this.color = color;
     this.length = length;
   }
 
   equals(other: Streak): boolean {
     if (this.length !== other.length) return false;
+    if (this.color !== other.color) return false;
     return true;
   }
 }
-function StreakElement(prop: { crossOut: boolean; streak: Streak }) {
+
+function adjustColor(color: string, targetContrast: number): string {
+  const gameBackgroundColor = '#282c34';
+
+  let finalColor = color;
+
+  while (chroma.contrast(gameBackgroundColor, finalColor) >= targetContrast) {
+    finalColor = chroma(finalColor).darken(0.1).hex();
+  }
+  while (chroma.contrast(gameBackgroundColor, finalColor) <= targetContrast) {
+    finalColor = chroma(finalColor).brighten(0.1).hex();
+  }
+
+  return finalColor;
+}
+
+function StreakElement(props: {
+  crossOut: boolean;
+  streak: Streak;
+  genColor: (index: number) => string;
+}) {
+  // repeatedly brighten color until the contrast is good enough
+  const incompleteColor = adjustColor(props.genColor(props.streak.color), 4.5);
+
+  // repeatedly darken color as long as contrast is good enough
+  const completeColor = adjustColor(props.genColor(props.streak.color), 1.5);
+
   return (
     <div
-      className={classNames({
-        hint: true,
-        crossout: prop.crossOut,
-      })}
+      className={'hint'}
+      style={{
+        color: props.crossOut ? completeColor : incompleteColor,
+      }}
     >
-      {prop.streak.length}
+      {props.streak.length}
     </div>
   );
 }
 
 function StreakListElement(props: {
+  genColor: (index: number) => string;
   /** the streak the user has actually drawn on the board */
   currentStreaks: StreakList;
   /** the expected streak for the solution */
@@ -73,7 +104,9 @@ function StreakListElement(props: {
       }
     }
 
-    streaks.push(<StreakElement crossOut={foundMatch} streak={expectedStreak} />);
+    streaks.push(
+      <StreakElement genColor={props.genColor} crossOut={foundMatch} streak={expectedStreak} />
+    );
   }
 
   return <div className={'hint-' + props.type}>{streaks}</div>;
@@ -90,6 +123,7 @@ function StreakListElement(props: {
  * and are thus given a different div className than normal hint numbers.
  */
 export function StreakSection(props: {
+  genColor: (index: number) => string;
   currentStreaks: StreakList[];
   expectedStreaks: StreakList[];
   type: 'row' | 'col';
@@ -108,6 +142,7 @@ export function StreakSection(props: {
   for (let i = 0; i < props.expectedStreaks.length; i++) {
     streakLists.push(
       <StreakListElement
+        genColor={props.genColor}
         currentStreaks={props.currentStreaks[i]}
         expectedStreaks={props.expectedStreaks[i]}
         type={props.type}

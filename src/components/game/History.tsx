@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { SquareValue } from '../common/constants';
+import { SquareFill, SquareValue } from '../common/constants';
 import { getUserFilledStreaks, useGameBoard } from './Board';
 import { DimensionType } from './Dimension';
 import { useGameMouse } from './GameMouse';
@@ -53,7 +53,7 @@ const HistoryContext = React.createContext<HistoryContextObject>(null!);
 function genInitialHistory(dimensions: DimensionType): HistorySnapshot {
   return {
     streaks: new BoardStreaks(Array(dimensions.rows).fill([]), Array(dimensions.cols).fill([])),
-    squares: Array(dimensions.rows * dimensions.cols).fill(SquareValue.EMPTY),
+    squares: Array(dimensions.rows * dimensions.cols).fill({ state: SquareFill.EMPTY }),
     winState: false,
   };
 }
@@ -89,7 +89,7 @@ export function GameHistory({ children }: { children: React.ReactNode }) {
         ])
       );
       setStepNumber(historyUntilStep.length);
-      mouse.reset();
+      mouse.reset(false);
     },
     undoAction() {
       if (stepNumber === 0) return;

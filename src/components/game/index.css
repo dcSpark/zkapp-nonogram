@@ -25,12 +25,7 @@ ul {
   align-items: center;
   font-weight: 700;
   font-size: 16px;
-  color: #fff;
   transition: color 0.2s ease 0s;
-}
-
-.crossout {
-  color: #666;
 }
 
 .lower-board {
@@ -109,10 +104,6 @@ ul {
   transition: transform 0.2s ease 0s;
 }
 
-.square-FILLED {
-  background-color: #353235;
-}
-
 @keyframes blink {
   from  { box-shadow: 0 0 0 8px #1a7acd;}
   to    { box-shadow: 0 0 0 8px #40ffdd;}
@@ -134,10 +125,6 @@ ul {
 .game {
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
   color: white;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -148,6 +135,63 @@ ul {
   cursor: default;
 }
 
+.game-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 80vh;
+  padding-top: 10vh;
+}
+
 .game-info {
   margin-right: 20px;
+}
+
+.color-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+/** Color Palette Square **/
+
+.colorSquare {
+  position: relative;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  border-width: 3px;
+  border-radius: 6px;
+  margin: 5px;
+  float: left;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  transition: border 0.2s ease 0s, background-color 0.2s ease 0s;
+}
+
+.colorSquare.selected {
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.colorSquare::after {
+  transform: scale(0);
+}
+
+@keyframes grey-blink {
+  from  { box-shadow: 0 0 0 4px #ffffff;}
+  to    { box-shadow: 0 0 0 4px #cccccc;}
+}
+
+.colorSquare:hover {
+  animation-name: grey-blink;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  z-index: 1;
+  cursor: pointer;
 }

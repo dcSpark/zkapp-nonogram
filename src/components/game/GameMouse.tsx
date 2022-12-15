@@ -1,11 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import { SquareValue } from '../common/constants';
+import { SquareFill, squareStateEqual, SquareValue } from '../common/constants';
 import { useGameBoard } from './Board';
-
-const BLACK_COLOR: Color = '#000000';
-
-type Color = string;
 
 export type MouseState = {
   color: undefined | string;
@@ -50,15 +46,22 @@ interface GameMouseContextObject {
    * @param {number} loc Index of the square being hovered over.
    */
   squareHover(loc: number): void;
-  reset(): void;
+
+  /**
+   * fullReset → new board
+   */
+  reset(fullReset: boolean): void;
+
+  getSelectedColor(): number;
+  setSelectedColor(color: number): void;
 }
 const MouseContext = React.createContext<GameMouseContextObject>(null!);
 
 export function GameMouse({ children }: { children: React.ReactNode }) {
   const [lMouseDown, setLMouseDown] = useState<boolean>(false);
   const [rMouseDown, setRMouseDown] = useState<boolean>(false);
-  const [initialSquare, setInitialSquare] = useState<SquareValue>(SquareValue.EMPTY);
-  const [currentAction, setCurrentAction] = useState<SquareValue>(SquareValue.EMPTY);
+  const [currentAction, setCurrentAction] = useState<SquareValue>({ state: SquareFill.EMPTY });
+  const [selectedColor, setSelectedColor] = useState<number>(0);
   const board = useGameBoard();
 
   const context: GameMouseContextObject = {
@@ -68,38 +71,49 @@ export function GameMouse({ children }: { children: React.ReactNode }) {
       if (event.button === 0) {
         if (event.type === 'mousedown') {
           setLMouseDown(true);
-          const action =
-            clickedSquare === SquareValue.EMPTY ? SquareValue.FILLED : SquareValue.EMPTY;
+          const action: SquareValue =
+            clickedSquare.state === SquareFill.EMPTY ||
+            (clickedSquare.state === SquareFill.FILLED && clickedSquare.color !== selectedColor)
+              ? { state: SquareFill.FILLED, color: selectedColor }
+              : { state: SquareFill.EMPTY };
           setCurrentAction(action);
           board.setSquare(loc, action);
         }
       } else if (event.button === 2) {
         if (event.type === 'mousedown') {
           setRMouseDown(true);
-          const action =
-            clickedSquare === SquareValue.EMPTY ? SquareValue.MARKED : SquareValue.EMPTY;
+          const action: SquareValue =
+            clickedSquare.state === SquareFill.EMPTY
+              ? { state: SquareFill.MARKED }
+              : { state: SquareFill.EMPTY };
           setCurrentAction(action);
           board.setSquare(loc, action);
         }
       } else {
         return;
       }
-      setInitialSquare(clickedSquare);
     },
     squareHover(loc) {
       if (!lMouseDown && !rMouseDown) return;
 
       const hoveredSquare = board.getSquare(loc);
-      if (initialSquare !== hoveredSquare) {
-        return;
-      }
+      // avoid triggering a bunch of setSquare calls if the state is the same
+      if (squareStateEqual(hoveredSquare, currentAction)) return;
       board.setSquare(loc, currentAction);
     },
-    reset() {
+    getSelectedColor() {
+      return selectedColor;
+    },
+    setSelectedColor(color) {
+      setSelectedColor(color);
+    },
+    reset(fullReset: boolean) {
       setLMouseDown(false);
       setRMouseDown(false);
-      setInitialSquare(SquareValue.EMPTY);
-      setCurrentAction(SquareValue.EMPTY);
+      setCurrentAction({ state: SquareFill.EMPTY });
+      if (fullReset) {
+        setSelectedColor(0);
+      }
     },
   };
   return <MouseContext.Provider value={context}>{children}</MouseContext.Provider>;
