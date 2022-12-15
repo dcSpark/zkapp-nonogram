@@ -12,1189 +12,367 @@ export function dcSpark(): BoardDescription {
   return {
     defaultColor: '#222222',
     dimensions: {
-      rows: 18,
-      cols: 40,
+      rows: 16,
+      cols: 38,
     },
     expectedStreaks: new BoardStreaks(
       [
-        [],
         [
-          {
-            color: 0,
-            length: 8,
-          },
-          {
-            color: 1,
-            length: 5,
-          },
-          {
-            color: 2,
-            length: 4,
-          },
+          { color: 0, length: 8 },
+          { color: 1, length: 5 },
+          { color: 2, length: 4 },
         ],
         [
-          {
-            color: 0,
-            length: 11,
-          },
-          {
-            color: 1,
-            length: 4,
-          },
-          {
-            color: 2,
-            length: 7,
-          },
+          { color: 0, length: 11 },
+          { color: 1, length: 4 },
+          { color: 2, length: 7 },
         ],
         [
-          {
-            color: 0,
-            length: 13,
-          },
-          {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 1,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 6,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
+          { color: 0, length: 13 },
+          { color: 1, length: 2 },
+          { color: 0, length: 1 },
+          { color: 1, length: 1 },
+          { color: 2, length: 6 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
         ],
         [
-          {
-            color: 0,
-            length: 14,
-          },
-          {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 5,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
+          { color: 0, length: 14 },
+          { color: 1, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 5 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
         ],
         [
-          {
-            color: 0,
-            length: 7,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 7,
-          },
-          {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 3,
-          },
-          {
-            color: 2,
-            length: 5,
-          },
-          {
-            color: 3,
-            length: 3,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
+          { color: 0, length: 7 },
+          { color: 3, length: 2 },
+          { color: 0, length: 7 },
+          { color: 1, length: 2 },
+          { color: 0, length: 3 },
+          { color: 2, length: 5 },
+          { color: 0, length: 3 },
+          { color: 2, length: 2 },
+          { color: 4, length: 1 },
         ],
         [
-          {
-            color: 0,
-            length: 7,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 6,
-            length: 2,
-          },
-          {
-            color: 6,
-            length: 2,
-          },
-          {
-            color: 1,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 5,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
+          { color: 0, length: 7 },
+          { color: 3, length: 2 },
+          { color: 0, length: 6 },
+          { color: 5, length: 2 },
+          { color: 5, length: 2 },
+          { color: 1, length: 1 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 5 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
+          { color: 4, length: 1 },
         ],
         [
-          {
-            color: 0,
-            length: 4,
-          },
-          {
-            color: 4,
-            length: 3,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 7,
-            length: 3,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 6,
-            length: 8,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
+          { color: 0, length: 4 },
+          { color: 3, length: 3 },
+          { color: 0, length: 1 },
+          { color: 3, length: 2 },
+          { color: 0, length: 1 },
+          { color: 6, length: 3 },
+          { color: 0, length: 1 },
+          { color: 5, length: 8 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 3 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 4, length: 2 },
         ],
         [
-          {
-            color: 0,
-            length: 4,
-          },
-          {
-            color: 4,
-            length: 6,
-          },
-          {
-            color: 7,
-            length: 4,
-          },
-          {
-            color: 6,
-            length: 10,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
+          { color: 0, length: 4 },
+          { color: 3, length: 6 },
+          { color: 6, length: 4 },
+          { color: 5, length: 10 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 3 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 4, length: 3 },
         ],
         [
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 4,
-            length: 4,
-          },
-          {
-            color: 7,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 2,
-          },
-          {
-            color: 6,
-            length: 10,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
+          { color: 0, length: 6 },
+          { color: 3, length: 4 },
+          { color: 6, length: 2 },
+          { color: 0, length: 2 },
+          { color: 5, length: 10 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 3 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 4, length: 1 },
+          { color: 0, length: 1 },
+          { color: 4, length: 3 },
         ],
         [
-          {
-            color: 0,
-            length: 5,
-          },
-          {
-            color: 4,
-            length: 5,
-          },
-          {
-            color: 7,
-            length: 3,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 6,
-            length: 10,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
+          { color: 0, length: 5 },
+          { color: 3, length: 5 },
+          { color: 6, length: 3 },
+          { color: 0, length: 1 },
+          { color: 5, length: 10 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 3 },
+          { color: 0, length: 1 },
+          { color: 4, length: 2 },
+          { color: 0, length: 1 },
+          { color: 4, length: 3 },
         ],
         [
-          {
-            color: 0,
-            length: 3,
-          },
-          {
-            color: 4,
-            length: 3,
-          },
-          {
-            color: 0,
-            length: 4,
-          },
-          {
-            color: 7,
-            length: 3,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 6,
-            length: 8,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
+          { color: 0, length: 3 },
+          { color: 3, length: 3 },
+          { color: 0, length: 4 },
+          { color: 6, length: 3 },
+          { color: 0, length: 1 },
+          { color: 5, length: 8 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 3 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 4, length: 3 },
+          { color: 0, length: 1 },
+          { color: 4, length: 3 },
         ],
         [
-          {
-            color: 0,
-            length: 15,
-          },
-          {
-            color: 6,
-            length: 6,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 3,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
+          { color: 0, length: 15 },
+          { color: 5, length: 6 },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 3 },
+          { color: 0, length: 3 },
+          { color: 4, length: 3 },
+          { color: 0, length: 1 },
+          { color: 4, length: 2 },
         ],
         [
-          {
-            color: 0,
-            length: 14,
-          },
-          {
-            color: 6,
-            length: 4,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
+          { color: 0, length: 14 },
+          { color: 5, length: 4 },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 2 },
+          { color: 4, length: 1 },
+          { color: 0, length: 1 },
+          { color: 4, length: 1 },
+          { color: 0, length: 1 },
+          { color: 4, length: 3 },
+          { color: 0, length: 1 },
+          { color: 4, length: 2 },
         ],
         [
-          {
-            color: 0,
-            length: 13,
-          },
-          {
-            color: 6,
-            length: 2,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 6,
-          },
+          { color: 0, length: 13 },
+          { color: 5, length: 2 },
+          { color: 2, length: 3 },
+          { color: 4, length: 3 },
+          { color: 0, length: 1 },
+          { color: 4, length: 6 },
         ],
         [
-          {
-            color: 0,
-            length: 11,
-          },
-          {
-            color: 5,
-            length: 11,
-          },
+          { color: 0, length: 11 },
+          { color: 4, length: 11 },
         ],
         [
-          {
-            color: 0,
-            length: 8,
-          },
-          {
-            color: 5,
-            length: 8,
-          },
+          { color: 0, length: 8 },
+          { color: 4, length: 8 },
         ],
-        [],
       ],
       [
-        [],
+        [{ color: 0, length: 4 }],
+        [{ color: 0, length: 8 }],
+        [{ color: 0, length: 12 }],
+        [{ color: 0, length: 14 }],
         [
-          {
-            color: 0,
-            length: 4,
-          },
+          { color: 0, length: 5 },
+          { color: 3, length: 2 },
+          { color: 0, length: 2 },
+          { color: 3, length: 1 },
+          { color: 0, length: 4 },
         ],
         [
-          {
-            color: 0,
-            length: 8,
-          },
+          { color: 0, length: 6 },
+          { color: 3, length: 2 },
+          { color: 0, length: 1 },
+          { color: 3, length: 2 },
+          { color: 0, length: 5 },
         ],
         [
-          {
-            color: 0,
-            length: 12,
-          },
+          { color: 0, length: 6 },
+          { color: 3, length: 5 },
+          { color: 0, length: 5 },
         ],
         [
-          {
-            color: 0,
-            length: 14,
-          },
+          { color: 0, length: 7 },
+          { color: 3, length: 3 },
+          { color: 0, length: 6 },
         ],
         [
-          {
-            color: 0,
-            length: 5,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 2,
-          },
-          {
-            color: 4,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 4,
-          },
+          { color: 0, length: 4 },
+          { color: 3, length: 6 },
+          { color: 0, length: 6 },
         ],
         [
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
+          { color: 0, length: 4 },
+          { color: 3, length: 6 },
+          { color: 0, length: 6 },
         ],
         [
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 4,
-            length: 5,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
+          { color: 0, length: 7 },
+          { color: 6, length: 3 },
+          { color: 0, length: 6 },
         ],
         [
-          {
-            color: 0,
-            length: 7,
-          },
-          {
-            color: 4,
-            length: 3,
-          },
-          {
-            color: 0,
-            length: 6,
-          },
+          { color: 0, length: 6 },
+          { color: 6, length: 5 },
+          { color: 0, length: 5 },
         ],
         [
-          {
-            color: 0,
-            length: 4,
-          },
-          {
-            color: 4,
-            length: 6,
-          },
-          {
-            color: 0,
-            length: 6,
-          },
+          { color: 0, length: 6 },
+          { color: 6, length: 2 },
+          { color: 0, length: 1 },
+          { color: 6, length: 2 },
+          { color: 0, length: 5 },
         ],
         [
-          {
-            color: 0,
-            length: 4,
-          },
-          {
-            color: 4,
-            length: 6,
-          },
-          {
-            color: 0,
-            length: 6,
-          },
+          { color: 0, length: 5 },
+          { color: 6, length: 2 },
+          { color: 0, length: 2 },
+          { color: 6, length: 1 },
+          { color: 0, length: 4 },
         ],
         [
-          {
-            color: 0,
-            length: 7,
-          },
-          {
-            color: 7,
-            length: 3,
-          },
-          {
-            color: 0,
-            length: 6,
-          },
+          { color: 0, length: 5 },
+          { color: 5, length: 3 },
+          { color: 0, length: 4 },
         ],
         [
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 7,
-            length: 5,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
+          { color: 0, length: 3 },
+          { color: 5, length: 5 },
+          { color: 0, length: 2 },
         ],
         [
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 7,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 7,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
+          { color: 0, length: 1 },
+          { color: 5, length: 7 },
+        ],
+        [{ color: 5, length: 8 }],
+        [{ color: 5, length: 8 }],
+        [{ color: 5, length: 8 }],
+        [{ color: 5, length: 8 }],
+        [{ color: 5, length: 7 }],
+        [
+          { color: 1, length: 3 },
+          { color: 5, length: 5 },
+          { color: 2, length: 2 },
         ],
         [
-          {
-            color: 0,
-            length: 5,
-          },
-          {
-            color: 7,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 2,
-          },
-          {
-            color: 7,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 4,
-          },
+          { color: 1, length: 3 },
+          { color: 2, length: 2 },
+          { color: 5, length: 3 },
+          { color: 2, length: 4 },
         ],
         [
-          {
-            color: 0,
-            length: 5,
-          },
-          {
-            color: 6,
-            length: 3,
-          },
-          {
-            color: 0,
-            length: 4,
-          },
+          { color: 1, length: 2 },
+          { color: 0, length: 10 },
+          { color: 2, length: 1 },
+          { color: 4, length: 1 },
         ],
         [
-          {
-            color: 0,
-            length: 3,
-          },
-          {
-            color: 6,
-            length: 5,
-          },
-          {
-            color: 0,
-            length: 2,
-          },
+          { color: 1, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 9 },
+          { color: 4, length: 1 },
         ],
         [
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 6,
-            length: 7,
-          },
+          { color: 1, length: 3 },
+          { color: 0, length: 3 },
+          { color: 2, length: 7 },
+          { color: 4, length: 3 },
         ],
         [
-          {
-            color: 6,
-            length: 8,
-          },
+          { color: 1, length: 2 },
+          { color: 2, length: 4 },
+          { color: 0, length: 4 },
+          { color: 2, length: 2 },
+          { color: 4, length: 4 },
         ],
         [
-          {
-            color: 6,
-            length: 8,
-          },
+          { color: 1, length: 1 },
+          { color: 2, length: 9 },
+          { color: 0, length: 3 },
+          { color: 4, length: 3 },
         ],
         [
-          {
-            color: 6,
-            length: 8,
-          },
+          { color: 1, length: 1 },
+          { color: 2, length: 10 },
+          { color: 0, length: 1 },
+          { color: 4, length: 1 },
+          { color: 0, length: 1 },
+          { color: 4, length: 2 },
         ],
         [
-          {
-            color: 6,
-            length: 8,
-          },
+          { color: 2, length: 10 },
+          { color: 0, length: 3 },
+          { color: 4, length: 3 },
         ],
         [
-          {
-            color: 6,
-            length: 7,
-          },
+          { color: 2, length: 6 },
+          { color: 0, length: 4 },
+          { color: 4, length: 6 },
         ],
         [
-          {
-            color: 1,
-            length: 3,
-          },
-          {
-            color: 6,
-            length: 5,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
+          { color: 2, length: 3 },
+          { color: 0, length: 3 },
+          { color: 2, length: 3 },
+          { color: 4, length: 7 },
         ],
         [
-          {
-            color: 1,
-            length: 3,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 6,
-            length: 3,
-          },
-          {
-            color: 2,
-            length: 4,
-          },
+          { color: 2, length: 2 },
+          { color: 0, length: 1 },
+          { color: 2, length: 1 },
+          { color: 0, length: 1 },
+          { color: 2, length: 3 },
+          { color: 4, length: 8 },
         ],
         [
-          {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 10,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
+          { color: 2, length: 2 },
+          { color: 0, length: 10 },
+          { color: 4, length: 2 },
         ],
         [
-          {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 9,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
+          { color: 2, length: 5 },
+          { color: 4, length: 7 },
         ],
         [
-          {
-            color: 1,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 3,
-          },
-          {
-            color: 2,
-            length: 7,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
+          { color: 2, length: 3 },
+          { color: 4, length: 7 },
         ],
-        [
-          {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 2,
-            length: 4,
-          },
-          {
-            color: 3,
-            length: 4,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 5,
-            length: 4,
-          },
-        ],
-        [
-          {
-            color: 1,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 9,
-          },
-          {
-            color: 3,
-            length: 3,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 1,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 10,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
-        ],
-        [
-          {
-            color: 2,
-            length: 10,
-          },
-          {
-            color: 3,
-            length: 3,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 2,
-            length: 6,
-          },
-          {
-            color: 3,
-            length: 4,
-          },
-          {
-            color: 5,
-            length: 6,
-          },
-        ],
-        [
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 3,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 5,
-            length: 7,
-          },
-        ],
-        [
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 5,
-            length: 8,
-          },
-        ],
-        [
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 10,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
-        ],
-        [
-          {
-            color: 2,
-            length: 5,
-          },
-          {
-            color: 5,
-            length: 7,
-          },
-        ],
-        [
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 5,
-            length: 7,
-          },
-        ],
-        [
-          {
-            color: 5,
-            length: 7,
-          },
-        ],
-        [],
+        [{ color: 4, length: 7 }],
       ]
     ),
     colorGenerator: (_numColor, index) => {
@@ -1206,14 +384,12 @@ export function dcSpark(): BoardDescription {
         case 2:
           return '#F19465'; // 15832165
         case 3:
-          return '#FFFFFF'; // 16777215
-        case 4:
           return '#022E41'; // 142913
-        case 5:
+        case 4:
           return '#AC76B3'; // 11302579
-        case 6:
+        case 5:
           return '#FF0000'; // 16711680
-        case 7:
+        case 6:
           return '#FC951F'; // 16553247
         default: {
           return '#000000';

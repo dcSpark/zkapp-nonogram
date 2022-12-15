@@ -11,23 +11,26 @@ ul {
   grid-auto-flow: column;
   margin-bottom: 20px;
   padding-left: 20px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 .hint-col {
   display: grid;
   justify-items: center;
   max-width: 70px;
-  grid-gap: 20px;
+  grid-gap: 10px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .hint {
-  display: flex;
   align-items: center;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
   transition: color 0.2s ease 0s;
+  text-align: center;
+  min-width: 2em;
 }
 
 .lower-board {
@@ -42,15 +45,16 @@ ul {
 
 .hint-row {
   display: grid;
-  grid-gap: 20px;
   grid-auto-flow: column;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .game-board {
   display: grid;
   border-radius: 10px;
   padding: 3px;
-  min-width: 40vw;
+  min-width: 60vw;
 }
 
 .board-row {
