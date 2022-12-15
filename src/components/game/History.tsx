@@ -44,7 +44,7 @@ interface HistoryContextObject {
    */
   redoAction(): void;
 
-  latestSnapshot: HistorySnapshot;
+  getLatestSnapshot(): HistorySnapshot;
 
   reset(dimensions: DimensionType): void;
 }
@@ -102,7 +102,9 @@ export function GameHistory({ children }: { children: React.ReactNode }) {
       board.setBoard(history[stepNumber + 1].squares);
       setStepNumber(step => step + 1);
     },
-    latestSnapshot: history[stepNumber],
+    getLatestSnapshot() {
+      return history[stepNumber];
+    },
     reset(dimensions: DimensionType) {
       setStepNumber(0);
       setHistory([genInitialHistory(dimensions)]);
