@@ -21,7 +21,21 @@ export function dcSpark(): BoardDescription {
         [
           {
             color: 0,
-            length: 7,
+            length: 8,
+          },
+          {
+            color: 1,
+            length: 5,
+          },
+          {
+            color: 2,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 11,
           },
           {
             color: 1,
@@ -29,51 +43,7 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 2,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 10,
-          },
-          {
-            color: 1,
-            length: 3,
-          },
-          {
-            color: 2,
-            length: 6,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 12,
-          },
-          {
-            color: 1,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 1,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 5,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 1,
+            length: 7,
           },
         ],
         [
@@ -83,69 +53,239 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 1,
+            length: 2,
+          },
+          {
+            color: 3,
             length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 4,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 4,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 6,
           },
           {
             color: 1,
             length: 1,
           },
           {
+            color: 2,
+            length: 6,
+          },
+          {
             color: 3,
-            length: 2,
+            length: 1,
           },
           {
             color: 2,
-            length: 4,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 14,
+          },
+          {
+            color: 1,
+            length: 2,
           },
           {
             color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 5,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
             length: 2,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 7,
+          },
+          {
+            color: 4,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 7,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 3,
+          },
+          {
+            color: 2,
+            length: 5,
+          },
+          {
+            color: 3,
+            length: 3,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 5,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 7,
+          },
+          {
+            color: 4,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 6,
+          },
+          {
+            color: 6,
+            length: 2,
+          },
+          {
+            color: 6,
+            length: 2,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 5,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 5,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 4,
+          },
+          {
+            color: 4,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 4,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 7,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 6,
+            length: 8,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 1,
           },
           {
             color: 2,
@@ -153,7 +293,57 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 5,
-            length: 0,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 4,
+          },
+          {
+            color: 4,
+            length: 6,
+          },
+          {
+            color: 7,
+            length: 4,
+          },
+          {
+            color: 6,
+            length: 10,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 3,
           },
         ],
         [
@@ -163,85 +353,7 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 4,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
-          {
-            color: 6,
-            length: 1,
-          },
-          {
-            color: 6,
-            length: 1,
-          },
-          {
-            color: 1,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
             length: 4,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 0,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 3,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 0,
-          },
-          {
-            color: 4,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 0,
           },
           {
             color: 7,
@@ -249,27 +361,15 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 0,
-            length: 0,
+            length: 2,
           },
           {
             color: 6,
-            length: 7,
-          },
-          {
-            color: 2,
-            length: 0,
+            length: 10,
           },
           {
             color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
             length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
           },
           {
             color: 2,
@@ -277,29 +377,37 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 3,
-            length: 0,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 1,
           },
           {
             color: 2,
             length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 0,
           },
           {
             color: 5,
             length: 1,
           },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 3,
+          },
         ],
         [
           {
             color: 0,
-            length: 3,
+            length: 5,
           },
           {
             color: 4,
@@ -310,20 +418,16 @@ export function dcSpark(): BoardDescription {
             length: 3,
           },
           {
-            color: 6,
-            length: 9,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
+            color: 0,
             length: 1,
           },
           {
+            color: 6,
+            length: 10,
+          },
+          {
             color: 3,
-            length: 0,
+            length: 1,
           },
           {
             color: 2,
@@ -331,189 +435,123 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
             length: 1,
           },
           {
+            color: 2,
+            length: 3,
+          },
+          {
             color: 3,
-            length: 0,
+            length: 1,
           },
           {
             color: 5,
             length: 2,
           },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 3,
+          },
         ],
         [
           {
             color: 0,
-            length: 5,
+            length: 3,
           },
           {
             color: 4,
             length: 3,
           },
           {
-            color: 7,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 6,
-            length: 9,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
-        ],
-        [
-          {
             color: 0,
             length: 4,
           },
           {
-            color: 4,
-            length: 4,
-          },
-          {
             color: 7,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 0,
-          },
-          {
-            color: 6,
-            length: 9,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 2,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
             length: 3,
           },
           {
-            color: 7,
-            length: 2,
-          },
-          {
             color: 0,
-            length: 0,
+            length: 1,
           },
           {
             color: 6,
-            length: 7,
+            length: 8,
           },
           {
             color: 2,
-            length: 0,
+            length: 1,
           },
           {
             color: 3,
-            length: 0,
+            length: 1,
           },
           {
             color: 2,
-            length: 2,
+            length: 3,
           },
           {
             color: 3,
-            length: 0,
+            length: 1,
           },
           {
             color: 2,
-            length: 0,
+            length: 1,
           },
           {
             color: 3,
-            length: 0,
+            length: 1,
           },
           {
             color: 5,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 3,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 15,
+          },
+          {
+            color: 6,
+            length: 6,
+          },
+          {
+            color: 2,
             length: 2,
           },
           {
             color: 3,
-            length: 0,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 3,
+          },
+          {
+            color: 5,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 1,
           },
           {
             color: 5,
@@ -527,15 +565,7 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 6,
-            length: 5,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
+            length: 4,
           },
           {
             color: 2,
@@ -543,19 +573,39 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 3,
-            length: 2,
+            length: 1,
           },
           {
-            color: 5,
+            color: 2,
             length: 2,
-          },
-          {
-            color: 3,
-            length: 0,
           },
           {
             color: 5,
             length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 2,
           },
         ],
         [
@@ -565,93 +615,43 @@ export function dcSpark(): BoardDescription {
           },
           {
             color: 6,
+            length: 2,
+          },
+          {
+            color: 2,
             length: 3,
           },
           {
-            color: 2,
-            length: 1,
+            color: 5,
+            length: 3,
           },
           {
             color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
             length: 1,
           },
           {
             color: 5,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 1,
+            length: 6,
           },
         ],
         [
           {
             color: 0,
-            length: 12,
-          },
-          {
-            color: 6,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 2,
+            length: 11,
           },
           {
             color: 5,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 5,
+            length: 11,
           },
         ],
         [
           {
             color: 0,
-            length: 10,
+            length: 8,
           },
           {
             color: 5,
-            length: 10,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 7,
-          },
-          {
-            color: 5,
-            length: 7,
+            length: 8,
           },
         ],
         [],
@@ -661,506 +661,336 @@ export function dcSpark(): BoardDescription {
         [
           {
             color: 0,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 7,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 11,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 13,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 4,
-          },
-          {
-            color: 4,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 4,
-            length: 0,
-          },
-          {
-            color: 0,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 5,
-          },
-          {
-            color: 4,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 0,
-          },
-          {
-            color: 4,
-            length: 1,
-          },
-          {
-            color: 0,
             length: 4,
           },
         ],
         [
           {
             color: 0,
-            length: 5,
-          },
-          {
-            color: 4,
-            length: 4,
-          },
-          {
-            color: 0,
-            length: 4,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 4,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 3,
-          },
-          {
-            color: 4,
-            length: 5,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 3,
-          },
-          {
-            color: 4,
-            length: 5,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 6,
-          },
-          {
-            color: 7,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 5,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 5,
-          },
-          {
-            color: 7,
-            length: 4,
-          },
-          {
-            color: 0,
-            length: 4,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 5,
-          },
-          {
-            color: 7,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 0,
-          },
-          {
-            color: 7,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 4,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 4,
-          },
-          {
-            color: 7,
-            length: 1,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-          {
-            color: 7,
-            length: 0,
-          },
-          {
-            color: 0,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 4,
-          },
-          {
-            color: 6,
-            length: 2,
-          },
-          {
-            color: 0,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 2,
-          },
-          {
-            color: 6,
-            length: 4,
-          },
-          {
-            color: 0,
-            length: 1,
-          },
-        ],
-        [
-          {
-            color: 0,
-            length: 0,
-          },
-          {
-            color: 6,
-            length: 6,
-          },
-        ],
-        [
-          {
-            color: 6,
-            length: 7,
-          },
-        ],
-        [
-          {
-            color: 6,
-            length: 7,
-          },
-        ],
-        [
-          {
-            color: 6,
-            length: 7,
-          },
-        ],
-        [
-          {
-            color: 6,
-            length: 7,
-          },
-        ],
-        [
-          {
-            color: 6,
-            length: 6,
-          },
-        ],
-        [
-          {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 6,
-            length: 4,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-        ],
-        [
-          {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 6,
-            length: 2,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 1,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 9,
-          },
-          {
-            color: 2,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 0,
-          },
-        ],
-        [
-          {
-            color: 1,
-            length: 1,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 2,
             length: 8,
           },
+        ],
+        [
           {
-            color: 5,
-            length: 0,
+            color: 0,
+            length: 12,
           },
         ],
         [
           {
-            color: 1,
-            length: 2,
-          },
-          {
-            color: 3,
-            length: 2,
-          },
-          {
-            color: 2,
-            length: 6,
-          },
-          {
-            color: 5,
-            length: 2,
+            color: 0,
+            length: 14,
           },
         ],
         [
           {
-            color: 1,
-            length: 1,
-          },
-          {
-            color: 2,
-            length: 3,
-          },
-          {
-            color: 3,
-            length: 3,
-          },
-          {
-            color: 2,
-            length: 1,
-          },
-          {
-            color: 5,
-            length: 3,
-          },
-        ],
-        [
-          {
-            color: 1,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 8,
-          },
-          {
-            color: 3,
-            length: 2,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
-        ],
-        [
-          {
-            color: 1,
-            length: 0,
-          },
-          {
-            color: 2,
-            length: 9,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 0,
-          },
-          {
-            color: 3,
-            length: 0,
-          },
-          {
-            color: 5,
-            length: 1,
-          },
-        ],
-        [
-          {
-            color: 2,
-            length: 9,
-          },
-          {
-            color: 3,
-            length: 2,
-          },
-          {
-            color: 5,
-            length: 2,
-          },
-        ],
-        [
-          {
-            color: 2,
+            color: 0,
             length: 5,
           },
           {
-            color: 3,
-            length: 3,
+            color: 4,
+            length: 2,
           },
           {
-            color: 5,
+            color: 0,
+            length: 2,
+          },
+          {
+            color: 4,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 6,
+          },
+          {
+            color: 4,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 4,
+            length: 2,
+          },
+          {
+            color: 0,
             length: 5,
           },
         ],
         [
           {
-            color: 2,
-            length: 2,
+            color: 0,
+            length: 6,
           },
           {
-            color: 3,
-            length: 2,
+            color: 4,
+            length: 5,
           },
           {
-            color: 2,
-            length: 2,
+            color: 0,
+            length: 5,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 7,
           },
           {
-            color: 5,
+            color: 4,
+            length: 3,
+          },
+          {
+            color: 0,
             length: 6,
           },
         ],
         [
           {
-            color: 2,
-            length: 1,
+            color: 0,
+            length: 4,
           },
           {
-            color: 3,
-            length: 0,
+            color: 4,
+            length: 6,
           },
           {
-            color: 2,
-            length: 0,
+            color: 0,
+            length: 6,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 4,
           },
           {
-            color: 3,
-            length: 0,
+            color: 4,
+            length: 6,
           },
           {
-            color: 2,
+            color: 0,
+            length: 6,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 7,
+          },
+          {
+            color: 7,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 6,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 6,
+          },
+          {
+            color: 7,
+            length: 5,
+          },
+          {
+            color: 0,
+            length: 5,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 6,
+          },
+          {
+            color: 7,
             length: 2,
           },
           {
-            color: 5,
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 7,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 5,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 7,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 2,
+          },
+          {
+            color: 7,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 6,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 3,
+          },
+          {
+            color: 6,
+            length: 5,
+          },
+          {
+            color: 0,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 6,
             length: 7,
           },
         ],
         [
           {
+            color: 6,
+            length: 8,
+          },
+        ],
+        [
+          {
+            color: 6,
+            length: 8,
+          },
+        ],
+        [
+          {
+            color: 6,
+            length: 8,
+          },
+        ],
+        [
+          {
+            color: 6,
+            length: 8,
+          },
+        ],
+        [
+          {
+            color: 6,
+            length: 7,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 3,
+          },
+          {
+            color: 6,
+            length: 5,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 3,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 6,
+            length: 3,
+          },
+          {
+            color: 2,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 10,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
             color: 2,
             length: 1,
           },
           {
             color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
             length: 9,
           },
           {
@@ -1170,7 +1000,109 @@ export function dcSpark(): BoardDescription {
         ],
         [
           {
+            color: 1,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 3,
+          },
+          {
             color: 2,
+            length: 7,
+          },
+          {
+            color: 5,
+            length: 3,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 2,
+            length: 4,
+          },
+          {
+            color: 3,
+            length: 4,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 5,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 9,
+          },
+          {
+            color: 3,
+            length: 3,
+          },
+          {
+            color: 5,
+            length: 3,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 10,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 5,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 2,
+            length: 10,
+          },
+          {
+            color: 3,
+            length: 3,
+          },
+          {
+            color: 5,
+            length: 3,
+          },
+        ],
+        [
+          {
+            color: 2,
+            length: 6,
+          },
+          {
+            color: 3,
             length: 4,
           },
           {
@@ -1181,17 +1113,85 @@ export function dcSpark(): BoardDescription {
         [
           {
             color: 2,
-            length: 2,
+            length: 3,
+          },
+          {
+            color: 3,
+            length: 3,
+          },
+          {
+            color: 2,
+            length: 3,
           },
           {
             color: 5,
-            length: 6,
+            length: 7,
+          },
+        ],
+        [
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 3,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 5,
+            length: 8,
+          },
+        ],
+        [
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 3,
+            length: 10,
+          },
+          {
+            color: 5,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 2,
+            length: 5,
+          },
+          {
+            color: 5,
+            length: 7,
+          },
+        ],
+        [
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 5,
+            length: 7,
           },
         ],
         [
           {
             color: 5,
-            length: 6,
+            length: 7,
           },
         ],
         [],
