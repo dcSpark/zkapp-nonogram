@@ -112,6 +112,13 @@ function StreakListElement(props: {
   return <div className={'hint-' + props.type}>{streaks}</div>;
 }
 
+type StreakSectionProps = {
+  genColor: (index: number) => string;
+  currentStreaks: StreakList[];
+  expectedStreaks: StreakList[];
+  type: 'row' | 'col';
+};
+
 /**
  * Translates either row or column streaks into HTML div elements.
  *
@@ -122,12 +129,7 @@ function StreakListElement(props: {
  * Crossed out hint numbers appear as a different color than normal hint numbers,
  * and are thus given a different div className than normal hint numbers.
  */
-export function StreakSection(props: {
-  genColor: (index: number) => string;
-  currentStreaks: StreakList[];
-  expectedStreaks: StreakList[];
-  type: 'row' | 'col';
-}) {
+export const StreakSection = React.forwardRef<HTMLDivElement, StreakSectionProps>((props, ref) => {
   const streakLists: React.ReactElement[] = [];
 
   // this may happen if the board isn't available yet
@@ -150,5 +152,9 @@ export function StreakSection(props: {
     );
   }
 
-  return <div className={props.type + '-hints'}>{streakLists}</div>;
-}
+  return (
+    <div ref={ref} className={props.type + '-hints'}>
+      {streakLists}
+    </div>
+  );
+});

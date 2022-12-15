@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DimensionsChoices } from '../common/constants';
 import { Board, useGameBoard } from './Board';
 import { DimensionChoices } from './Dimension';
@@ -16,6 +16,7 @@ export function Game() {
   const board = useGameBoard();
   const mouse = useGameMouse();
   const history = useHistory();
+  const elementRef = useRef<HTMLDivElement>(null);
 
   const [seconds, setSeconds] = useState<number>(0);
   useEffect(() => {
@@ -79,7 +80,10 @@ export function Game() {
           </div>
         </div>
         <div className="right-panel">
-          <div className="upper-board">
+          <div
+            style={{ marginLeft: `${elementRef?.current?.getBoundingClientRect()?.width ?? 0}px` }}
+            className="upper-board"
+          >
             <StreakSection
               genColor={indexedColorGenerator}
               currentStreaks={history.getLatestSnapshot().streaks.cols}
@@ -89,6 +93,7 @@ export function Game() {
           </div>
           <div className="lower-board">
             <StreakSection
+              ref={elementRef}
               genColor={indexedColorGenerator}
               currentStreaks={history.getLatestSnapshot().streaks.rows}
               expectedStreaks={board.getExpectedStreaks().rows}
