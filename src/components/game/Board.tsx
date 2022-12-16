@@ -42,6 +42,7 @@ export function Board(props: BoardProps) {
     rows.push(
       <BoardRow
         {...props}
+        key={row}
         rowLength={props.dimensions.cols}
         startIndex={row * props.dimensions.cols}
       />

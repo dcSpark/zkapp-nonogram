@@ -82,57 +82,66 @@ function StreakElement(props: {
   );
 }
 
-function StreakListElement(props: {
-  genColor: (index: number) => string;
-  /** the streak the user has actually drawn on the board */
-  currentStreaks: StreakList;
-  /** the expected streak for the solution */
-  expectedStreaks: StreakList;
-  /* place the list is rendered in */
-  type: 'row' | 'col';
-  emptyStreakColor: string;
-}) {
-  const streaks: React.ReactElement[] = [];
+const StreakListElement = React.memo(
+  (props: {
+    genColor: (index: number) => string;
+    /** the streak the user has actually drawn on the board */
+    currentStreaks: StreakList;
+    /** the expected streak for the solution */
+    expectedStreaks: StreakList;
+    /* place the list is rendered in */
+    type: 'row' | 'col';
+    emptyStreakColor: string;
+  }) => {
+    const streaks: React.ReactElement[] = [];
 
-  // we have to find the overlap between the expected streaks and what the user has drawn
-  // the way we do this is to iterate over the expected streaks (left to right)
-  // and match based off of these
+    // we have to find the overlap between the expected streaks and what the user has drawn
+    // the way we do this is to iterate over the expected streaks (left to right)
+    // and match based off of these
 
-  // we want to avoid double-matching on the same streak
-  // ex: if the hints are 3 1
-  // and the user has drawn xxx
-  // we don't want the same xxx to match the 3 and then the first x is reused to match the 1
-  let lastMatchedStreak = 0;
-  for (const expectedStreak of props.expectedStreaks) {
-    let foundMatch = false;
-    for (let i = lastMatchedStreak; i < props.currentStreaks.length; i++) {
-      if (compareStreak(expectedStreak, props.currentStreaks[i])) {
-        // start from next streak going forward to avoid the double-matching mentioned above
-        lastMatchedStreak = i + 1;
-        foundMatch = true;
-        break;
+    // we want to avoid double-matching on the same streak
+    // ex: if the hints are 3 1
+    // and the user has drawn xxx
+    // we don't want the same xxx to match the 3 and then the first x is reused to match the 1
+    let lastMatchedStreak = 0;
+    for (let i = 0; i < props.expectedStreaks.length; i++) {
+      const expectedStreak = props.expectedStreaks[i];
+      let foundMatch = false;
+      for (let j = lastMatchedStreak; j < props.currentStreaks.length; j++) {
+        if (compareStreak(expectedStreak, props.currentStreaks[j])) {
+          // start from next streak going forward to avoid the double-matching mentioned above
+          lastMatchedStreak = j + 1;
+          foundMatch = true;
+          break;
+        }
       }
+
+      streaks.push(
+        <StreakElement
+          key={`${i}-${JSON.stringify(expectedStreak)}-${foundMatch}`}
+          genColor={props.genColor}
+          crossOut={foundMatch}
+          streak={expectedStreak}
+        />
+      );
     }
 
-    streaks.push(
-      <StreakElement genColor={props.genColor} crossOut={foundMatch} streak={expectedStreak} />
-    );
-  }
-
-  if (streaks.length === 0) {
-    streaks.push(
-      <StreakElement
-        genColor={() => props.emptyStreakColor}
-        crossOut={false}
-        streak={{
-          color: 0,
-          length: 0,
-        }}
-      />
-    );
-  }
-  return <div className={'hint-' + props.type}>{streaks}</div>;
-}
+    if (streaks.length === 0) {
+      streaks.push(
+        <StreakElement
+          genColor={() => props.emptyStreakColor}
+          crossOut={false}
+          streak={{
+            color: 0,
+            length: 0,
+          }}
+        />
+      );
+    }
+    return <div className={'hint-' + props.type}>{streaks}</div>;
+  },
+  (a, b) => a.currentStreaks === b.currentStreaks
+);
 
 type StreakSectionProps = {
   genColor: (index: number) => string;
@@ -167,6 +176,9 @@ export const StreakSection = React.forwardRef<HTMLDivElement, StreakSectionProps
   for (let i = 0; i < props.expectedStreaks.length; i++) {
     streakLists.push(
       <StreakListElement
+        key={`${i}-${JSON.stringify(props.currentStreaks[i])}-${JSON.stringify(
+          props.expectedStreaks[i]
+        )}`}
         genColor={props.genColor}
         currentStreaks={props.currentStreaks[i]}
         expectedStreaks={props.expectedStreaks[i]}

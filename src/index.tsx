@@ -6,6 +6,7 @@ import Game from './components/game/Game';
 import { GameMouse } from './components/game/GameMouse';
 import { GameBoard } from './components/game/Board';
 import { GameHistory } from './components/game/History';
+import { GameTimer } from './components/game/Timer';
 
 // ========================================
 
@@ -15,7 +16,9 @@ root.render(
   <GameBoard>
     <GameMouse>
       <GameHistory>
-        <Game />
+        <GameTimer>
+          <Game />
+        </GameTimer>
       </GameHistory>
     </GameMouse>
   </GameBoard>

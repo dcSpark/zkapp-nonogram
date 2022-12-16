@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { DimensionsChoices } from '../common/constants';
 import { Board, useGameBoard } from './Board';
 import { DimensionChoices } from './Dimension';
@@ -9,31 +9,26 @@ import { useHistory } from './History';
 import { useCallback } from 'react';
 import { ColorChoices, ColorPicker } from './Colors';
 import { dcSpark } from '../../prepackaged';
+import { TimeDisplay, useGameTimer } from './Timer';
 
-function TimeDisplay(props: { seconds: number }) {
-  return <div>{new Date(1000 * (props.seconds + 1)).toISOString().substring(11, 11 + 8)}</div>;
-}
+const randomBoards = false;
+
 export function Game() {
   const board = useGameBoard();
   const mouse = useGameMouse();
   const history = useHistory();
+  const timer = useGameTimer();
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const [seconds, setSeconds] = useState<number>(0);
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (history.getLatestSnapshot().winState) return;
-      setSeconds(seconds => seconds + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [history.getLatestSnapshot().winState]);
-
-  useEffect(() => {
-    // board.newRandomGame(board.getDimensions(), board.getNumColors());
-    const prepackagedBoard = dcSpark();
-    board.newFixedGame(prepackagedBoard);
-    mouse.reset(true);
-    history.reset(prepackagedBoard.dimensions);
+    if (randomBoards) {
+      board.newRandomGame(board.getDimensions(), board.getNumColors());
+    } else {
+      const prepackagedBoard = dcSpark();
+      board.newFixedGame(prepackagedBoard);
+      mouse.reset(true);
+      history.reset(prepackagedBoard.dimensions);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -57,7 +52,7 @@ export function Game() {
       numColors = colorsSel.selectedIndex + 1;
     }
 
-    setSeconds(0);
+    timer.resetTimer();
     board.newRandomGame(nextDimensions, numColors);
     mouse.reset(true);
     history.reset(nextDimensions);
@@ -80,7 +75,7 @@ export function Game() {
       <div className="game-content">
         <div className="left-panel">
           <div className="game-info">
-            <TimeDisplay seconds={seconds} />
+            <TimeDisplay />
             <div>{history.getLatestSnapshot().winState ? 'You won!' : ''}</div>
           </div>
         </div>
@@ -122,11 +117,15 @@ export function Game() {
             <span className="material-icons" onClick={() => history.redoAction()}>
               redo
             </span>
-            <span className="material-icons" onClick={generateNewBoard}>
-              replay
-            </span>
-            <DimensionChoices onChange={generateNewBoard} />
-            <ColorChoices onChange={generateNewBoard} />
+            {randomBoards && (
+              <>
+                <span className="material-icons" onClick={generateNewBoard}>
+                  replay
+                </span>
+                <DimensionChoices onChange={generateNewBoard} />
+                <ColorChoices onChange={generateNewBoard} />
+              </>
+            )}
           </div>
         </div>
         <ColorPicker
