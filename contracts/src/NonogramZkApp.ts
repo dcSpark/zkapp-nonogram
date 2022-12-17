@@ -9,14 +9,14 @@ import {
   Struct,
   Circuit,
 } from 'snarkyjs';
-import { solutionColumns, solutionRows } from './circuitUtils.js';
-import { Color, ColoredStreak } from './types.js';
+import { solutionColumns, solutionRows } from './circuitUtils';
+import { Color, ColoredStreak } from './types';
 import {
   ColumnClass,
   RowClass,
   secretNonogram,
   secretSolution,
-} from './solutionNonogram.js';
+} from './solutionNonogram';
 
 export { SolutionNonogram, NonogramZkApp };
 
@@ -29,11 +29,6 @@ await isReady;
  * Therefore, we need the solution to consider the validity of a solution based off the row & column descriptions
  * and not the hash of the final image desired
  */
-
-// function nonogramCtor(secretNonogram: {
-//   rows: ColoredStreak[][],
-//   columns: ColoredStreak[][],
-// }) {
 
 class SolutionNonogram extends Struct({
   rows: Circuit.array(RowClass, secretNonogram.rows.length),
@@ -81,13 +76,6 @@ class SolutionNonogram extends Struct({
     ]);
   }
 }
-// }
-
-// const secretSolution = genSecretSolution();
-// const SolutionNonogram = nonogramCtor({
-//   rows: solutionRows(secretSolution),
-//   columns: solutionColumns(secretSolution),
-// });
 
 export class NonogramSubmission extends Struct({
   value: Circuit.array(
@@ -102,7 +90,6 @@ export class NonogramSubmission extends Struct({
   }
 }
 
-// const expectedHash = Field(0);
 const expectedHash = SolutionNonogram.fromJS(secretNonogram).hash();
 
 class NonogramZkApp extends SmartContract {
@@ -139,8 +126,5 @@ class NonogramZkApp extends SmartContract {
         nonogramHash,
         'nonogram does not match the one committed on-chain'
       );
-
-    // TODO: reducer instead? Emit the public key instead?
-    this.emitEvent('solved-nonogram', nonogram.hash());
   }
 }

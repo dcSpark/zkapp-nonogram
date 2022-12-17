@@ -73,17 +73,17 @@ function DynamicArray<T>(type: Provable<T>, maxLength: number) {
     //     this.set(this.length.sub(1), value);
     //   }
 
-    //   public pop(n: Field): void {
-    //     const mask = this.lengthMask(this.length.sub(n));
-    //     this.decrementLength(n);
+    public pop(n: Field): void {
+      const mask = this.lengthMask(this.length.sub(n));
+      this.decrementLength(n);
 
-    //     for (let i = 0; i < this.maxLength(); i++) {
-    //       this.values[i] = Circuit.switch([mask[i], mask[i].not()], type, [
-    //         this.values[i],
-    //         Null(),
-    //       ]);
-    //     }
-    //   }
+      for (let i = 0; i < this.maxLength(); i++) {
+        this.values[i] = Circuit.switch([mask[i], mask[i].not()], type, [
+          this.values[i],
+          Null(),
+        ]);
+      }
+    }
 
     //   public concat(other: this): this {
     //     const newArr = other.copy();
@@ -197,7 +197,7 @@ function DynamicArray<T>(type: Provable<T>, maxLength: number) {
         lengthReached = Field(i).equals(this.length).or(lengthReached);
         const isIndex = Field(i).equals(index);
         // assert index < length
-        isIndex.and(lengthReached).not().assertTrue();
+        // isIndex.and(lengthReached).not().assertTrue();
         mask[i] = isIndex;
       }
       return mask;
@@ -214,43 +214,43 @@ function DynamicArray<T>(type: Provable<T>, maxLength: number) {
       this.length = newLength;
     }
 
-    //   public decrementLength(n: Field): void {
-    //     this.length = this.length.sub(n);
-    //     // make sure length did not underflow
-    //     let newLengthFound = Bool(false);
-    //     for (let i = 0; i < this.maxLength() + 1; i++) {
-    //       newLengthFound = newLengthFound.or(Field(i).equals(this.length));
-    //     }
-    //     newLengthFound.assertTrue();
-    //   }
+    public decrementLength(n: Field): void {
+      this.length = this.length.sub(n);
+      // make sure length did not underflow
+      // let newLengthFound = Bool(false);
+      // for (let i = 0; i < this.maxLength() + 1; i++) {
+      //   newLengthFound = newLengthFound.or(Field(i).equals(this.length));
+      // }
+      // newLengthFound.assertTrue();
+    }
 
-    //   public lengthMask(n: Field): Bool[] {
-    //     const mask = [];
-    //     let masked = Bool(true);
-    //     for (let i = 0; i < this.maxLength(); i++) {
-    //       masked = Circuit.if(Field(i).equals(n), Bool(false), masked);
-    //       mask[i] = masked;
-    //     }
-    //     return mask;
-    //   }
+    public lengthMask(n: Field): Bool[] {
+      const mask = [];
+      let masked = Bool(true);
+      for (let i = 0; i < this.maxLength(); i++) {
+        masked = Circuit.if(Field(i).equals(n), Bool(false), masked);
+        mask[i] = masked;
+      }
+      return mask;
+    }
 
-    //   public map(fn: (v: T, i: Field) => T): this {
-    //     const newArr = this.copy();
-    //     let masked = Bool(true);
-    //     for (let i = 0; i < newArr.values.length; i++) {
-    //       masked = Circuit.if(
-    //         Field(i).equals(newArr.length),
-    //         Bool(false),
-    //         masked
-    //       );
-    //       newArr.values[i] = Circuit.if(
-    //         masked,
-    //         fn(newArr.values[i], Field(i)),
-    //         Null()
-    //       );
-    //     }
-    //     return newArr;
+    // public map(fn: (v: T, i: Field) => T): this {
+    //   const newArr = this.copy();
+    //   let masked = Bool(true);
+    //   for (let i = 0; i < newArr.values.length; i++) {
+    //     masked = Circuit.if(
+    //       Field(i).equals(newArr.length),
+    //       Bool(false),
+    //       masked
+    //     );
+    //     newArr.values[i] = Circuit.if(
+    //       masked,
+    //       fn(newArr.values[i], Field(i)),
+    //       Null()
+    //     );
     //   }
+    //   return newArr;
+    // }
   };
 
   function fillWithNull([...values]: T[], length: number): T[] {

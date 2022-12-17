@@ -1,6 +1,6 @@
 import { Circuit, Field } from 'snarkyjs';
-import { Color } from './types.js';
-import { ColumnClass, RowClass, secretNonogram } from './solutionNonogram.js';
+import { Color } from './types';
+import { ColumnClass, RowClass, secretNonogram } from './solutionNonogram';
 
 function encodeAsStreak(
   row: Color[],
@@ -11,6 +11,18 @@ function encodeAsStreak(
     color: Color.noColor(),
     length: Field(1), // start with 1 just to make the math work
   };
+
+  // if the row starts with no color
+  // we need to skip adding this to the result
+  // this isn't easy, since we can't do an if set for adding to the circuit
+  // so instead, if the row starts with noColor, we stuff it into the beginning of the array
+  // and override it or delete it later
+  let startOffset = Circuit.if(
+    row[0].equals(Color.noColor()),
+    Field(1),
+    Field(0)
+  );
+  result.incrementLength(startOffset);
 
   for (let i = 0; i < row.length; i++) {
     const isNoColor = row[i].equals(Color.noColor());
@@ -24,16 +36,34 @@ function encodeAsStreak(
     );
 
     const incrementSize = Circuit.if(startNewColor, Field(1), Field(0));
-    result.incrementLength(incrementSize);
+    // if startOffset is true, we want to skip the first incrementLength call
+    const incrementLength = Circuit.if(
+      startOffset.equals(1),
+      Field(0),
+      incrementSize
+    );
+    result.incrementLength(incrementLength);
+    // remove the start offset after it's been used up
+    startOffset = Circuit.if(
+      startOffset.equals(1),
+      startOffset.sub(incrementSize),
+      startOffset
+    );
 
     // note: length is 0 for the initial noColor call, so this is a no-op in that case
-    result.set(index, {
-      color: currentRun.color,
+    // avoid result.set overriding the last seen color if there are no colors afterwards
+    const color = Circuit.if(isNoColor, currentRun.color, row[i]);
+    currentRun = {
+      color: color,
       length,
-    });
+    };
+    result.set(index, currentRun);
 
-    index = Circuit.if(startNewColor, index.add(1), index);
+    index = Circuit.if(startNewColor, index.add(incrementLength), index);
   }
+  // if we never ended up adding any color, then the length is === 1
+  // with just the start offset, so we need to remove it
+  result.pop(startOffset);
 }
 
 export function solutionRows(image: Color[][]): any {

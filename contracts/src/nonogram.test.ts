@@ -1,4 +1,4 @@
-import { NonogramSubmission, NonogramZkApp } from './nonogram';
+import { NonogramSubmission, NonogramZkApp } from './NonogramZkApp';
 import {
   isReady,
   shutdown,
@@ -7,9 +7,9 @@ import {
   Mina,
   AccountUpdate,
 } from 'snarkyjs';
-import { genSecretSolution } from './solution.js';
-import { Color } from './types.js';
-import { solutionColumns, solutionRows } from './circuitUtils.js';
+import { genSecretSolution } from './solution';
+import { Color } from './types';
+import { solutionColumns, solutionRows } from './circuitUtils';
 
 describe('nonogram', () => {
   let zkAppPrivateKey: PrivateKey,
@@ -48,10 +48,6 @@ describe('nonogram', () => {
     });
     await tx.prove();
     await tx.send();
-
-    // const events = await zkApp.fetchEvents();
-    // const verifiedEventValue = events[0].event.toFields(null)[0];
-    // expect(verifiedEventValue).toEqual("9745901556730586602254241540205477356877189563359647213102193662741991851935");
   });
 
   it('rejects an incorrect solution', async () => {
