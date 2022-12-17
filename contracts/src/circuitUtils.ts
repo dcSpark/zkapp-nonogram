@@ -6,7 +6,7 @@ function encodeAsStreak(
   row: Color[],
   result: InstanceType<typeof RowClass> | InstanceType<typeof ColumnClass>
 ): void {
-  let index = Field(0);
+  let index = Field(-1);
   let currentRun = {
     color: Color.noColor(),
     length: Field(1), // start with 1 just to make the math work
@@ -43,6 +43,11 @@ function encodeAsStreak(
       incrementSize
     );
     result.incrementLength(incrementLength);
+
+    index = Circuit.if(startNewColor, index.add(1), index);
+    // <0 in the case that we had some empty colors at the start of the array
+    const adjustedIndex = Circuit.if(index.lt(0), Field(0), index);
+
     // remove the start offset after it's been used up
     startOffset = Circuit.if(
       startOffset.equals(1),
@@ -57,12 +62,11 @@ function encodeAsStreak(
       color: color,
       length,
     };
-    result.set(index, currentRun);
-
-    index = Circuit.if(startNewColor, index.add(incrementLength), index);
+    result.set(adjustedIndex, currentRun);
   }
+
   // if we never ended up adding any color, then the length is === 1
-  // with just the start offset, so we need to remove it
+  // with just the (non-overridden) start offset, so we need to remove it
   result.pop(startOffset);
 }
 

@@ -9,8 +9,10 @@
  * Build the project: `$ npm run build`
  * Run with node:     `$ node build/src/run.js`.
  */
-import { NonogramZkApp } from './NonogramZkApp';
+import { NonogramSubmission, NonogramZkApp } from './NonogramZkApp';
 import { AccountUpdate, Mina, PrivateKey, shutdown } from 'snarkyjs';
+import { secretSolution } from './solutionNonogram';
+import { Color } from './types';
 
 // setup
 const Local = Mina.LocalBlockchain();
@@ -36,37 +38,29 @@ await tx.prove();
  * (but `deploy()` changes some of those permissions to "proof" and adds the verification key that enables proofs.
  * that's why we don't need `tx.sign()` for the later transactions.)
  */
-// await tx.sign([zkAppPrivateKey]).send();
+await tx.sign([zkAppPrivateKey]).send();
 
-// console.log('Is the nonogram solved?', zkApp.isSolved.get().toBoolean());
+console.log('Submitting wrong solution...');
 
-// let solution = solveNonogram(nonogram);
-// if (solution === undefined) throw Error('cannot happen');
+const solutionClone = secretSolution.map((row) => row.map((col) => col));
+solutionClone[0][0] = Color.hexToFields('000000');
+try {
+  let tx = await Mina.transaction(account, () => {
+    zkApp.submitSolution(NonogramSubmission.from(solutionClone));
+  });
+  await tx.prove();
+  await tx.send();
+} catch {
+  console.log('There was an error submitting the solution, as expected');
+}
 
-// // submit a wrong solution
-// let noSolution = cloneNonogram(solution);
-// noSolution[0][0] = (noSolution[0][0] % 9) + 1;
-
-// console.log('Submitting wrong solution...');
-// try {
-//   let tx = await Mina.transaction(account, () => {
-//     zkApp.submitSolution(Nonogram.from(nonogram), Nonogram.from(noSolution));
-//   });
-//   await tx.prove();
-//   await tx.send();
-// } catch {
-//   console.log('There was an error submitting the solution, as expected');
-// }
-// console.log('Is the nonogram solved?', zkApp.isSolved.get().toBoolean());
-
-// // submit the actual solution
-// console.log('Submitting solution...');
-// tx = await Mina.transaction(account, () => {
-//   zkApp.submitSolution(Nonogram.from(nonogram), Nonogram.from(solution!));
-// });
-// await tx.prove();
-// await tx.send();
-// console.log('Is the nonogram solved?', zkApp.isSolved.get().toBoolean());
+// submit the actual solution
+console.log('Submitting solution...');
+tx = await Mina.transaction(account, () => {
+  zkApp.submitSolution(NonogramSubmission.from(secretSolution));
+});
+await tx.prove();
+await tx.send();
 
 // cleanup
 await shutdown();

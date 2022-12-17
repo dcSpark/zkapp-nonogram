@@ -49,6 +49,7 @@ class SolutionNonogram extends Struct({
       const arr = new ColumnClass(column);
       circuitColumns.push(arr);
     }
+
     return new SolutionNonogram({ rows: circuitRows, columns: circuitColumns });
   }
   static fromCircuit(nonogram: {
@@ -79,18 +80,19 @@ class SolutionNonogram extends Struct({
 
 export class NonogramSubmission extends Struct({
   value: Circuit.array(
-    Circuit.array(Color, secretSolution[0].length),
-    secretSolution.length
+    Circuit.array(Color, secretSolution.length),
+    secretSolution[0].length
   ),
 }) {
   static from(value: Color[][]) {
     return new NonogramSubmission({
-      value: value.map((row) => row.map(Field)),
+      value,
     });
   }
 }
 
-const expectedHash = SolutionNonogram.fromJS(secretNonogram).hash();
+// const expectedHash = SolutionNonogram.fromJS(secretNonogram).hash();
+// console.log(expectedHash.toBigInt());
 
 class NonogramZkApp extends SmartContract {
   @state(Field) nonogramHash = State<Field>();
@@ -101,7 +103,12 @@ class NonogramZkApp extends SmartContract {
 
   @method init() {
     super.init();
-    this.nonogramHash.set(expectedHash);
+    this.nonogramHash.set(
+      Field(
+        // expectedHash // - doesn't when deploying - needs to be a static constant
+        17739214903883395114522368789019603819539277385656798838307121012038043050733n
+      )
+    );
   }
 
   /**

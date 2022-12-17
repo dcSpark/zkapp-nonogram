@@ -24,6 +24,8 @@ describe('nonogram', () => {
     account = Local.testAccounts[0].privateKey;
     zkAppPrivateKey = PrivateKey.random();
     zkAppAddress = zkAppPrivateKey.toPublicKey();
+    // console.log(zkAppPrivateKey.toBase58());
+    // console.log(zkAppAddress.toBase58());
     secretSolution = genSecretSolution();
     // zkApp = new NonogramZkApp(zkAppAddress);
   });
@@ -54,7 +56,7 @@ describe('nonogram', () => {
     const zkApp = new NonogramZkApp(zkAppAddress);
     await deploy(zkApp, zkAppPrivateKey, account);
 
-    const solutionClone = JSON.parse(JSON.stringify(secretSolution));
+    const solutionClone = secretSolution.map((row) => row.map((col) => col));
     solutionClone[0][0] = Color.hexToFields('000000');
 
     await expect(async () => {

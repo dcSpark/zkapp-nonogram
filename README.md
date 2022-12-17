@@ -14,6 +14,13 @@ Learn more [on Wikipedia](https://en.wikipedia.org/wiki/Nonogram)
 - Dynamic arrays are needed for two reasons:
   1. Streaks may be of variable length (ex: one row may be [2,4,6], but another row maybe [2,2,1,1])
   2. We can't encode streaks of 0 in the circuit, or that would give the solution just by reading out the circuit
+- Circuit limit can't encode 40x20 picture
+
+# How to build
+
+Note that `solution.ts` is missing. This is because if we uploaded the solution to Github, it would defeat the point!
+
+However, you can find a `testSolutions.ts` file with a few different tests you can play around with
 
 ## Controls
 
