@@ -24,8 +24,11 @@ export function genSecretSolution() {
   return {
     allRed:       [C.R, C.R],
     emptyThenRed: [C.N, C.R],
+    empty2ThenRed:[C.N, C.N, C.R],
     allEmpty:     [C.N, C.N],
     emptyRedGreen:[C.N, C.R, C.G],
     redGreen:     [C.R, C.G],
+    RedEmptyRed:  [C.R, C.N, C.R],
+    Red2EmptyRed: [C.R, C.N, C.N, C.R],
   };
 }
