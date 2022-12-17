@@ -97,7 +97,7 @@ class NonogramZkApp extends SmartContract {
     this.nonogramHash.set(
       Field(
         // expectedHash // - doesn't work when deploying (?) - needs to be a static constant
-        16542339824047825289578592733393668458270447501650438742388555827295093986637n
+        25134448949193411911263289606790727633601303035954420118353984288310600161763n
       )
     );
   }

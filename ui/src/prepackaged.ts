@@ -9,6 +9,199 @@ export type BoardDescription = {
   defaultColor: string;
 };
 
+export function smallRandom(): BoardDescription {
+  return {
+    defaultColor: '#888888',
+    dimensions: {
+      rows: 5,
+      cols: 10,
+    },
+    expectedStreaks: new BoardStreaks(
+      [
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 2,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 2,
+          },
+        ],
+      ],
+      [
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 2,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+        ],
+        [
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+        ],
+      ]
+    ),
+    colorGenerator: (_numColor, index) => {
+      switch (index) {
+        case 0:
+          return '#022E41'; // 142913
+        case 1:
+          return '#FC951F'; // 16553247
+        default: {
+          throw new Error(`Unexpected color index ${index}`);
+        }
+      }
+    },
+  };
+}
+
 export function dcSparkSmall(): BoardDescription {
   return {
     defaultColor: '#222222',

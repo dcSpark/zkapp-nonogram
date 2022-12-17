@@ -34,30 +34,27 @@ function encodeAsStreak(
       Field,
       [currentRun.length, currentRun.length.add(1), Field(1)]
     );
-
-    const incrementSize = Circuit.if(startNewColor, Field(1), Field(0));
-    // if startOffset is true, we want to skip the first incrementLength call
-    const incrementLength = Circuit.if(
-      startOffset.equals(1),
-      Field(0),
-      incrementSize
-    );
-    result.incrementLength(incrementLength);
-
-    index = Circuit.if(startNewColor, index.add(1), index);
-    // <0 in the case that we had some empty colors at the start of the array
-    const adjustedIndex = Circuit.if(index.lt(0), Field(0), index);
-
-    // remove the start offset after it's been used up
-    startOffset = Circuit.if(startOffset.equals(1), Field(0), startOffset);
-
-    // note: length is 0 for the initial noColor call, so this is a no-op in that case
     // avoid result.set overriding the last seen color if there are no colors afterwards
     const color = Circuit.if(isNoColor, currentRun.color, row[i]);
     currentRun = {
       color: color,
       length,
     };
+
+    // if startOffset is true, we want to skip the first incrementLength call
+    const incrementLength = Circuit.if(
+      startOffset.equals(1).or(startNewColor.not()),
+      Field(0),
+      Field(1)
+    );
+    result.incrementLength(incrementLength);
+
+    index = Circuit.if(startNewColor, index.add(1), index);
+    // <0 in the case that we had some empty colors at the start of the array
+    const adjustedIndex = Circuit.if(index.lt(0), Field(0), index);
+    // remove the start offset after it's been used up
+    startOffset = Field(0);
+
     result.set(adjustedIndex, currentRun);
   }
 

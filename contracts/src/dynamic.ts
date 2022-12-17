@@ -68,10 +68,10 @@ function DynamicArray<T>(type: Provable<T>, maxLength: number) {
       }
     }
 
-    //   public push(value: T): void {
-    //     this.incrementLength(Field(1));
-    //     this.set(this.length.sub(1), value);
-    //   }
+    // public push(value: T): void {
+    //   this.incrementLength(Field(1));
+    //   this.set(this.length.sub(1), value);
+    // }
 
     public pop(n: Field): void {
       const mask = this.lengthMask(this.length.sub(n));
