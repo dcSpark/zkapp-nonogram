@@ -1,23 +1,16 @@
-import {
-  Mina,
-  isReady,
-  PublicKey,
-  PrivateKey,
-  Field,
-  fetchAccount,
-} from 'snarkyjs'
+import { Mina, isReady, PublicKey, PrivateKey, Field, fetchAccount } from 'snarkyjs';
 
 type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
 // ---------------------------------------------------------------------------------------
 
-import type { NonogramZkApp } from '../../contracts/src/nonogram';
+import type { NonogramZkApp, NonogramSubmission } from '../../contracts/src/NonogramZkApp';
 
 const state = {
   NonogramZkApp: null as null | typeof NonogramZkApp,
   zkapp: null as null | NonogramZkApp,
   transaction: null as null | Transaction,
-}
+};
 
 // ---------------------------------------------------------------------------------------
 
@@ -26,13 +19,11 @@ const functions = {
     await isReady;
   },
   setActiveInstanceToBerkeley: async (args: {}) => {
-    const Berkeley = Mina.BerkeleyQANet(
-      "https://proxy.berkeley.minaexplorer.com/graphql"
-    );
+    const Berkeley = Mina.BerkeleyQANet('https://proxy.berkeley.minaexplorer.com/graphql');
     Mina.setActiveInstance(Berkeley);
   },
   loadContract: async (args: {}) => {
-    const { NonogramZkApp } = await import('../../contracts/build/src/nonogram.js');
+    const { NonogramZkApp } = await import('../../contracts/build/src/NonogramZkApp.js');
     state.NonogramZkApp = NonogramZkApp;
   },
   compileContract: async (args: {}) => {
@@ -46,18 +37,17 @@ const functions = {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
     state.zkapp = new state.NonogramZkApp!(publicKey);
   },
-  getNum: async (args: {}) => {
-    const currentNum = await state.zkapp!.num.get();
-    return JSON.stringify(currentNum.toJSON());
+  getHash: async (args: {}) => {
+    const currentHash = await state.zkapp!.nonogramHash.get();
+    return JSON.stringify(currentHash.toJSON());
   },
-  createUpdateTransaction: async (args: {}) => {
+  submitSolutionTransaction: async (args: { solution: NonogramSubmission }) => {
     const transaction = await Mina.transaction(() => {
-        state.zkapp!.update();
-      }
-    );
+      state.zkapp!.submitSolution(args.solution);
+    });
     state.transaction = transaction;
   },
-  proveUpdateTransaction: async (args: {}) => {
+  proveSolutionTransaction: async (args: {}) => {
     await state.transaction!.prove();
   },
   getTransactionJSON: async (args: {}) => {
@@ -70,15 +60,15 @@ const functions = {
 export type WorkerFunctions = keyof typeof functions;
 
 export type ZkappWorkerRequest = {
-  id: number,
-  fn: WorkerFunctions,
-  args: any
-}
+  id: number;
+  fn: WorkerFunctions;
+  args: any;
+};
 
 export type ZkappWorkerReponse = {
-  id: number,
-  data: any
-}
+  id: number;
+  data: any;
+};
 if (process.browser) {
   addEventListener('message', async (event: MessageEvent<ZkappWorkerRequest>) => {
     const returnData = await functions[event.data.fn](event.data.args);
@@ -86,7 +76,7 @@ if (process.browser) {
     const message: ZkappWorkerReponse = {
       id: event.data.id,
       data: returnData,
-    }
-    postMessage(message)
+    };
+    postMessage(message);
   });
 }

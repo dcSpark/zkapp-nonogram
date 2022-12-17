@@ -7,7 +7,7 @@ import { useGameMouse } from './GameMouse';
 import { useHistory } from './History';
 import { useCallback } from 'react';
 import { ColorChoices, ColorPicker } from './Colors';
-import { dcSpark } from '../../prepackaged';
+import { dcSparkSmall } from '../../prepackaged';
 import { TimeDisplay, useGameTimer } from './Timer';
 
 const randomBoards = false;
@@ -23,7 +23,7 @@ export function Game() {
     if (randomBoards) {
       board.newRandomGame(board.getDimensions(), board.getNumColors());
     } else {
-      const prepackagedBoard = dcSpark();
+      const prepackagedBoard = dcSparkSmall();
       board.newFixedGame(prepackagedBoard);
       mouse.reset(true);
       history.reset(prepackagedBoard.dimensions);

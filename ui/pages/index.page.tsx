@@ -1,5 +1,3 @@
-import '../styles/Home.module.css';
-
 import { useEffect, useState } from 'react';
 import type { NonogramZkApp } from '../../contracts/src/';
 import { Mina, isReady, PublicKey, fetchAccount } from 'snarkyjs';
@@ -19,7 +17,7 @@ export default function Home() {
       // Update this to use the address (public key) for your zkApp account
       // To try it out, you can try this address for an example "NonogramZkApp" smart contract that we've deployed to
       // Berkeley Testnet B62qqkb7hD1We6gEfrcqosKt9C398VLp1WXeTo1i9boPoqF7B1LxHg4
-      const zkAppAddress = '';
+      const zkAppAddress = 'B62qohbssEnVvbQPKyRaexKrrqzEUCmKNY4bSjvAvPH1xwtuDdCMpdw';
       // This should be removed once the zkAppAddress is updated.
       if (!zkAppAddress) {
         console.error(

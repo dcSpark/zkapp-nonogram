@@ -8,7 +8,421 @@ export type BoardDescription = {
   colorGenerator: ColorGenerator;
   defaultColor: string;
 };
-export function dcSpark(): BoardDescription {
+
+export function dcSparkSmall(): BoardDescription {
+  return {
+    defaultColor: '#222222',
+    dimensions: {
+      rows: 14,
+      cols: 16,
+    },
+    expectedStreaks: new BoardStreaks(
+      [
+        [
+          {
+            color: 0,
+            length: 11,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 13,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 14,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 7,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 7,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 7,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 7,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 3,
+          },
+          {
+            color: 1,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 3,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 3,
+          },
+          {
+            color: 1,
+            length: 6,
+          },
+          {
+            color: 2,
+            length: 4,
+          },
+          {
+            color: 0,
+            length: 3,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 1,
+            length: 4,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 5,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 4,
+          },
+          {
+            color: 1,
+            length: 5,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 3,
+          },
+          {
+            color: 1,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 3,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 16,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 14,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 13,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 11,
+          },
+        ],
+      ],
+      [
+        [
+          {
+            color: 0,
+            length: 8,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 12,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 14,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 2,
+          },
+          {
+            color: 1,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 1,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 1,
+            length: 5,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 6,
+          },
+          {
+            color: 1,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 5,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 3,
+          },
+          {
+            color: 1,
+            length: 6,
+          },
+          {
+            color: 0,
+            length: 5,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 3,
+          },
+          {
+            color: 1,
+            length: 6,
+          },
+          {
+            color: 0,
+            length: 5,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 6,
+          },
+          {
+            color: 2,
+            length: 3,
+          },
+          {
+            color: 0,
+            length: 5,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 2,
+            length: 5,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 1,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 5,
+          },
+          {
+            color: 2,
+            length: 2,
+          },
+          {
+            color: 0,
+            length: 2,
+          },
+          {
+            color: 2,
+            length: 1,
+          },
+          {
+            color: 0,
+            length: 4,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 12,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 10,
+          },
+        ],
+        [
+          {
+            color: 0,
+            length: 8,
+          },
+        ],
+      ]
+    ),
+    colorGenerator: (_numColor, index) => {
+      switch (index) {
+        case 0:
+          return '#F6F3EB'; // 16184299
+        case 1:
+          return '#022E41'; // 142913
+        case 2:
+          return '#FC951F'; // 16553247
+        default: {
+          throw new Error(`Unexpected color index ${index}`);
+        }
+      }
+    },
+  };
+}
+
+export function dcSparkFull(): BoardDescription {
   return {
     defaultColor: '#222222',
     dimensions: {

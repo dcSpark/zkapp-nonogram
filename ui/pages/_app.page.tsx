@@ -1,10 +1,14 @@
 import '../styles/globals.css';
+import '../styles/Home.module.css';
+
 import { useEffect, useState } from 'react';
 import './reactCOIServiceWorker';
 
 import ZkappWorkerClient from './zkappWorkerClient';
-
+import type { NonogramSubmission } from '../../contracts/src/NonogramZkApp';
 import { PublicKey, PrivateKey, Field } from 'snarkyjs';
+import { SpinnerCircular } from 'spinners-react';
+import Home from './index.page';
 
 let transactionFee = 0.1;
 
@@ -14,10 +18,11 @@ export default function App() {
     hasWallet: null as null | boolean,
     hasBeenSetup: false,
     accountExists: false,
-    currentNum: null as null | Field,
+    currentHash: null as null | Field, // hash in the nonogram contract
     publicKey: null as null | PublicKey,
     zkappPublicKey: null as null | PublicKey,
     creatingTransaction: false,
+    createdTxHash: String,
   });
 
   // -------------------------------------------------------
@@ -58,15 +63,15 @@ export default function App() {
 
         // TODO
         const zkappPublicKey = PublicKey.fromBase58(
-          'B62qph2VodgSo5NKn9gZta5BHNxppgZMDUihf1g7mXreL4uPJFXDGDA'
+          'B62qohbssEnVvbQPKyRaexKrrqzEUCmKNY4bSjvAvPH1xwtuDdCMpdw'
         );
 
         await zkappWorkerClient.initZkappInstance(zkappPublicKey);
 
         console.log('getting zkApp state...');
         await zkappWorkerClient.fetchAccount({ publicKey: zkappPublicKey });
-        const currentNum = await zkappWorkerClient.getNum();
-        console.log('current state:', currentNum.toString());
+        const currentHash = await zkappWorkerClient.getHash();
+        console.log('current state:', currentHash.toString());
 
         setState({
           ...state,
@@ -76,7 +81,7 @@ export default function App() {
           publicKey,
           zkappPublicKey,
           accountExists,
-          currentNum,
+          currentHash,
         });
       }
     })();
@@ -105,16 +110,16 @@ export default function App() {
   // -------------------------------------------------------
   // Send a transaction
 
-  const onSendTransaction = async () => {
+  const onSendTransaction = async (args: { solution: NonogramSubmission }) => {
     setState({ ...state, creatingTransaction: true });
     console.log('sending a transaction...');
 
     await state.zkappWorkerClient!.fetchAccount({ publicKey: state.publicKey! });
 
-    await state.zkappWorkerClient!.createUpdateTransaction();
+    await state.zkappWorkerClient!.submitSolutionTransaction(args);
 
     console.log('creating proof...');
-    await state.zkappWorkerClient!.proveUpdateTransaction();
+    await state.zkappWorkerClient!.proveSolutionTransaction();
 
     console.log('getting Transaction JSON...');
     const transactionJSON = await state.zkappWorkerClient!.getTransactionJSON();
@@ -130,19 +135,19 @@ export default function App() {
 
     console.log('See transaction at https://berkeley.minaexplorer.com/transaction/' + hash);
 
-    setState({ ...state, creatingTransaction: false });
+    setState({ ...state, creatingTransaction: false, createdTxHash: hash });
   };
 
   // -------------------------------------------------------
   // Refresh the current state
 
-  const onRefreshCurrentNum = async () => {
+  const onRefreshCurrentHash = async () => {
     console.log('getting zkApp state...');
     await state.zkappWorkerClient!.fetchAccount({ publicKey: state.zkappPublicKey! });
-    const currentNum = await state.zkappWorkerClient!.getNum();
-    console.log('current state:', currentNum.toString());
+    const currentHash = await state.zkappWorkerClient!.getHash();
+    console.log('current state:', currentHash.toString());
 
-    setState({ ...state, currentNum });
+    setState({ ...state, currentHash });
   };
 
   // -------------------------------------------------------
@@ -162,8 +167,11 @@ export default function App() {
 
   let setupText = state.hasBeenSetup ? 'SnarkyJS Ready' : 'Setting up SnarkyJS...';
   let setup = (
-    <div>
+    <div style={{ color: 'white', width: 'fit-content', marginLeft: 'auto', marginRight: 'auto' }}>
       {' '}
+      <div style={{ width: 'fit-content', marginLeft: 'auto', marginRight: 'auto' }}>
+        <SpinnerCircular size={48} enabled={true} />
+      </div>
       {setupText} {hasWallet}
     </div>
   );
@@ -182,22 +190,23 @@ export default function App() {
     );
   }
 
-  let mainContent;
-  if (state.hasBeenSetup && state.accountExists) {
-    mainContent = (
-      <div>
-        <button onClick={onSendTransaction} disabled={state.creatingTransaction}>
-          {' '}
-          Send Transaction{' '}
-        </button>
-        <div> Current Number in zkApp: {state.currentNum!.toString()} </div>
-        <button onClick={onRefreshCurrentNum}> Get Latest State </button>
-      </div>
-    );
-  }
+  // <button onClick={() => onSendTransaction} disabled={state.creatingTransaction}>
+  let mainContent = <Home />;
+  // if (state.hasBeenSetup && state.accountExists) {
+  //   mainContent = (
+  //     <div>
+  //       <button onClick={onSendTransaction} disabled={state.creatingTransaction}>
+  //         {' '}
+  //         Send Transaction{' '}
+  //       </button>
+  //       <div style={{color: "white"}}> Current hash in zkApp: {state.currentHash!.toString()} </div>
+  //       <button onClick={onRefreshCurrentHash}> Get Latest State </button>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {setup}
       {accountDoesNotExist}
       {mainContent}
