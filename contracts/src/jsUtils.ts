@@ -1,5 +1,5 @@
 import { Field } from 'snarkyjs';
-import { Color, ColoredStreak } from './types';
+import { Color, ColoredStreak } from './types.js';
 
 /**
  * Pure JS implementation of Nonogram generator

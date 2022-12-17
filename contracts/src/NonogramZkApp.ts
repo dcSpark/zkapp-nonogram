@@ -9,14 +9,9 @@ import {
   Struct,
   Circuit,
 } from 'snarkyjs';
-import { solutionColumns, solutionRows } from './circuitUtils';
-import { Color, ColoredStreak } from './types';
-import {
-  ColumnClass,
-  RowClass,
-  secretNonogram,
-  secretSolution,
-} from './solutionNonogram';
+import { solutionColumns, solutionRows } from './circuitUtils.js';
+import { Color, ColoredStreak } from './types.js';
+import { ColumnClass, RowClass, secretNonogram } from './solutionNonogram.js';
 
 export { SolutionNonogram, NonogramZkApp };
 
@@ -80,8 +75,8 @@ class SolutionNonogram extends Struct({
 
 export class NonogramSubmission extends Struct({
   value: Circuit.array(
-    Circuit.array(Color, secretSolution.length),
-    secretSolution[0].length
+    Circuit.array(Color, secretNonogram.columns.length),
+    secretNonogram.rows.length
   ),
 }) {
   static from(value: Color[][]) {
@@ -97,16 +92,12 @@ export class NonogramSubmission extends Struct({
 class NonogramZkApp extends SmartContract {
   @state(Field) nonogramHash = State<Field>();
 
-  events = {
-    'solved-nonogram': Field,
-  };
-
-  @method init() {
+  init() {
     super.init();
     this.nonogramHash.set(
       Field(
-        // expectedHash // - doesn't when deploying - needs to be a static constant
-        17739214903883395114522368789019603819539277385656798838307121012038043050733n
+        // expectedHash // - doesn't work when deploying (?) - needs to be a static constant
+        16542339824047825289578592733393668458270447501650438742388555827295093986637n
       )
     );
   }

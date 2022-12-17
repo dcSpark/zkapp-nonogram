@@ -20,7 +20,7 @@
     "test": "node --experimental-vm-modules --experimental-wasm-modules --experimental-wasm-threads node_modules/jest/bin/jest.js",
     "testw": "node --experimental-vm-modules --experimental-wasm-modules --experimental-wasm-threads node_modules/jest/bin/jest.js --watch",
     "lint": "npx eslint src/* --fix",
-    "start": "node --max-old-space-size=16384 build/src/run.js"
+    "start": "node --max-old-space-size=8192 build/src/run.js"
   },
   "lint-staged": {
     "**/*": [

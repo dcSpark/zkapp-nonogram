@@ -1,6 +1,6 @@
-import { Circuit, Field } from 'snarkyjs';
-import { Color } from './types';
-import { ColumnClass, RowClass, secretNonogram } from './solutionNonogram';
+import { Circuit, Field, Struct } from 'snarkyjs';
+import { Color } from './types.js';
+import { ColumnClass, RowClass, secretNonogram } from './solutionNonogram.js';
 
 function encodeAsStreak(
   row: Color[],
@@ -49,11 +49,7 @@ function encodeAsStreak(
     const adjustedIndex = Circuit.if(index.lt(0), Field(0), index);
 
     // remove the start offset after it's been used up
-    startOffset = Circuit.if(
-      startOffset.equals(1),
-      startOffset.sub(incrementSize),
-      startOffset
-    );
+    startOffset = Circuit.if(startOffset.equals(1), Field(0), startOffset);
 
     // note: length is 0 for the initial noColor call, so this is a no-op in that case
     // avoid result.set overriding the last seen color if there are no colors afterwards
@@ -83,15 +79,21 @@ export function solutionRows(image: Color[][]): any {
 
   return result;
 }
+
 export function solutionColumns(image: Color[][]): any {
   const result: (InstanceType<typeof ColumnClass> | [])[] = Array.from(
     { length: secretNonogram.columns.length },
     () => []
   );
 
-  // note: safe to access thanks to sanity check
+  const column = Array.from(
+    { length: secretNonogram.rows.length },
+    (_) => new Color(0)
+  );
   for (let i = 0; i < secretNonogram.columns.length; i++) {
-    const column = image.map((row) => row[i]);
+    for (let j = 0; j < secretNonogram.rows.length; j++) {
+      column[j] = image[j][i];
+    }
     const streakResult = new ColumnClass();
     encodeAsStreak(column, streakResult);
     result[i] = streakResult;

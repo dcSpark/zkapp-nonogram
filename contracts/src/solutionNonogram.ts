@@ -1,8 +1,8 @@
 import { isReady } from 'snarkyjs';
-import { ColoredStreak } from './types';
-import { DynamicArray } from './dynamic';
-import { solutionColumns, solutionRows } from './jsUtils';
-import { genSecretSolution } from './solution';
+import { ColoredStreak } from './types.js';
+import { DynamicArray } from './dynamic.js';
+import { solutionColumns, solutionRows } from './jsUtils.js';
+import { genSecretSolution } from './solution.js';
 
 await isReady;
 

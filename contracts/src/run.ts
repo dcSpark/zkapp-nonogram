@@ -9,10 +9,10 @@
  * Build the project: `$ npm run build`
  * Run with node:     `$ node build/src/run.js`.
  */
-import { NonogramSubmission, NonogramZkApp } from './NonogramZkApp';
+import { NonogramSubmission, NonogramZkApp } from './NonogramZkApp.js';
 import { AccountUpdate, Mina, PrivateKey, shutdown } from 'snarkyjs';
-import { secretSolution } from './solutionNonogram';
-import { Color } from './types';
+import { secretSolution } from './solutionNonogram.js';
+import { Color } from './types.js';
 
 // setup
 const Local = Mina.LocalBlockchain();
@@ -61,6 +61,7 @@ tx = await Mina.transaction(account, () => {
 });
 await tx.prove();
 await tx.send();
+console.log('Solution accepted!');
 
 // cleanup
 await shutdown();

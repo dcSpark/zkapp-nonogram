@@ -1,3 +1,3 @@
-import { NonogramZkApp } from './NonogramZkApp';
+import { NonogramZkApp } from './NonogramZkApp.js';
 
 export { NonogramZkApp };
