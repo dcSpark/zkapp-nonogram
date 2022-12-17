@@ -3,7 +3,6 @@ import { DimensionsChoices } from '../common/constants';
 import { Board, useGameBoard } from './Board';
 import { DimensionChoices } from './Dimension';
 import { StreakSection } from './Streaks';
-import './index.css';
 import { useGameMouse } from './GameMouse';
 import { useHistory } from './History';
 import { useCallback } from 'react';
