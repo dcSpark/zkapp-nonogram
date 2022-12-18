@@ -8,7 +8,7 @@ import {
   Circuit,
   Bool,
 } from 'snarkyjs';
-import { secretNonogram, secretSolution } from '../common/solutionNonogram';
+import { secretNonogram } from '../common/solutionNonogram';
 import {
   NonogramSubmission,
   SolutionNonogram,
@@ -16,16 +16,24 @@ import {
   ColumnClass,
 } from '../common/ioTypes';
 import { Color, ColoredStreak } from '../common/types';
-import { solutionColumns, solutionRows } from '../common/jsUtils';
 
 await isReady;
+
+/** note: will return the first value in `streaks` on a negative index */
+function getStreakAtIndex(streaks: ColoredStreak[], index: Field) {
+  let result = streaks[0];
+  for (let i = 0; i < streaks.length; i++) {
+    result = Circuit.if(index.equals(i), streaks[i], result);
+  }
+  return result;
+}
 
 function checkRowCircuit(
   row: Color[],
   noColor: Color,
   streaks: ColoredStreak[]
 ) {
-  let streakIndex = -1;
+  let streakIndex = Field(-1);
   let currentRun = {
     color: noColor,
     left: Field(0),
@@ -52,19 +60,12 @@ function checkRowCircuit(
       const ignoreBranch = matchCurrentColor;
       currentRun.left.equals(0).or(ignoreBranch).assertTrue();
 
-      streakIndex = isNoColor.or(ignoreBranch).toBoolean()
-        ? streakIndex
-        : streakIndex + 1;
-      // streakIndex = Number(
-      //   Circuit.if(
-      //     isNoColor.or(ignoreBranch),
-      //     Field(streakIndex),
-      //     Field(streakIndex + 1)
-      //   ).toBigInt()
-      // );
-      // const adjustedIndex = Circuit.if(streakIndex < 0, 0, streakIndex);
-      const adjustedIndex = streakIndex < 0 ? 0 : streakIndex;
-      const nextStreak = streaks[adjustedIndex];
+      streakIndex = Circuit.if(
+        isNoColor.or(ignoreBranch),
+        streakIndex,
+        streakIndex.add(1)
+      );
+      const nextStreak = getStreakAtIndex(streaks, streakIndex);
 
       // either it's a no color, or the 1st color of the next streak
       isNoColor
@@ -150,6 +151,7 @@ const expectedHash = SolutionNonogram.fromJS({
   rows: solutionRows(secretSolution),
   columns: solutionColumns(secretSolution),
 }).hash();
+// console.log(expectedHash.toBigInt());
 
 export class NewNonogramZkApp extends SmartContract {
   @state(Field) nonogramHash = State<Field>();
@@ -159,7 +161,7 @@ export class NewNonogramZkApp extends SmartContract {
     this.nonogramHash.set(
       Field(
         expectedHash // - doesn't work when deploying (?) - needs to be a static constant
-        // 27417915103099424883129587366510885725444441367370105474708385997982957530358n
+        // 12088336191140403124638594755517918076968435720907935785006885229166255168908n
       )
     );
   }
