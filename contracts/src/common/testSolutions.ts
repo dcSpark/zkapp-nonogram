@@ -1,4 +1,5 @@
 import { Color } from './types';
+import { isReady } from 'snarkyjs';
 
 /**
  * ======================================================
@@ -7,7 +8,9 @@ import { Color } from './types';
  * ======================================================
  */
 
-export function genSecretSolution() {
+export async function genSecretSolution() {
+  await isReady;
+
   // colors
   const C = {
     /** red */

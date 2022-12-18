@@ -30,7 +30,7 @@ Two possible implementations:
 
 (1) does not work because the circuit size to generate the streaks is empirically too large. Anything more than a 5x5 grid goes over the max SRS limit due to heavy usage of dynamic arrays
 
-(3) is not ideal as the on-chain storage grows as the nonogram size increases. However, storing the streaks on-chain is nice because it means you don't need to connect to a UI that knows the pre-image of hash-of-streaks in order to be able to render the nonogram
+(3) is not ideal as the on-chain storage grows as the nonogram size increases which means you will quickly hit the maximum. However, storing the streaks on-chain is nice because it means you don't need to connect to a UI that knows the pre-image of hash-of-streaks in order to be able to render the nonogram
 
 # How to build
 

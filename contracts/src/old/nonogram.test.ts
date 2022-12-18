@@ -1,4 +1,4 @@
-import { NonogramSubmission, NonogramZkApp } from './NonogramZkApp';
+import { OldNonogramZkApp } from './OldNonogramZkApp.js';
 import {
   isReady,
   shutdown,
@@ -7,9 +7,10 @@ import {
   Mina,
   AccountUpdate,
 } from 'snarkyjs';
-import { genSecretSolution } from './solution';
-import { Color } from './types';
-import { solutionColumns, solutionRows } from './circuitUtils';
+import { genSecretSolution } from '../common/solution.js';
+import { Color } from '../common/types.js';
+import { solutionColumns, solutionRows } from './circuitUtils.js';
+import { NonogramSubmission } from '../common/ioTypes.js';
 
 describe('nonogram', () => {
   let zkAppPrivateKey: PrivateKey,
@@ -26,8 +27,8 @@ describe('nonogram', () => {
     zkAppAddress = zkAppPrivateKey.toPublicKey();
     // console.log(zkAppPrivateKey.toBase58());
     // console.log(zkAppAddress.toBase58());
-    secretSolution = genSecretSolution();
-    // zkApp = new NonogramZkApp(zkAppAddress);
+    secretSolution = await genSecretSolution();
+    // zkApp = new OldNonogramZkApp(zkAppAddress);
   });
 
   afterAll(() => {
@@ -35,14 +36,15 @@ describe('nonogram', () => {
   });
 
   it('accepts a correct solution', async () => {
-    const zkApp = new NonogramZkApp(zkAppAddress);
+    const zkApp = new OldNonogramZkApp(zkAppAddress);
     await deploy(zkApp, zkAppPrivateKey, account);
 
+    const color = Color.noColor();
     const submission = NonogramSubmission.from(secretSolution);
     console.log(
       JSON.stringify({
-        rows: solutionRows(secretSolution),
-        columns: solutionColumns(secretSolution),
+        rows: solutionRows(secretSolution, color),
+        columns: solutionColumns(secretSolution, color),
       })
     );
     const tx = await Mina.transaction(account, () => {
@@ -53,7 +55,7 @@ describe('nonogram', () => {
   });
 
   it('rejects an incorrect solution', async () => {
-    const zkApp = new NonogramZkApp(zkAppAddress);
+    const zkApp = new OldNonogramZkApp(zkAppAddress);
     await deploy(zkApp, zkAppPrivateKey, account);
 
     const solutionClone = secretSolution.map((row) => row.map((col) => col));
@@ -61,7 +63,7 @@ describe('nonogram', () => {
 
     await expect(async () => {
       let tx = await Mina.transaction(account, () => {
-        let zkApp = new NonogramZkApp(zkAppAddress);
+        let zkApp = new OldNonogramZkApp(zkAppAddress);
         zkApp.submitSolution(NonogramSubmission.from(solutionClone));
       });
       await tx.prove();
@@ -71,7 +73,7 @@ describe('nonogram', () => {
 });
 
 async function deploy(
-  zkApp: NonogramZkApp,
+  zkApp: OldNonogramZkApp,
   zkAppPrivateKey: PrivateKey,
   account: PrivateKey
 ) {

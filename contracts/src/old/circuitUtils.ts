@@ -1,10 +1,12 @@
-import { Circuit, Field, Struct } from 'snarkyjs';
-import { Color } from './types.js';
-import { ColumnClass, RowClass, secretNonogram } from './solutionNonogram.js';
+import { Circuit, Field } from 'snarkyjs';
+import { Color } from '../common/types.js';
+import { secretNonogram } from '../common/solutionNonogram.js';
+import { ColumnClass, RowClass } from '../common/ioTypes.js';
 
 function encodeAsStreak(
   row: Color[],
-  result: InstanceType<typeof RowClass> | InstanceType<typeof ColumnClass>
+  result: InstanceType<typeof RowClass> | InstanceType<typeof ColumnClass>,
+  noColor: Color
 ): void {
   // if the row starts with no color
   // we need to skip adding this to the result
@@ -18,10 +20,10 @@ function encodeAsStreak(
   };
   result.incrementLength(Field(1));
   result.set(Field(0), currentRun);
-  let index = Circuit.if(row[0].equals(Color.noColor()), Field(-1), Field(0));
+  let index = Circuit.if(row[0].equals(noColor), Field(-1), Field(0));
 
   for (let i = 1; i < row.length; i++) {
-    const isNoColor = row[i].equals(Color.noColor());
+    const isNoColor = row[i].equals(noColor);
     const isPreviousColor = row[i].equals(row[i - 1]);
     const extendPrevious = isNoColor.not().and(isPreviousColor);
     const startNewColor = isNoColor.not().and(isPreviousColor.not());
@@ -55,21 +57,21 @@ function encodeAsStreak(
   result.pop(Circuit.if(index.lt(0), Field(1), Field(0)));
 }
 
-export function solutionRows(image: Color[][]): any {
+export function solutionRows(image: Color[][], noColor: Color): any {
   const result: (InstanceType<typeof RowClass> | [])[] = Array.from(
     { length: secretNonogram.rows.length },
     () => []
   );
   for (let i = 0; i < secretNonogram.rows.length; i++) {
     const streakResult = new RowClass();
-    encodeAsStreak(image[i], streakResult);
+    encodeAsStreak(image[i], streakResult, noColor);
     result[i] = streakResult;
   }
 
   return result;
 }
 
-export function solutionColumns(image: Color[][]): any {
+export function solutionColumns(image: Color[][], noColor: Color): any {
   const result: (InstanceType<typeof ColumnClass> | [])[] = Array.from(
     { length: secretNonogram.columns.length },
     () => []
@@ -84,7 +86,7 @@ export function solutionColumns(image: Color[][]): any {
       column[j] = image[j][i];
     }
     const streakResult = new ColumnClass();
-    encodeAsStreak(column, streakResult);
+    encodeAsStreak(column, streakResult, noColor);
     result[i] = streakResult;
   }
 

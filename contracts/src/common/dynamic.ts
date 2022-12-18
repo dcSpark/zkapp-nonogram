@@ -3,7 +3,7 @@
  * Which is provided under Apache 2 license by Daniel Gretzke
  */
 
-import { Bool, Circuit, Field, Poseidon, Provable, Struct } from 'snarkyjs';
+import { Bool, Circuit, Field, Provable, Struct } from 'snarkyjs';
 
 export { DynamicArray };
 

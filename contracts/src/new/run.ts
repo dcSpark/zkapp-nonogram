@@ -1,5 +1,5 @@
 /**
- * This file specifies how to run the `NonogramZkApp` smart contract locally using the `Mina.LocalBlockchain()` method.
+ * This file specifies how to run the `NewNonogramZkApp` smart contract locally using the `Mina.LocalBlockchain()` method.
  * The `Mina.LocalBlockchain()` method specifies a ledger of accounts and contains logic for updating the ledger.
  *
  * Please note that this deployment is local and does not deploy to a live network.
@@ -9,10 +9,12 @@
  * Build the project: `$ npm run build`
  * Run with node:     `$ node build/src/run.js`.
  */
-import { NonogramSubmission, NonogramZkApp } from './NonogramZkApp.js';
+import { NewNonogramZkApp } from './NewNonogramZkApp.js';
 import { AccountUpdate, Mina, PrivateKey, shutdown } from 'snarkyjs';
-import { secretSolution } from './solutionNonogram.js';
-import { Color } from './types.js';
+import { Color } from '../common/types';
+import { secretSolution } from '../common/solutionNonogram';
+import { solutionColumns, solutionRows } from '../common/jsUtils';
+import { NonogramSubmission, SolutionNonogram } from '../common/ioTypes';
 
 // setup
 const Local = Mina.LocalBlockchain();
@@ -22,10 +24,10 @@ const account = Local.testAccounts[0].privateKey;
 const zkAppPrivateKey = PrivateKey.random();
 const zkAppAddress = zkAppPrivateKey.toPublicKey();
 // create an instance of the smart contract
-const zkApp = new NonogramZkApp(zkAppAddress);
+const zkApp = new NewNonogramZkApp(zkAppAddress);
 
 console.log('Deploying and initializing Nonogram...');
-await NonogramZkApp.compile();
+await NewNonogramZkApp.compile();
 let tx = await Mina.transaction(account, () => {
   AccountUpdate.fundNewAccount(account);
   zkApp.deploy();
@@ -40,13 +42,21 @@ await tx.prove();
  */
 await tx.sign([zkAppPrivateKey]).send();
 
+const streaks = {
+  rows: solutionRows(secretSolution),
+  columns: solutionColumns(secretSolution),
+};
+
 console.log('Submitting wrong solution...');
 
 const solutionClone = secretSolution.map((row) => row.map((col) => col));
 solutionClone[0][0] = Color.hexToFields('000000');
 try {
   let tx = await Mina.transaction(account, () => {
-    zkApp.submitSolution(NonogramSubmission.from(solutionClone));
+    zkApp.submitSolution(
+      NonogramSubmission.from(solutionClone),
+      SolutionNonogram.fromJS(streaks)
+    );
   });
   await tx.prove();
   await tx.send();
@@ -57,7 +67,10 @@ try {
 // submit the actual solution
 console.log('Submitting solution...');
 tx = await Mina.transaction(account, () => {
-  zkApp.submitSolution(NonogramSubmission.from(secretSolution));
+  zkApp.submitSolution(
+    NonogramSubmission.from(secretSolution),
+    SolutionNonogram.fromJS(streaks)
+  );
 });
 await tx.prove();
 await tx.send();
