@@ -147,12 +147,14 @@ function checkRowCircuit(
 //   }
 // }
 
-const expectedHash = SolutionNonogram.fromJS({
-  rows: solutionRows(secretSolution),
-  columns: solutionColumns(secretSolution),
-}).hash();
+// const expectedHash = SolutionNonogram.fromJS({
+//   rows: solutionRows(secretSolution),
+//   columns: solutionColumns(secretSolution),
+// }).hash();
 // console.log(expectedHash.toBigInt());
 
+const expectedHash =
+  '12088336191140403124638594755517918076968435720907935785006885229166255168908';
 export class NewNonogramZkApp extends SmartContract {
   @state(Field) nonogramHash = State<Field>();
 
@@ -160,10 +162,15 @@ export class NewNonogramZkApp extends SmartContract {
     super.init();
     this.nonogramHash.set(
       Field(
-        expectedHash // - doesn't work when deploying (?) - needs to be a static constant
-        // 12088336191140403124638594755517918076968435720907935785006885229166255168908n
+        // expectedHash // - doesn't work when deploying (?) - needs to be a static constant
+        expectedHash
       )
     );
+  }
+
+  @method update(hash: Field) {
+    hash.assertEquals(expectedHash);
+    this.nonogramHash.set(hash);
   }
 
   /**
