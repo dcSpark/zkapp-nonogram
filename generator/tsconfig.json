@@ -3,6 +3,7 @@
     "target": "es2020",
     "module": "CommonJS",
     "lib": ["dom", "esnext"],
+    "outDir": "./build",
     "rootDir": ".",
     "strict": true,
     "skipLibCheck": true,

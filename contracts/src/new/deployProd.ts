@@ -1,5 +1,5 @@
 import { NewNonogramZkApp } from './NewNonogramZkApp.js';
-import { AccountUpdate, Field, Mina, PrivateKey, shutdown } from 'snarkyjs';
+import { AccountUpdate, Mina, PrivateKey, shutdown } from 'snarkyjs';
 
 const personalPrivateKey = '';
 const appPrivateKey = '';
@@ -33,22 +33,22 @@ await deployTx.prove();
 await deployTx.sign([zkAppPrivateKey]).send();
 
 // Note: this tx shouldn't be required. I was just hitting a bug with zk deploy.
-console.log('Initializing Nonogram...');
-let updateTx = await Mina.transaction(
-  {
-    feePayerKey: account,
-    fee: 100000000,
-  },
-  () => {
-    zkApp.update(
-      Field(
-        '12088336191140403124638594755517918076968435720907935785006885229166255168908'
-      )
-    );
-  }
-);
-await updateTx.prove();
-await updateTx.send();
+// console.log('Initializing Nonogram...');
+// let updateTx = await Mina.transaction(
+//   {
+//     feePayerKey: account,
+//     fee: 100000000,
+//   },
+//   () => {
+//     zkApp.update(
+//       Field(
+//         '12088336191140403124638594755517918076968435720907935785006885229166255168908'
+//       )
+//     );
+//   }
+// );
+// await updateTx.prove();
+// await updateTx.send();
 
 // cleanup
 await shutdown();

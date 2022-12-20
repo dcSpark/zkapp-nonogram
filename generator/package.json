@@ -2,7 +2,10 @@
   "name": "nonogram-generator",
   "version": "0.1.0",
   "license": "Apache-2.0",
+  "main": "build/src/index.js",
+  "types": "build/src/index.d.ts",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "start": "ts-node src/index.ts",
     "format": "prettier --write --ignore-unknown **/*",
     "lint": "npx eslint src/* --fix"
