@@ -12,12 +12,12 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       await isReady;
-      const { NonogramZkApp } = await import('../../contracts/build/src/');
+      const { NonogramZkApp } = await import('../../contracts/build/src/index');
 
       // Update this to use the address (public key) for your zkApp account
       // To try it out, you can try this address for an example "NonogramZkApp" smart contract that we've deployed to
       // Berkeley Testnet B62qqkb7hD1We6gEfrcqosKt9C398VLp1WXeTo1i9boPoqF7B1LxHg4
-      const zkAppAddress = 'B62qohbssEnVvbQPKyRaexKrrqzEUCmKNY4bSjvAvPH1xwtuDdCMpdw';
+      const zkAppAddress = 'B62qikvYSRJPpJXsTmrJBGPNkaXSftNbsSyMGy2cMt2FGF5BMeuBXcU';
       // This should be removed once the zkAppAddress is updated.
       if (!zkAppAddress) {
         console.error(

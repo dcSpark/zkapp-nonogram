@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "resolveJsonModule": true,
   },
   "include": ["./src"]
 }

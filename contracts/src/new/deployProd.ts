@@ -1,8 +1,20 @@
 import { NewNonogramZkApp } from './NewNonogramZkApp.js';
 import { AccountUpdate, Mina, PrivateKey, shutdown } from 'snarkyjs';
+import minimist from 'minimist';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
-const personalPrivateKey = '';
-const appPrivateKey = '';
+type KeyFileContent = {
+  privateKey: string;
+  publicKey: string;
+};
+
+const argv = minimist(process.argv.slice(2));
+
+const personalKeys: KeyFileContent = require(argv.personal ??
+  '../../../keys/berkeley.json');
+const appKeys: KeyFileContent = require(argv.app ??
+  '../../../keys/personal.json');
 
 // setup
 const Local = Mina.BerkeleyQANet(
@@ -10,18 +22,27 @@ const Local = Mina.BerkeleyQANet(
 );
 Mina.setActiveInstance(Local);
 
-const account = PrivateKey.fromBase58(personalPrivateKey);
-const zkAppPrivateKey = PrivateKey.fromBase58(appPrivateKey);
+const account = PrivateKey.fromBase58(personalKeys.privateKey);
+const zkAppPrivateKey = PrivateKey.fromBase58(appKeys.privateKey);
 const zkAppAddress = zkAppPrivateKey.toPublicKey();
 // create an instance of the smart contract
 const zkApp = new NewNonogramZkApp(zkAppAddress);
 
 console.log('Deploying and initializing Nonogram...');
-await NewNonogramZkApp.compile();
-let deployTx = await Mina.transaction(account, () => {
-  AccountUpdate.fundNewAccount(account);
-  zkApp.deploy();
-});
+const compiledContract = await NewNonogramZkApp.compile();
+console.log(JSON.stringify(compiledContract.provers));
+let deployTx = await Mina.transaction(
+  {
+    feePayerKey: account,
+    fee: 100000000,
+  },
+  () => {
+    AccountUpdate.fundNewAccount(account);
+    zkApp.deploy({
+      zkappKey: zkAppPrivateKey,
+    });
+  }
+);
 await deployTx.prove();
 /**
  * note: this tx needs to be signed with `tx.sign()`, because `deploy` uses `requireSignature()` under the hood,
@@ -30,15 +51,15 @@ await deployTx.prove();
  * (but `deploy()` changes some of those permissions to "proof" and adds the verification key that enables proofs.
  * that's why we don't need `tx.sign()` for the later transactions.)
  */
-await deployTx.sign([zkAppPrivateKey]).send();
+await deployTx.sign([zkAppPrivateKey, account]).send();
 
 // Note: this tx shouldn't be required. I was just hitting a bug with zk deploy.
 // console.log('Initializing Nonogram...');
 // let updateTx = await Mina.transaction(
-//   {
-//     feePayerKey: account,
-//     fee: 100000000,
-//   },
+// {
+//   feePayerKey: account,
+//   fee: 100000000,
+// },
 //   () => {
 //     zkApp.update(
 //       Field(

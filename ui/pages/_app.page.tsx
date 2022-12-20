@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import './reactCOIServiceWorker';
 
 import ZkappWorkerClient from './zkappWorkerClient';
-import type { NonogramSubmission } from '../../contracts/src/NonogramZkApp';
+import type { NonogramSubmission } from '../../contracts/src/common/ioTypes';
 import { PublicKey, PrivateKey, Field } from 'snarkyjs';
 import { SpinnerCircular } from 'spinners-react';
 import Home from './index.page';
@@ -61,9 +61,8 @@ export default function App() {
         await zkappWorkerClient.compileContract();
         console.log('zkApp compiled');
 
-        // TODO
         const zkappPublicKey = PublicKey.fromBase58(
-          'B62qohbssEnVvbQPKyRaexKrrqzEUCmKNY4bSjvAvPH1xwtuDdCMpdw'
+          'B62qikvYSRJPpJXsTmrJBGPNkaXSftNbsSyMGy2cMt2FGF5BMeuBXcU'
         );
 
         await zkappWorkerClient.initZkappInstance(zkappPublicKey);

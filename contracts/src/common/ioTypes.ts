@@ -1,7 +1,7 @@
 import { Circuit, Field, isReady, Poseidon, Struct } from 'snarkyjs';
-import { DynamicArray } from './dynamic';
-import { gameInfo, JsonStreak } from './input';
-import { Color, ColoredStreak } from './types';
+import { DynamicArray } from './dynamic.js';
+import { gameInfo, JsonStreak } from './input.js';
+import { Color, ColoredStreak } from './types.js';
 
 await isReady;
 

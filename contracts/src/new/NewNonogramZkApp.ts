@@ -6,17 +6,16 @@ import {
   State,
   isReady,
   Circuit,
-  Bool,
 } from 'snarkyjs';
-import { gameInfo } from '../common/input';
+import { gameInfo } from '../common/input.js';
 import {
   NonogramSubmission,
   SolutionNonogram,
   RowClass,
   ColumnClass,
   circuitGameInfo,
-} from '../common/ioTypes';
-import { Color } from '../common/types';
+} from '../common/ioTypes.js';
+import { Color } from '../common/types.js';
 
 await isReady;
 
@@ -30,11 +29,9 @@ function checkRowCircuit(
     color: noColor,
     left: Field(0),
   };
-  let isEmptyConstraint = Bool(true);
   for (let j = 0; j < row.length; j++) {
     const matchCurrentColor = row[j].equals(currentRun.color);
     const isNoColor = row[j].equals(noColor);
-    isEmptyConstraint = Circuit.if(isNoColor, Bool(true), isEmptyConstraint);
 
     // matchCurrentColor = true
     {
@@ -44,7 +41,9 @@ function checkRowCircuit(
         Field(0),
         Field(1)
       );
-      currentRun.left.gte(0).or(ignoreBranch);
+      // note: we don't actually need to check currentRun.left here
+      // as it's already checked for us either in the `matchCurrentColor = false` case or when the function terminates
+      // currentRun.left.gte(lengthChange).or(ignoreBranch).assertTrue();
       currentRun.left = currentRun.left.sub(lengthChange);
     }
     // matchCurrentColor = false
@@ -70,35 +69,34 @@ function checkRowCircuit(
         .or(ignoreBranch)
         .assertTrue();
 
+      const match = [
+        ignoreBranch,
+        ignoreBranch.not().and(isNoColor),
+        ignoreBranch.not().and(isNoColor.not()),
+      ];
       currentRun = {
-        color: Circuit.switch(
-          [
-            ignoreBranch,
-            ignoreBranch.not().and(isNoColor),
-            ignoreBranch.not().and(isNoColor.not()),
-          ],
-          Color,
-          [currentRun.color, noColor, nextStreak.color]
-        ),
-        left: Circuit.switch(
-          [
-            ignoreBranch,
-            ignoreBranch.not().and(isNoColor),
-            ignoreBranch.not().and(isNoColor.not()),
-          ],
-          Color,
-          [currentRun.left, Field(0), nextStreak.length.sub(1)]
-        ),
+        color: Circuit.switch(match, Color, [
+          currentRun.color,
+          noColor,
+          nextStreak.color,
+        ]),
+        left: Circuit.switch(match, Color, [
+          currentRun.left,
+          Field(0),
+          nextStreak.length.sub(1),
+        ]),
       };
     }
   }
   // either we've seen all constraints, or there weren't any to begin with
-  isEmptyConstraint
-    .or(Field(streakIndex).equals(streaks.length.sub(1)))
-    .assertTrue();
+  // note: this works on empty streaks because streakIndex is initialized as -1
+  Field(streakIndex).equals(streaks.length.sub(1)).assertTrue();
   currentRun.left.equals(0).assertTrue();
 }
 
+/**
+ * Here is a JS implementation of the above circuit in case it helps with readability
+ */
 // function checkRowJS(row: Color[], noColor: Color, streaks: ColoredStreak[]) {
 //   let streakIndex = -1;
 //   let currentRun = {

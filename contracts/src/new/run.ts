@@ -11,13 +11,13 @@
  */
 import { NewNonogramZkApp } from './NewNonogramZkApp.js';
 import { AccountUpdate, Mina, PrivateKey, shutdown } from 'snarkyjs';
-import { Color } from '../common/types';
+import { Color } from '../common/types.js';
 import {
   circuitGameInfo,
   NonogramSubmission,
   SolutionNonogram,
-} from '../common/ioTypes';
-import { getSolution } from 'nonogram-generator/src/imageParser.js';
+} from '../common/ioTypes.js';
+import { getSolution } from 'nonogram-generator/build/src/imageParser.js';
 
 // setup
 const Local = Mina.LocalBlockchain();
