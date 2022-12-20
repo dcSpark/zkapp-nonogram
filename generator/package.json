@@ -1,0 +1,33 @@
+{
+  "name": "nonogram-generator",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "format": "prettier --write --ignore-unknown **/*",
+    "lint": "npx eslint src/* --fix"
+  },
+  "lint-staged": {
+    "**/*": [
+      "eslint src/* --fix",
+      "prettier --write --ignore-unknown"
+    ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-typescript": "^7.16.0",
+    "@types/minimist": "^1.2.2",
+    "@types/pngjs": "^6.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
+    "eslint": "^8.7.0",
+    "lint-staged": "^11.0.1",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "minimist": "^1.2.7",
+    "pngjs": "^6.0.0"
+  }
+}

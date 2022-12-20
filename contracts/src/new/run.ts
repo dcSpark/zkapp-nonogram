@@ -12,9 +12,12 @@
 import { NewNonogramZkApp } from './NewNonogramZkApp.js';
 import { AccountUpdate, Mina, PrivateKey, shutdown } from 'snarkyjs';
 import { Color } from '../common/types';
-import { secretSolution } from '../common/solutionNonogram';
-import { solutionColumns, solutionRows } from '../common/jsUtils';
-import { NonogramSubmission, SolutionNonogram } from '../common/ioTypes';
+import {
+  circuitGameInfo,
+  NonogramSubmission,
+  SolutionNonogram,
+} from '../common/ioTypes';
+import { getSolution } from 'nonogram-generator/src/imageParser.js';
 
 // setup
 const Local = Mina.LocalBlockchain();
@@ -42,20 +45,20 @@ await tx.prove();
  */
 await tx.sign([zkAppPrivateKey]).send();
 
-const streaks = {
-  rows: solutionRows(secretSolution),
-  columns: solutionColumns(secretSolution),
-};
-
 console.log('Submitting wrong solution...');
 
-const solutionClone = secretSolution.map((row) => row.map((col) => col));
+const secretSolution = await getSolution('../generator/puzzles/production.png');
+const solutionColors = secretSolution.map((row) =>
+  row.map((col) => new Color(col))
+);
+
+const solutionClone = solutionColors.map((row) => row.map((col) => col));
 solutionClone[0][0] = Color.hexToFields('000000');
 try {
   let tx = await Mina.transaction(account, () => {
     zkApp.submitSolution(
       NonogramSubmission.from(solutionClone),
-      SolutionNonogram.fromJS(streaks)
+      SolutionNonogram.fromJS(circuitGameInfo)
     );
   });
   await tx.prove();
@@ -68,8 +71,8 @@ try {
 console.log('Submitting solution...');
 tx = await Mina.transaction(account, () => {
   zkApp.submitSolution(
-    NonogramSubmission.from(secretSolution),
-    SolutionNonogram.fromJS(streaks)
+    NonogramSubmission.from(solutionColors),
+    SolutionNonogram.fromJS(circuitGameInfo)
   );
 });
 await tx.prove();

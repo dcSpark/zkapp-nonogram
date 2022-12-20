@@ -15,9 +15,9 @@ import { AccountUpdate, isReady, Mina, PrivateKey, shutdown } from 'snarkyjs';
 await isReady;
 
 import { OldNonogramZkApp } from './OldNonogramZkApp.js';
-import { secretSolution } from '../common/solutionNonogram.js';
 import { Color } from '../common/types.js';
 import { NonogramSubmission } from '../common/ioTypes.js';
+import { getSolution } from 'nonogram-generator/src/imageParser';
 
 async function run() {
   // setup
@@ -48,7 +48,14 @@ async function run() {
 
   console.log('Submitting wrong solution...');
 
-  const solutionClone = secretSolution.map((row) => row.map((col) => col));
+  const secretSolution = await getSolution(
+    '../generator/puzzles/production.png'
+  );
+  const solutionColors = secretSolution.map((row) =>
+    row.map((col) => new Color(col))
+  );
+
+  const solutionClone = solutionColors.map((row) => row.map((col) => col));
   solutionClone[0][0] = Color.hexToFields('000000');
   try {
     let tx = await Mina.transaction(account, () => {
@@ -63,7 +70,7 @@ async function run() {
   // submit the actual solution
   console.log('Submitting solution...');
   tx = await Mina.transaction(account, () => {
-    zkApp.submitSolution(NonogramSubmission.from(secretSolution));
+    zkApp.submitSolution(NonogramSubmission.from(solutionColors));
   });
   await tx.prove();
   await tx.send();

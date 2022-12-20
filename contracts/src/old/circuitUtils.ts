@@ -1,7 +1,6 @@
 import { Circuit, Field } from 'snarkyjs';
 import { Color } from '../common/types.js';
-import { secretNonogram } from '../common/solutionNonogram.js';
-import { ColumnClass, RowClass } from '../common/ioTypes.js';
+import { circuitGameInfo, ColumnClass, RowClass } from '../common/ioTypes.js';
 
 function encodeAsStreak(
   row: Color[],
@@ -57,12 +56,16 @@ function encodeAsStreak(
   result.pop(Circuit.if(index.lt(0), Field(1), Field(0)));
 }
 
+const maxLengths = {
+  row: Math.max(...circuitGameInfo.rows.map((row) => row.length)),
+  column: Math.max(...circuitGameInfo.columns.map((column) => column.length)),
+};
 export function solutionRows(image: Color[][], noColor: Color): any {
   const result: (InstanceType<typeof RowClass> | [])[] = Array.from(
-    { length: secretNonogram.rows.length },
+    { length: maxLengths.row },
     () => []
   );
-  for (let i = 0; i < secretNonogram.rows.length; i++) {
+  for (let i = 0; i < maxLengths.row; i++) {
     const streakResult = new RowClass();
     encodeAsStreak(image[i], streakResult, noColor);
     result[i] = streakResult;
@@ -73,16 +76,13 @@ export function solutionRows(image: Color[][], noColor: Color): any {
 
 export function solutionColumns(image: Color[][], noColor: Color): any {
   const result: (InstanceType<typeof ColumnClass> | [])[] = Array.from(
-    { length: secretNonogram.columns.length },
+    { length: maxLengths.column },
     () => []
   );
 
-  const column = Array.from(
-    { length: secretNonogram.rows.length },
-    (_) => new Color(0)
-  );
-  for (let i = 0; i < secretNonogram.columns.length; i++) {
-    for (let j = 0; j < secretNonogram.rows.length; j++) {
+  const column = Array.from({ length: maxLengths.row }, (_) => new Color(0));
+  for (let i = 0; i < maxLengths.column; i++) {
+    for (let j = 0; j < maxLengths.row; j++) {
       column[j] = image[j][i];
     }
     const streakResult = new ColumnClass();

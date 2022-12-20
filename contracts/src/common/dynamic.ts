@@ -53,10 +53,10 @@ function DynamicArray<T>(type: Provable<T>, maxLength: number) {
       });
     }
 
-    //   public get(index: Field): T {
-    //     const mask = this.indexMask(index);
-    //     return Circuit.switch(mask, type, this.values);
-    //   }
+    public get(index: Field): T {
+      const mask = this.indexMask(index);
+      return Circuit.switch(mask, type, this.values);
+    }
 
     public set(index: Field, value: T): void {
       const mask = this.indexMask(index);

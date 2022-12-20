@@ -7,10 +7,10 @@ import {
   Mina,
   AccountUpdate,
 } from 'snarkyjs';
-import { genSecretSolution } from '../common/solution.js';
 import { Color } from '../common/types.js';
 import { solutionColumns, solutionRows } from './circuitUtils.js';
 import { NonogramSubmission } from '../common/ioTypes.js';
+import { getSolution } from 'nonogram-generator/src/imageParser.js';
 
 describe('nonogram', () => {
   let zkAppPrivateKey: PrivateKey,
@@ -27,7 +27,12 @@ describe('nonogram', () => {
     zkAppAddress = zkAppPrivateKey.toPublicKey();
     // console.log(zkAppPrivateKey.toBase58());
     // console.log(zkAppAddress.toBase58());
-    secretSolution = await genSecretSolution();
+    const parsedSolution = await getSolution(
+      '../generator/puzzles/production.png'
+    );
+    secretSolution = parsedSolution.map((row) =>
+      row.map((col) => new Color(col))
+    );
     // zkApp = new OldNonogramZkApp(zkAppAddress);
   });
 

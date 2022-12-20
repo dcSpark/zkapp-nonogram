@@ -1,10 +1,42 @@
-import { Circuit, Field, Poseidon, Struct } from 'snarkyjs';
+import { Circuit, Field, isReady, Poseidon, Struct } from 'snarkyjs';
 import { DynamicArray } from './dynamic';
-import { maxColumnLen, maxRowLen, secretNonogram } from './solutionNonogram';
+import { gameInfo, JsonStreak } from './input';
 import { Color, ColoredStreak } from './types';
 
-export const RowClass = DynamicArray(ColoredStreak, maxRowLen);
-export const ColumnClass = DynamicArray(ColoredStreak, maxColumnLen);
+await isReady;
+
+function jsonToStreakInfo(json: {
+  rows: JsonStreak[][];
+  columns: JsonStreak[][];
+}): StreaksInfo {
+  return {
+    rows: json.rows.map((row) =>
+      row.map((streak) => ({
+        color: new Color(streak.color),
+        length: Field(streak.length),
+      }))
+    ),
+    columns: json.columns.map((column) =>
+      column.map((streak) => ({
+        color: new Color(streak.color),
+        length: Field(streak.length),
+      }))
+    ),
+  };
+}
+
+export const circuitGameInfo: {
+  rows: ColoredStreak[][];
+  columns: ColoredStreak[][];
+} = jsonToStreakInfo(gameInfo);
+
+export type StreaksInfo = {
+  rows: ColoredStreak[][];
+  columns: ColoredStreak[][];
+};
+
+export const RowClass = DynamicArray(ColoredStreak, gameInfo.rows.length);
+export const ColumnClass = DynamicArray(ColoredStreak, gameInfo.columns.length);
 
 /**
  * Note: a Nonogram may have multiple solutions
@@ -15,13 +47,10 @@ export const ColumnClass = DynamicArray(ColoredStreak, maxColumnLen);
  */
 
 export class SolutionNonogram extends Struct({
-  rows: Circuit.array(RowClass, secretNonogram.rows.length),
-  columns: Circuit.array(ColumnClass, secretNonogram.columns.length),
+  rows: Circuit.array(RowClass, gameInfo.rows.length),
+  columns: Circuit.array(ColumnClass, gameInfo.columns.length),
 }) {
-  static fromJS(nonogram: {
-    rows: ColoredStreak[][];
-    columns: ColoredStreak[][];
-  }) {
+  static fromJS(nonogram: StreaksInfo) {
     const circuitRows = [];
     for (const row of nonogram.rows) {
       const arr = new RowClass(row);
@@ -64,8 +93,8 @@ export class SolutionNonogram extends Struct({
 
 export class NonogramSubmission extends Struct({
   value: Circuit.array(
-    Circuit.array(Color, secretNonogram.columns.length),
-    secretNonogram.rows.length
+    Circuit.array(Color, gameInfo.columns.length),
+    gameInfo.rows.length
   ),
 }) {
   static from(value: Color[][]) {

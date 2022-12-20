@@ -1,5 +1,4 @@
-import { Field } from 'snarkyjs';
-import { Color, ColoredStreak } from './types';
+import { ColorUtils, ColoredStreak, Color } from "./color";
 
 /**
  * Pure JS implementation of Nonogram generator
@@ -9,11 +8,11 @@ import { Color, ColoredStreak } from './types';
 function sanityCheck(image: Color[][]) {
   // 1) Make sure both |row| and |column| >= 1
   if (image.length === 0) {
-    throw new Error('Image cannot be empty');
+    throw new Error("Image cannot be empty");
   }
   const firstRowLength = image[0].length;
   if (firstRowLength === 0) {
-    throw new Error('Image cannot be empty');
+    throw new Error("Image cannot be empty");
   }
 
   // 2) Make sure all rows are the same length
@@ -28,22 +27,20 @@ function sanityCheck(image: Color[][]) {
 function encodeAsStreak(row: Color[]): ColoredStreak[] {
   const result: ColoredStreak[] = [];
   let currentRun = {
-    color: Color.noColor(),
+    color: ColorUtils.NO_COLOR,
     length: 0,
   };
 
   const maybeAddRun = () => {
-    if (!currentRun.color.equals(Color.noColor()).toBoolean()) {
-      result.push(
-        new ColoredStreak({
-          color: currentRun.color,
-          length: Field(currentRun.length),
-        })
-      );
+    if (currentRun.color !== ColorUtils.NO_COLOR) {
+      result.push({
+        color: currentRun.color,
+        length: currentRun.length,
+      });
     }
   };
   for (const entry of row) {
-    if (entry.equals(currentRun.color).toBoolean()) {
+    if (entry === currentRun.color) {
       currentRun.length++;
       continue;
     }

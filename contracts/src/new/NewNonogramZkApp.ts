@@ -8,30 +8,22 @@ import {
   Circuit,
   Bool,
 } from 'snarkyjs';
-import { secretNonogram } from '../common/solutionNonogram';
+import { gameInfo } from '../common/input';
 import {
   NonogramSubmission,
   SolutionNonogram,
   RowClass,
   ColumnClass,
+  circuitGameInfo,
 } from '../common/ioTypes';
-import { Color, ColoredStreak } from '../common/types';
+import { Color } from '../common/types';
 
 await isReady;
-
-/** note: will return the first value in `streaks` on a negative index */
-function getStreakAtIndex(streaks: ColoredStreak[], index: Field) {
-  let result = streaks[0];
-  for (let i = 0; i < streaks.length; i++) {
-    result = Circuit.if(index.equals(i), streaks[i], result);
-  }
-  return result;
-}
 
 function checkRowCircuit(
   row: Color[],
   noColor: Color,
-  streaks: ColoredStreak[]
+  streaks: InstanceType<typeof RowClass> | InstanceType<typeof ColumnClass>
 ) {
   let streakIndex = Field(-1);
   let currentRun = {
@@ -65,7 +57,12 @@ function checkRowCircuit(
         streakIndex,
         streakIndex.add(1)
       );
-      const nextStreak = getStreakAtIndex(streaks, streakIndex);
+      const adjustedIndex = Circuit.if(
+        streakIndex.lt(0),
+        Field(0),
+        streakIndex
+      );
+      const nextStreak = streaks.get(adjustedIndex);
 
       // either it's a no color, or the 1st color of the next streak
       isNoColor
@@ -97,7 +94,7 @@ function checkRowCircuit(
   }
   // either we've seen all constraints, or there weren't any to begin with
   isEmptyConstraint
-    .or(Field(streakIndex).equals(streaks.length - 1))
+    .or(Field(streakIndex).equals(streaks.length.sub(1)))
     .assertTrue();
   currentRun.left.equals(0).assertTrue();
 }
@@ -108,7 +105,7 @@ function checkRowCircuit(
 //     color: noColor,
 //     left: 0,
 //   };
-//   for (let j = 0; j < secretNonogram.columns.length; j++) {
+//   for (let j = 0; j < gameInfo.columns.length; j++) {
 //     if (row[j].equals(currentRun.color)) {
 //       if (currentRun.color.equals(noColor)) {
 //         continue;
@@ -147,30 +144,15 @@ function checkRowCircuit(
 //   }
 // }
 
-// const expectedHash = SolutionNonogram.fromJS({
-//   rows: solutionRows(secretSolution),
-//   columns: solutionColumns(secretSolution),
-// }).hash();
-// console.log(expectedHash.toBigInt());
+const expectedHash = SolutionNonogram.fromJS(circuitGameInfo).hash();
+console.log(`Generating zkApp for hash ${expectedHash.toBigInt()}`);
 
-const expectedHash =
-  '12088336191140403124638594755517918076968435720907935785006885229166255168908';
 export class NewNonogramZkApp extends SmartContract {
   @state(Field) nonogramHash = State<Field>();
 
   init() {
     super.init();
-    this.nonogramHash.set(
-      Field(
-        // expectedHash // - doesn't work when deploying (?) - needs to be a static constant
-        expectedHash
-      )
-    );
-  }
-
-  @method update(hash: Field) {
-    hash.assertEquals(expectedHash);
-    this.nonogramHash.set(hash);
+    this.nonogramHash.set(Field(expectedHash));
   }
 
   /**
@@ -199,31 +181,31 @@ export class NewNonogramZkApp extends SmartContract {
     const emptyRow = new RowClass([{ color: noColor, length: Field(1) }]);
     const emptyColumn = new ColumnClass([{ color: noColor, length: Field(1) }]);
     // check row streaks
-    for (let i = 0; i < secretNonogram.rows.length; i++) {
+    for (let i = 0; i < gameInfo.rows.length; i++) {
       const adjustedStreaks = Circuit.if(
         streaks.rows[i].length.equals(0),
         emptyRow,
-        streaks.rows[i]
+        streaks.rows[i] as InstanceType<typeof RowClass>
       );
-      checkRowCircuit(solutionValue[i], noColor, adjustedStreaks.values);
+      checkRowCircuit(solutionValue[i], noColor, adjustedStreaks);
     }
 
     // check column streaks
     {
       const column = Array.from(
-        { length: secretNonogram.rows.length },
+        { length: gameInfo.rows.length },
         (_) => new Color(0)
       );
-      for (let i = 0; i < secretNonogram.columns.length; i++) {
-        for (let j = 0; j < secretNonogram.rows.length; j++) {
+      for (let i = 0; i < gameInfo.columns.length; i++) {
+        for (let j = 0; j < gameInfo.rows.length; j++) {
           column[j] = solutionValue[j][i];
         }
         const adjustedStreaks = Circuit.if(
           streaks.columns[i].length.equals(0),
           emptyColumn,
-          streaks.columns[i]
+          streaks.columns[i] as InstanceType<typeof ColumnClass>
         );
-        checkRowCircuit(column, noColor, adjustedStreaks.values);
+        checkRowCircuit(column, noColor, adjustedStreaks);
       }
     }
   }
