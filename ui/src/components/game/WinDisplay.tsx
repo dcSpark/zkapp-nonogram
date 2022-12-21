@@ -26,8 +26,8 @@ export function WinDisplay() {
     // don't want to trigger right away, or `mina` may not be injected yet
     if (winState) {
       const mina = (window as any).mina;
+      setHasWallet(mina != null);
       if (mina != null) {
-        setHasWallet(true);
         mina.requestAccounts().then((accounts: string[]) => setPublicKeyBase58(accounts[0]));
       }
     }
@@ -205,7 +205,7 @@ export function WinDisplay() {
         <SpinnerCircular size={24} enabled={creatingTransaction} />
         <button onClick={onSendTransaction} disabled={creatingTransaction}>
           {' '}
-          Send Transaction{' '}
+          Send Transaction to the Berkeley testnet{' '}
         </button>
       </div>
     );
