@@ -1,0 +1,244 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+ol,
+ul {
+  padding-left: 30px;
+}
+
+
+body {
+  background-color: #282c34;
+}
+
+.col-hints {
+  display: grid;
+  align-self: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: end;
+  grid-auto-flow: column;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.hint-col {
+  display: grid;
+  justify-items: center;
+  max-width: 70px;
+  grid-gap: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hint {
+  align-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  transition: color 0.2s ease 0s;
+  text-align: center;
+  min-width: 2em;
+}
+
+.lower-board {
+  display: flex;
+}
+
+.row-hints {
+  display: grid;
+  justify-items: end;
+  margin-right: 20px;
+}
+
+.hint-row {
+  display: grid;
+  grid-auto-flow: column;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.game-board {
+  display: grid;
+  border-radius: 10px;
+  padding: 3px;
+  min-width: 60vw;
+}
+
+.board-row {
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.square {
+  position: relative;
+  display: flex;
+  color: #f44336;
+  align-items: center;
+  justify-content: center;
+  border-width: 3px;
+  border-radius: 6px;
+  margin: 3px;
+  float: left;
+  width: auto;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  transition: border 0.2s ease 0s, background-color 0.2s ease 0s;
+}
+
+.square .material-icons {
+  -webkit-transform: scale(0);
+          transform: scale(0);
+  transition: -webkit-transform 0.2s ease 0s;
+  transition: transform 0.2s ease 0s;
+  transition: transform 0.2s ease 0s, -webkit-transform 0.2s ease 0s;
+}
+
+.square::after {
+  -webkit-transform: scale(0);
+          transform: scale(0);
+}
+
+.square-MARKED {
+  color: #f44336;
+}
+
+.square-MARKED .material-icons {
+  font-size: 70px;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  transition: -webkit-transform 0.2s ease 0s;
+  transition: transform 0.2s ease 0s;
+  transition: transform 0.2s ease 0s, -webkit-transform 0.2s ease 0s;
+}
+
+@-webkit-keyframes blink {
+  from  { box-shadow: 0 0 0 8px #1a7acd;}
+  to    { box-shadow: 0 0 0 8px #40ffdd;}
+}
+
+@keyframes blink {
+  from  { box-shadow: 0 0 0 8px #1a7acd;}
+  to    { box-shadow: 0 0 0 8px #40ffdd;}
+}
+
+.square-EMPTY:hover, .square-FILLED:hover {
+  -webkit-animation-name: blink;
+          animation-name: blink;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+          animation-direction: alternate;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+.game {
+  min-height: 100vh;
+  color: white;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+.game-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 80vh;
+  padding-top: 10vh;
+}
+
+.game-info {
+  margin-right: 20px;
+}
+
+.color-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+/** Color Palette Square **/
+
+.colorSquare {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 3px;
+  border-radius: 6px;
+  margin: 5px;
+  float: left;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  transition: border 0.2s ease 0s, background-color 0.2s ease 0s;
+}
+
+.colorSquare.selected {
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.colorSquare::after {
+  -webkit-transform: scale(0);
+          transform: scale(0);
+}
+
+@-webkit-keyframes grey-blink {
+  from  { box-shadow: 0 0 0 4px #ffffff;}
+  to    { box-shadow: 0 0 0 4px #cccccc;}
+}
+
+@keyframes grey-blink {
+  from  { box-shadow: 0 0 0 4px #ffffff;}
+  to    { box-shadow: 0 0 0 4px #cccccc;}
+}
+
+.colorSquare:hover {
+  -webkit-animation-name: grey-blink;
+          animation-name: grey-blink;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+          animation-direction: alternate;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.colorSquareAndShortcut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+a {
+  color: orange
+}
