@@ -1,4 +1,4 @@
-# zkNonogram
+# zkapp-nonogram
 
 [Try it out right here](TODO)
 

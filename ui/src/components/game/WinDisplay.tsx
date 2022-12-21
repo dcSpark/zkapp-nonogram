@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { NonogramSubmission } from 'nonogram-zkapp/build/src/common/ioTypes';
 import { PublicKey, Field } from 'snarkyjs';
 import { SpinnerCircular } from 'spinners-react';
 
-import type { SolutionNonogram } from 'nonogram-zkapp/build/src/common/ioTypes';
 import { useHistory } from './History';
 import { useSnarky } from '../../../pages/_app.page';
 import { boardToContractForm, useGameBoard } from './Board';

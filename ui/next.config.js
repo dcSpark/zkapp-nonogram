@@ -35,8 +35,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/zkNonogram' : undefined, // update if your repo name changes for 'npm run deploy' to work successfully
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/zkNonogram/' : undefined, // update if your repo name changes for 'npm run deploy' to work successfully
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if your project has type errors.
+    // needed because of broken typescript top-level await checking
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
+  basePath: process.env.NODE_ENV === 'production' ? '/zkapp-nonogram' : undefined, // update if your repo name changes for 'npm run deploy' to work successfully
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/zkapp-nonogram/' : undefined, // update if your repo name changes for 'npm run deploy' to work successfully
 };
 
 module.exports = nextConfig
