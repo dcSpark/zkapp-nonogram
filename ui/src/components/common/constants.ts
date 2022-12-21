@@ -13,6 +13,13 @@ export enum SquareFill {
   MARKED,
 }
 
+/** Field(-1) in snarkyJS */
+export const SnarkyJSEmptyColor = -1;
+export const indexToColor = (colorHex: string) => {
+  const truncatedColor = colorHex.startsWith('#') ? colorHex.substring(1) : colorHex;
+  return Number.parseInt(truncatedColor, 16);
+};
+
 export type SquareValue =
   | {
       state: SquareFill.EMPTY | SquareFill.MARKED;

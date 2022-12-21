@@ -9,6 +9,7 @@ import { useCallback } from 'react';
 import { ColorChoices, ColorPicker } from './Colors';
 import { smallRandom } from '../../prepackaged';
 import { TimeDisplay, useGameTimer } from './Timer';
+import { SimpleWinDisplay, WinDisplay } from './WinDisplay';
 
 const randomBoards = false;
 
@@ -75,7 +76,7 @@ export function Game() {
         <div className="left-panel">
           <div className="game-info">
             <TimeDisplay />
-            <div>{history.getLatestSnapshot().winState ? 'You won!' : ''}</div>
+            {board.getBoardDescription == null ? <SimpleWinDisplay /> : <WinDisplay />}
           </div>
         </div>
         <div className="right-panel">
@@ -110,21 +111,24 @@ export function Game() {
             />
           </div>
           <div className="undo-redo">
-            <span className="material-icons" onClick={() => history.undoAction()}>
-              undo
-            </span>
-            <span className="material-icons" onClick={() => history.redoAction()}>
-              redo
-            </span>
-            {randomBoards && (
-              <>
-                <span className="material-icons" onClick={generateNewBoard}>
-                  replay
-                </span>
-                <DimensionChoices onChange={generateNewBoard} />
-                <ColorChoices onChange={generateNewBoard} />
-              </>
-            )}
+            <div style={{ marginLeft: 'auto', marginRight: 'auto', width: 'fit-content' }}>
+              <span className="material-icons" onClick={() => history.undoAction()}>
+                undo
+              </span>
+              <span className="material-icons" onClick={() => history.redoAction()}>
+                redo
+              </span>
+
+              {randomBoards && (
+                <>
+                  <span className="material-icons" onClick={generateNewBoard}>
+                    replay
+                  </span>
+                  <DimensionChoices onChange={generateNewBoard} />
+                  <ColorChoices onChange={generateNewBoard} />
+                </>
+              )}
+            </div>
           </div>
         </div>
         <ColorPicker
@@ -133,6 +137,12 @@ export function Game() {
           selectedColor={mouse.getSelectedColor()}
           onSelect={color => mouse.setSelectedColor(color)}
         />
+        <div>
+          Learn how to play{' '}
+          <a target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=GEoXerHCQS0">
+            here
+          </a>
+        </div>
       </div>
     </div>
   );

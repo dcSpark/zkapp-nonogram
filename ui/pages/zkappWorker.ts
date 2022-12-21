@@ -4,13 +4,37 @@ type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
 // ---------------------------------------------------------------------------------------
 
-import type { NonogramZkApp, NonogramSubmission } from '../../contracts/src/NonogramZkApp';
+import type { NonogramZkApp } from 'nonogram-zkapp/src/index';
+import type { NonogramSubmission, SolutionNonogram } from 'nonogram-zkapp/src/common/ioTypes';
+import type { StreakList } from '../src/components/game/Streaks';
 
 const state = {
   NonogramZkApp: null as null | typeof NonogramZkApp,
   zkapp: null as null | NonogramZkApp,
   transaction: null as null | Transaction,
 };
+
+async function toZkStreaks(streaks: {
+  rows: StreakList[];
+  cols: StreakList[];
+}): Promise<SolutionNonogram> {
+  const { SolutionNonogram } = await import('nonogram-zkapp/build/src/common/ioTypes');
+  const { Color } = await import('nonogram-zkapp/build/src/common/types');
+  return SolutionNonogram.fromJS({
+    rows: streaks.rows.map(row =>
+      row.map(entry => ({ length: Field(entry.length), color: new Color(entry.color) }))
+    ),
+    columns: streaks.cols.map(column =>
+      column.map(entry => ({ length: Field(entry.length), color: new Color(entry.color) }))
+    ),
+  });
+}
+
+async function toZkColors(colors: number[][]): Promise<NonogramSubmission> {
+  const { Color } = await import('nonogram-zkapp/build/src/common/types');
+  const { NonogramSubmission } = await import('nonogram-zkapp/build/src/common/ioTypes');
+  return NonogramSubmission.from(colors.map(rows => rows.map(col => new Color(col))));
+}
 
 // ---------------------------------------------------------------------------------------
 
@@ -23,7 +47,7 @@ const functions = {
     Mina.setActiveInstance(Berkeley);
   },
   loadContract: async (args: {}) => {
-    const { NonogramZkApp } = await import('../../contracts/build/src/NonogramZkApp.js');
+    const { NonogramZkApp } = await import('nonogram-zkapp/build/src/index');
     state.NonogramZkApp = NonogramZkApp;
   },
   compileContract: async (args: {}) => {
@@ -37,13 +61,23 @@ const functions = {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
     state.zkapp = new state.NonogramZkApp!(publicKey);
   },
-  getHash: async (args: {}) => {
+  calcBoardHash: async (streaks: { rows: StreakList[]; cols: StreakList[] }): Promise<string> => {
+    const solutionStreaks = await toZkStreaks(streaks);
+    const boardHash = solutionStreaks.hash();
+    return JSON.stringify(boardHash.toJSON());
+  },
+  getBoardHash: async (args: {}) => {
     const currentHash = await state.zkapp!.nonogramHash.get();
     return JSON.stringify(currentHash.toJSON());
   },
-  submitSolutionTransaction: async (args: { solution: NonogramSubmission }) => {
+  submitSolutionTransaction: async (args: {
+    solution: number[][];
+    streaks: { rows: StreakList[]; cols: StreakList[] };
+  }) => {
+    const solutionStreaks = await toZkStreaks(args.streaks);
+    const solution = await toZkColors(args.solution);
     const transaction = await Mina.transaction(() => {
-      state.zkapp!.submitSolution(args.solution);
+      state.zkapp!.submitSolution(solution, solutionStreaks);
     });
     state.transaction = transaction;
   },

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Color } from '../common/constants';
+import { Color, indexToColor } from '../common/constants';
 import chroma from 'chroma-js';
+import type { BoardDescription } from '../../prepackaged';
 
 /** ex: 3 1 3 */
 export type StreakList = Streak[];
@@ -31,6 +32,30 @@ export class BoardStreaks {
       }
     }
     return maxColor;
+  }
+
+  toContractForm(
+    description: BoardDescription,
+    numColors: number
+  ): { rows: StreakList[]; cols: StreakList[] } {
+    const toColor = (index: number) => {
+      const colorHex = description.colorGenerator(numColors, index);
+      return indexToColor(colorHex);
+    };
+    return {
+      rows: this.rows.map(row =>
+        row.map(entry => ({
+          length: entry.length,
+          color: toColor(entry.color),
+        }))
+      ),
+      cols: this.cols.map(column =>
+        column.map(entry => ({
+          length: entry.length,
+          color: toColor(entry.color),
+        }))
+      ),
+    };
   }
 }
 
@@ -83,7 +108,7 @@ function StreakElement(props: {
 }
 
 const StreakListElement = React.memo(
-  (props: {
+  function StreakListElement(props: {
     genColor: (index: number) => string;
     /** the streak the user has actually drawn on the board */
     currentStreaks: StreakList;
@@ -92,7 +117,7 @@ const StreakListElement = React.memo(
     /* place the list is rendered in */
     type: 'row' | 'col';
     emptyStreakColor: string;
-  }) => {
+  }) {
     const streaks: React.ReactElement[] = [];
 
     // we have to find the overlap between the expected streaks and what the user has drawn
@@ -161,36 +186,38 @@ type StreakSectionProps = {
  * Crossed out hint numbers appear as a different color than normal hint numbers,
  * and are thus given a different div className than normal hint numbers.
  */
-export const StreakSection = React.forwardRef<HTMLDivElement, StreakSectionProps>((props, ref) => {
-  const streakLists: React.ReactElement[] = [];
+export const StreakSection = React.forwardRef<HTMLDivElement, StreakSectionProps>(
+  function StreakSection(props, ref) {
+    const streakLists: React.ReactElement[] = [];
 
-  // this may happen if the board isn't available yet
-  if (props.expectedStreaks.length === 0) {
-    return <></>;
-  }
-  if (props.expectedStreaks.length !== props.currentStreaks.length) {
-    throw new Error(
-      `Unexpected: should never happen. Expect ${props.expectedStreaks.length}. Current ${props.currentStreaks.length}`
+    // this may happen if the board isn't available yet
+    if (props.expectedStreaks.length === 0) {
+      return <></>;
+    }
+    if (props.expectedStreaks.length !== props.currentStreaks.length) {
+      throw new Error(
+        `Unexpected: should never happen. Expect ${props.expectedStreaks.length}. Current ${props.currentStreaks.length}`
+      );
+    }
+    for (let i = 0; i < props.expectedStreaks.length; i++) {
+      streakLists.push(
+        <StreakListElement
+          key={`${i}-${JSON.stringify(props.currentStreaks[i])}-${JSON.stringify(
+            props.expectedStreaks[i]
+          )}`}
+          genColor={props.genColor}
+          currentStreaks={props.currentStreaks[i]}
+          expectedStreaks={props.expectedStreaks[i]}
+          type={props.type}
+          emptyStreakColor={props.emptyStreakColor}
+        />
+      );
+    }
+
+    return (
+      <div ref={ref} className={props.type + '-hints'}>
+        {streakLists}
+      </div>
     );
   }
-  for (let i = 0; i < props.expectedStreaks.length; i++) {
-    streakLists.push(
-      <StreakListElement
-        key={`${i}-${JSON.stringify(props.currentStreaks[i])}-${JSON.stringify(
-          props.expectedStreaks[i]
-        )}`}
-        genColor={props.genColor}
-        currentStreaks={props.currentStreaks[i]}
-        expectedStreaks={props.expectedStreaks[i]}
-        type={props.type}
-        emptyStreakColor={props.emptyStreakColor}
-      />
-    );
-  }
-
-  return (
-    <div ref={ref} className={props.type + '-hints'}>
-      {streakLists}
-    </div>
-  );
-});
+);

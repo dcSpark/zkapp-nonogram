@@ -4,22 +4,10 @@ This template uses TypeScript.
 
 ## How to build
 
-```sh
-npm run build
-```
-
-## How to run tests
-
-```sh
-npm run test
-npm run testw # watch mode
-```
-
-## How to run coverage
-
-```sh
-npm run coverage
-```
+1. Add a `personal.json` and a `berkeley.json` key to the keys folder
+2. Generate a puzzle using the `generator` utility included in this repo
+3. Add the generated puzzle as a constant in `input.ts`
+4. Deploy using `npm run deploy`
 
 ## License
 

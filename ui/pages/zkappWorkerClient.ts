@@ -1,7 +1,8 @@
 import { fetchAccount, PublicKey, PrivateKey, Field } from 'snarkyjs';
 
 import type { ZkappWorkerRequest, ZkappWorkerReponse, WorkerFunctions } from './zkappWorker';
-import type { NonogramSubmission } from '../../contracts/src/NonogramZkApp';
+import type { NonogramSubmission } from 'nonogram-zkapp/src/NonogramZkApp';
+import type { StreakList } from '../src/components/game/Streaks';
 
 export default class ZkappWorkerClient {
   // ---------------------------------------------------------------------------------------
@@ -31,12 +32,17 @@ export default class ZkappWorkerClient {
     return this._call('initZkappInstance', { publicKey58: publicKey.toBase58() });
   }
 
-  async getHash(): Promise<Field> {
-    const result = await this._call('getHash', {});
+  async calcBoardHash(streaks: { rows: StreakList[]; cols: StreakList[] }): Promise<Field> {
+    const result = await this._call('calcBoardHash', { rows: streaks.rows, cols: streaks.cols });
     return Field.fromJSON(JSON.parse(result as string));
   }
 
-  submitSolutionTransaction(args: { solution: NonogramSubmission }) {
+  async getBoardHash(): Promise<Field> {
+    const result = await this._call('getBoardHash', {});
+    return Field.fromJSON(JSON.parse(result as string));
+  }
+
+  submitSolutionTransaction(args: { solution: number[][], streaks: { rows: StreakList[]; cols: StreakList[] } }) { 
     return this._call('submitSolutionTransaction', args);
   }
 

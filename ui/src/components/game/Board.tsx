@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { BoardDescription } from '../../prepackaged';
-import { createColors, DefaultDimensions, SquareFill, SquareValue } from '../common/constants';
+import {
+  createColors,
+  DefaultDimensions,
+  indexToColor,
+  SnarkyJSEmptyColor,
+  SquareFill,
+  SquareValue,
+} from '../common/constants';
 import { DimensionType } from './Dimension';
 import { Square } from './Square';
 import { BoardStreaks, Streak, StreakList } from './Streaks';
@@ -52,6 +59,30 @@ export function Board(props: BoardProps) {
   return <div className="game-board">{rows}</div>;
 }
 
+export function boardToContractForm(
+  dimensions: DimensionType,
+  board: SquareValue[],
+  description: BoardDescription,
+  numColors: number
+): number[][] {
+  const toColor = (index: number) => {
+    const colorHex = description.colorGenerator(numColors, index);
+    return indexToColor(colorHex);
+  };
+  const result = [];
+  for (let i = 0; i < dimensions.rows; i++) {
+    const row = [];
+    for (let j = 0; j < dimensions.cols; j++) {
+      const val = board[getSquareIndex(dimensions, i, j)];
+      const contractVal = val.state === SquareFill.FILLED ? toColor(val.color) : SnarkyJSEmptyColor;
+      row.push(contractVal);
+    }
+    result.push(row);
+  }
+
+  return result;
+}
+
 interface BoardContextObject {
   getDimensions(): DimensionType;
   getSize(): number;
@@ -73,6 +104,7 @@ interface BoardContextObject {
   setSquare(loc: number, value: SquareValue): void;
   setBoard(value: SquareValue[]): void;
   getBoard(): SquareValue[];
+  getBoardDescription(): BoardDescription | undefined;
 
   getNumColors(): number;
   getColorGenerator(): ColorGenerator;
@@ -99,12 +131,14 @@ export function GameBoard({ children }: { children: React.ReactNode }) {
   const [numColors, setNumColors] = useState<number>(1);
   const [colorGenerator, setColorGenerator] = useState<ColorGenerator>(() => defaultCreateColor);
   const [defaultColor, setDefaultColor] = useState<string>('#FFFFFF');
+  const [boardDescription, setBoardDescription] = useState<BoardDescription | undefined>(undefined);
 
   const context: BoardContextObject = {
     getDimensions() {
       return dimensions;
     },
     newRandomGame(newDimensions, newNumColors) {
+      setBoardDescription(undefined);
       setDimensions(newDimensions);
       setNumColors(newNumColors);
       setSquares(Array(getSize(newDimensions)).fill({ state: SquareFill.EMPTY }));
@@ -125,6 +159,7 @@ export function GameBoard({ children }: { children: React.ReactNode }) {
       setExpectedStreaks(getUserFilledStreaks(newDimensions, winSquares));
     },
     newFixedGame(boardDescription) {
+      setBoardDescription(boardDescription);
       setDimensions(boardDescription.dimensions);
       setNumColors(boardDescription.expectedStreaks.maxColor() + 1);
       setSquares(Array(getSize(boardDescription.dimensions)).fill({ state: SquareFill.EMPTY }));
@@ -153,6 +188,9 @@ export function GameBoard({ children }: { children: React.ReactNode }) {
     },
     getBoard() {
       return squares;
+    },
+    getBoardDescription() {
+      return boardDescription;
     },
     getColorGenerator() {
       return colorGenerator;

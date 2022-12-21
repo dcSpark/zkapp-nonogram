@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import type { NonogramZkApp } from '../../contracts/src/';
-import { Mina, isReady, PublicKey, fetchAccount } from 'snarkyjs';
+import { useEffect } from 'react';
+import { isReady, PublicKey } from 'snarkyjs';
 
+import Head from 'next/head';
 import Game from '../src/components/game/Game';
 import { GameMouse } from '../src/components/game/GameMouse';
 import { GameBoard } from '../src/components/game/Board';
@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       await isReady;
-      const { NonogramZkApp } = await import('../../contracts/build/src/index');
+      const { NonogramZkApp } = await import('nonogram-zkapp/build/src/index');
 
       // Update this to use the address (public key) for your zkApp account
       // To try it out, you can try this address for an example "NonogramZkApp" smart contract that we've deployed to
@@ -30,14 +30,22 @@ export default function Home() {
   }, []);
 
   return (
-    <GameBoard>
-      <GameMouse>
-        <GameHistory>
-          <GameTimer>
-            <Game />
-          </GameTimer>
-        </GameHistory>
-      </GameMouse>
-    </GameBoard>
+    <>
+      <Head>
+        <title>ZK Nonogram</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <meta name="description" content="zero-knowledge Nonogram game made SnarkyJS and React" />
+      </Head>
+      <GameBoard>
+        <GameMouse>
+          <GameHistory>
+            <GameTimer>
+              <Game />
+            </GameTimer>
+          </GameHistory>
+        </GameMouse>
+      </GameBoard>
+    </>
   );
 }
