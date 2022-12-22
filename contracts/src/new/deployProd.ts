@@ -11,9 +11,9 @@ type KeyFileContent = {
 
 const argv = minimist(process.argv.slice(2));
 
-const personalKeys: KeyFileContent = require(argv.personal ??
+const appKeys: KeyFileContent = require(argv.personal ??
   '../../../keys/berkeley.json');
-const appKeys: KeyFileContent = require(argv.app ??
+const personalKeys: KeyFileContent = require(argv.app ??
   '../../../keys/personal.json');
 
 // setup

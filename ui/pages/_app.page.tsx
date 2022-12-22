@@ -58,7 +58,7 @@ export default function App() {
         console.log('zkApp compiled');
 
         const zkappPublicKey = PublicKey.fromBase58(
-          'B62qikvYSRJPpJXsTmrJBGPNkaXSftNbsSyMGy2cMt2FGF5BMeuBXcU'
+          'B62qrKXoY2VJjE594fPTqu2SdmDwwYi4pB6P4jAQmBe8bXar2WeNaZY'
         );
 
         await zkappWorkerClient.initZkappInstance(zkappPublicKey);
