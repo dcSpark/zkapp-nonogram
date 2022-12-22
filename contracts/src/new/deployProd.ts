@@ -29,8 +29,7 @@ const zkAppAddress = zkAppPrivateKey.toPublicKey();
 const zkApp = new NewNonogramZkApp(zkAppAddress);
 
 console.log('Deploying and initializing Nonogram...');
-const compiledContract = await NewNonogramZkApp.compile();
-console.log(JSON.stringify(compiledContract.provers));
+await NewNonogramZkApp.compile();
 let deployTx = await Mina.transaction(
   {
     feePayerKey: account,
