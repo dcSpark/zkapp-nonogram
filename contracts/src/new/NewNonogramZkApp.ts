@@ -57,7 +57,7 @@ function checkRowCircuit(
         streakIndex.add(1)
       );
       const adjustedIndex = Circuit.if(
-        streakIndex.lt(0),
+        streakIndex.equals(-1),
         Field(0),
         streakIndex
       );
